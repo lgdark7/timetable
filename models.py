@@ -3,10 +3,21 @@ from flask_login import UserMixin
 
 db = SQLAlchemy()
 
+DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+TIMESLOTS = [
+    '10:00-10:50', '10:50-11:40', '11:40-12:30', '12:30-01:20', 
+    '02:00-02:50', '02:50-03:40', '03:40-04:30'
+]
+
 class Department(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), unique=True, nullable=False)
-    code = db.Column(db.String(10), unique=True, nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    code = db.Column(db.String(10), nullable=False)
+    section = db.Column(db.String(10), nullable=True, default='A')
+    semester = db.Column(db.String(20), nullable=True, default='Semester 1')
+    
+    # Unique constraint moved to a composite check in real usage or just allowed
+    # For simplicity, we'll allow multiple sections/semesters with same code.
     courses = db.relationship('Course', backref='department', lazy=True, cascade="all, delete-orphan")
     teachers = db.relationship('Teacher', backref='department', lazy=True, cascade="all, delete-orphan")
     timetable_entries = db.relationship('TimetableEntry', backref='department', lazy=True, cascade="all, delete-orphan")
@@ -14,7 +25,7 @@ class Department(db.Model):
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    code = db.Column(db.String(20), unique=True, nullable=False)
+    code = db.Column(db.String(20), nullable=False)
     dept_id = db.Column(db.Integer, db.ForeignKey('department.id'), nullable=False)
     type = db.Column(db.String(20), nullable=False, default='Theory') 
     hours_per_week = db.Column(db.Integer, nullable=False) 

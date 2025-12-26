@@ -23,7 +23,8 @@
                 <label class="form-label">Department</label>
                 <select name="dept_id" class="form-control" required>
                     {% for dept in departments %}
-                    <option value="{{ dept.id }}" {% if dept.id==course.dept_id %}selected{% endif %}>{{ dept.name }}
+                    <option value="{{ dept.id }}" {% if dept.id==course.dept_id %}selected{% endif %}>
+                        {{ dept.code }} - {{ dept.semester }} ({{ dept.section }})
                     </option>
                     {% endfor %}
                 </select>

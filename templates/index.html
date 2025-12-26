@@ -5,11 +5,48 @@
 {% endblock %}
 
 {% block content %}
-<div class="intro" style="text-align: center; padding: 50px 0;">
-    <div style="margin-top: 30px;">
-        <a href="{{ url_for('main.dashboard') }}" class="btn">Go to Dashboard</a>
-        <a href="{{ url_for('main.timetable') }}" class="btn"
-            style="background: var(--secondary); color: var(--dark); margin-left: 10px;">View Timetables</a>
+<div class="hero-section" style="padding: 100px 20px; text-align: center; animation: pageEnter 0.8s ease-out;">
+    <div
+        style="background: linear-gradient(135deg, var(--primary), var(--secondary)); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 3.5rem; font-weight: 800; margin-bottom: 20px;">
+        Intelligent Academic Scheduling
+    </div>
+    <h1
+        style="font-size: 1.5rem; color: var(--text-muted); font-weight: 400; max-width: 800px; margin: 0 auto 40px; line-height: 1.6;">
+        An advanced algorithmic solution for clash-free institution management. Experience the power of automated
+        constraints fulfillment.
+    </h1>
+
+    <div style="display: flex; gap: 20px; justify-content: center; margin-top: 50px;">
+        <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary"
+            style="padding: 15px 40px; font-size: 1.1rem; border-radius: 50px;">
+            <i class="fas fa-rocket"></i> Launch Dashboard
+        </a>
+        <a href="{{ url_for('main.timetable') }}" class="btn btn-light"
+            style="padding: 15px 40px; font-size: 1.1rem; border-radius: 50px;">
+            <i class="fas fa-calendar-alt"></i> View Public Schedules
+        </a>
+    </div>
+
+    <div
+        style="margin-top: 100px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; text-align: left;">
+        <div class="card" style="padding: 30px; border-left: 2px solid var(--primary);">
+            <i class="fas fa-bolt" style="font-size: 1.5rem; color: var(--primary); margin-bottom: 15px;"></i>
+            <h3 style="font-size: 1.1rem; margin-bottom: 10px;">Instant Generation</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Complex timetables generated in milliseconds using
+                optimized backtrack search.</p>
+        </div>
+        <div class="card" style="padding: 30px; border-left: 2px solid var(--secondary);">
+            <i class="fas fa-shield-alt" style="font-size: 1.5rem; color: var(--secondary); margin-bottom: 15px;"></i>
+            <h3 style="font-size: 1.1rem; margin-bottom: 10px;">Security First</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Role-based access ensures only authorized faculty
+                can modify critical assignments.</p>
+        </div>
+        <div class="card" style="padding: 30px; border-left: 2px solid var(--warning);">
+            <i class="fas fa-mobile-alt" style="font-size: 1.5rem; color: var(--warning); margin-bottom: 15px;"></i>
+            <h3 style="font-size: 1.1rem; margin-bottom: 10px;">Fully Responsive</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Access your daily schedules from any device with
+                optimized PDF exports.</p>
+        </div>
     </div>
 </div>
 {% endblock %}

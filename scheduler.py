@@ -1,10 +1,5 @@
 import random
-from models import db, TimetableEntry, Course, Teacher, Classroom, Department
-DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-TIMESLOTS = [
-    '10:00-10:50', '10:50-11:40', '11:40-12:30', '12:30-01:20', 
-    '02:00-02:50', '02:50-03:40', '03:40-04:30'
-]
+from models import db, TimetableEntry, Course, Teacher, Classroom, Department, DAYS, TIMESLOTS
 
 class Scheduler:
     def __init__(self):

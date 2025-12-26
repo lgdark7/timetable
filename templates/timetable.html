@@ -29,26 +29,27 @@
 </div>
 
 <div id="timetable-content">
-    {% for dept, schedule in timetable_data.items() %}
-    {% set is_student_link = (current_user.role == 'student' and current_user.dept_id == dept.id) %}
-    {% set is_teacher_link = (current_user.role == 'teacher' and current_user.dept_id == dept.id) %}
-
-    <div class="card timetable-card {{ 'student-highlight' if is_student_link }} {{ 'teacher-highlight' if is_teacher_link }}"
-        data-dept="{{ dept.name|lower }}" style="padding: 20px; page-break-after: always;">
-
+    {% if teacher_schedule %}
+    {# TEACHER DEDICATED VIEW #}
+    <div class="card timetable-card teacher-highlight"
+        style="padding: 15px; margin-bottom: 50px; border: 2px solid var(--primary);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
             <h3 style="margin: 0; color: var(--dark); font-weight: 700;">
-                {{ dept.name }} - Academic Timetable
+                <i class="fas fa-user-tie"></i> Your Personal Schedule: {{ teacher_profile.name }}
             </h3>
-            {% if current_user.dept_id == dept.id %}
-            <span class="badge {{ 'badge-student' if current_user.role == 'student' else 'badge-teacher' }}"
-                style="color: #fff; padding: 8px 15px; font-size: 0.8rem;">
-                <i class="fas fa-star"></i> Your Schedule
-            </span>
-            {% endif %}
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <span class="badge badge-teacher" style="color: #fff; padding: 8px 15px; font-size: 0.8rem;">
+                    <i class="fas fa-star"></i> Interactive Weekly Overview
+                </span>
+                <button onclick="downloadSinglePDF('Teacher_{{ teacher_profile.name }}', 'teacher-timetable-card')"
+                    class="btn btn-sm btn-light no-pdf"
+                    style="padding: 6px 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                    <i class="fas fa-file-pdf" style="color: #e11d48; margin-right: 5px;"></i> Download My PDF
+                </button>
+            </div>
         </div>
 
-        <div class="timetable-responsive">
+        <div class="timetable-responsive" id="teacher-timetable-card">
             <table class="timetable-table">
                 <thead>
                     <tr>
@@ -62,34 +63,26 @@
                     {% for day in days %}
                     <tr>
                         <td class="day-header">{{ day }}</td>
-                        {% for cell in schedule[day] %}
+                        {% for cell in teacher_schedule[day] %}
                         {% if not cell.skip %}
-                        {% set ns = namespace(is_mine=false) %}
-                        {% if cell.entries and current_user.role == 'teacher' %}
-                        {% for entry in cell.entries %}
-                        {% if entry.teacher_id == current_user.teacher_id %}
-                        {% set ns.is_mine = true %}
-                        {% endif %}
-                        {% endfor %}
-                        {% endif %}
                         {% set is_practical = cell.entries and cell.entries[0].course.type == 'Practical' %}
-
-                        {% set td_class = "practical-session" if is_practical else "" %}
-                        {% if ns.is_mine %}{% set td_class = td_class ~ " my-session" %}{% endif %}
-                        <td colspan="{{ cell.colspan }}" class="{{ td_class.strip() }}">
+                        <td colspan="{{ cell.colspan }}" class="{{ 'practical-session' if is_practical }} my-session">
                             {% if cell.entries %}
                             {% for entry in cell.entries %}
-                            {% set is_my_session = (current_user.role == 'teacher' and entry.teacher_id ==
-                            current_user.teacher_id) %}
-                            {% set div_class = "my-session-inner" if is_my_session else "" %}
-                            {% set div_style = "padding: 5px; border-bottom: 1px solid rgba(255,255,255,0.1);
-                            margin-bottom: 5px;" if not loop.last else "padding: 5px;" %}
-                            <div class="{{ div_class }}" style="{{ div_style }}">
-                                <div style="font-weight: 700; color: var(--primary); font-size: 0.95rem;">{{
-                                    entry.course.code }}</div>
-                                <div style="font-size: 0.8rem; color: var(--white); margin: 2px 0; opacity: 0.9;">{{
-                                    entry.classroom.name }}</div>
-                                <div style="font-size: 0.75rem; color: var(--text-muted);">{{ entry.teacher.name }}
+                            <div class="my-session-inner"
+                                style="{{ 'padding: 3px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 3px;' if not loop.last else 'padding: 3px;' }}">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                    <div style="font-weight: 700; color: var(--primary); font-size: 0.95rem;">
+                                        {{ entry.course.code }}
+                                    </div>
+                                    <a href="{{ url_for('main.edit_timetable_entry', id=entry.id) }}" class="no-pdf"
+                                        style="color: var(--text-muted); font-size: 0.8rem; opacity: 0.6;">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </div>
+                                <div style="font-size: 0.75rem; color: var(--white); margin: 2px 0; opacity: 0.9;">
+                                    {{ entry.department.code }} (Sec {{ entry.department.section }}) - {{
+                                    entry.classroom.name }}
                                 </div>
                                 {% if entry.course.type == 'Practical' %}
                                 <span
@@ -110,11 +103,111 @@
             </table>
         </div>
     </div>
-    {% else %}
-    <div class="card" style="text-align: center; padding: 60px;">
-        <i class="fas fa-calendar-times" style="font-size: 3rem; color: #adb5bd; margin-bottom: 20px;"></i>
-        <h3>No Timetable Data Found</h3>
-        <p style="color: #8898aa;">Please ensure data is added and generate the timetable from the dashboard.</p>
+
+    <div class="section-divider"
+        style="margin-bottom: 30px; text-align: center; border-bottom: 1px solid var(--border-color); position: relative;">
+        <span
+            style="background: var(--bg-main); padding: 0 20px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; position: relative; top: 12px;">Regular
+            Departmental Timetables</span>
+    </div>
+    {% endif %}
+
+    {# ALWAYS SHOW DEPARTMENTAL VIEW (FOR SEARCH/REGULAR VIEW) #}
+    {% for dept, schedule in timetable_data.items() %}
+    {% set is_student_link = (current_user.role == 'student' and current_user.dept_id == dept.id) %}
+    {% set is_teacher_link = (current_user.role == 'teacher' and current_user.dept_id == dept.id) %}
+
+    <div class="card timetable-card {{ 'student-highlight' if is_student_link }} {{ 'teacher-highlight' if is_teacher_link }}"
+        id="dept-card-{{ dept.id }}" data-dept="{{ dept.name|lower }}" style="padding: 15px; page-break-after: always;">
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <h3 style="margin: 0; color: var(--dark); font-weight: 700;">
+                {{ dept.name }} - {{ dept.code }} ({{ dept.semester }} - Section {{ dept.section }})
+            </h3>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                {% if current_user.dept_id == dept.id %}
+                <span class="badge {{ 'badge-student' if current_user.role == 'student' else 'badge-teacher' }}"
+                    style="color: #fff; padding: 8px 15px; font-size: 0.8rem;">
+                    <i class="fas fa-star"></i> Your Schedule
+                </span>
+                {% endif %}
+                <button
+                    onclick="downloadSinglePDF('{{ dept.code }}-S{{ dept.semester }}-{{ dept.section }}', 'dept-card-{{ dept.id }}')"
+                    class="btn btn-sm btn-light no-pdf"
+                    style="padding: 6px 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                    <i class="fas fa-file-pdf" style="color: #e11d48; margin-right: 5px;"></i> Download PDF
+                </button>
+            </div>
+        </div>
+
+        <div class="timetable-responsive">
+            <table class="timetable-table">
+                <thead>
+                    <tr>
+                        <th class="day-header">Day / Time</th>
+                        {% for t in time_slots %}
+                        <th>{{ t }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for day in days %}
+                    <tr>
+                        <td class="day-header">{{ day }}</td>
+                        {% for cell in schedule[day] %}
+                        {% if not cell.skip %}
+                        {% set is_practical = cell.entries and cell.entries[0].course.type == 'Practical' %}
+                        {% set ns = namespace(is_mine=false) %}
+                        {% if cell.entries and current_user.role == 'teacher' %}
+                        {% for entry in cell.entries %}
+                        {% if entry.teacher_id == current_user.teacher_id %}
+                        {% set ns.is_mine = true %}
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+
+                        <td colspan="{{ cell.colspan }}"
+                            class="{{ 'practical-session' if is_practical }} {{ 'my-session' if ns.is_mine }}">
+                            {% if cell.entries %}
+                            {% for entry in cell.entries %}
+                            {% set is_my_sess = (current_user.role == 'teacher' and entry.teacher_id ==
+                            current_user.teacher_id) %}
+                            <div class="{{ 'my-session-inner' if is_my_sess }}"
+                                style="{{ 'padding: 3px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 3px;' if not loop.last else 'padding: 3px;' }}">
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                    <div style="font-weight: 700; color: var(--primary); font-size: 0.95rem;">{{
+                                        entry.course.code }}</div>
+                                    {% if current_user.role == 'admin' or is_my_sess %}
+                                    <a href="{{ url_for('main.edit_timetable_entry', id=entry.id) }}" class="no-pdf"
+                                        style="color: var(--text-muted); font-size: 0.8rem; opacity: 0.6; transition: var(--transition-smooth);"
+                                        onmouseover="this.style.opacity='1'; this.style.color='var(--primary)'"
+                                        onmouseout="this.style.opacity='0.6'; this.style.color='var(--text-muted)'">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    {% endif %}
+                                </div>
+                                <div style="font-size: 0.75rem; color: var(--white); margin: 2px 0; opacity: 0.9;">{{
+                                    entry.classroom.name }}</div>
+                                <div style="font-size: 0.7rem; color: var(--text-muted);">{{ entry.teacher.name }}
+                                </div>
+                                {% if entry.course.type == 'Practical' %}
+                                <span
+                                    style="font-size: 0.65rem; color: var(--secondary); text-transform: uppercase; font-weight: 800;">[
+                                    Lab ]</span>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            <span style="color: #adb5bd;">-</span>
+                            {% endif %}
+                        </td>
+                        {% endif %}
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
     {% endfor %}
 </div>
@@ -130,11 +223,31 @@
 
         const opt = {
             margin: [5, 5],
-            filename: 'Timetable_{{ current_user.username }}_{{ current_user.role }}.pdf',
+            filename: 'Timetable_Complete_{{ current_user.username }}.pdf',
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2 },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
             pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            // Remove compact class after generation
+            document.body.classList.remove('pdf-compact');
+        });
+    }
+
+    function downloadSinglePDF(filename, elementId) {
+        const element = document.getElementById(elementId);
+
+        // Add compact class for PDF generation
+        document.body.classList.add('pdf-compact');
+
+        const opt = {
+            margin: [10, 10],
+            filename: `Timetable_${filename}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 1.5 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
         };
 
         html2pdf().set(opt).from(element).save().then(() => {
@@ -150,6 +263,7 @@
         const cards = document.querySelectorAll('.timetable-card');
         cards.forEach(card => {
             const dept = card.getAttribute('data-dept');
+            if (!dept) return; // Keep personal schedule visible
             if (dept.includes(term.toLowerCase())) {
                 card.style.display = 'block';
             } else {
@@ -170,8 +284,7 @@
     });
 </script>
 
-{% if current_user.dept_id %}
-{% set user_dept = Department.query.get(current_user.dept_id) %}
-<input type="hidden" id="user-dept-name" value="{{ user_dept.name if user_dept else '' }}">
+{% if current_user.department %}
+<input type="hidden" id="user-dept-name" value="{{ current_user.department.name }}">
 {% endif %}
 {% endblock %}

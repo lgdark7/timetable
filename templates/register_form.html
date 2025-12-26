@@ -2,59 +2,183 @@
 
 {% block content %}
 <div class="auth-wrapper">
+    <canvas id="particles-canvas"></canvas>
+
     <div class="auth-card">
         <div class="auth-header">
-            <div class="auth-brand" style="margin-bottom: 20px; font-size: 2rem; color: var(--primary);">
-                <i class="fas fa-calendar-alt"></i><br>
-                Intelligent Timetable
+            <div class="auth-brand">
+                <i class="fas fa-calendar-alt"></i>
+                <span
+                    style="background: linear-gradient(135deg, #818cf8, #c084fc); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Intelligent
+                    Timetable</span>
             </div>
             <h2>Join as {{ role|capitalize }}</h2>
             <p>Enter your details below</p>
         </div>
 
         <form action="{{ url_for('main.register_' ~ role) }}" method="POST">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div
+                style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444; padding: 12px; border-radius: 12px; font-size: 0.85rem; margin-bottom: 20px; text-align: center;">
+                <i class="fas fa-exclamation-circle"></i> {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
             <div class="form-group">
-                <label class="form-label">Username</label>
-                <input type="text" name="username" class="form-control" placeholder="Choose a username" required>
+                <label class="form-label" style="color: rgba(255,255,255,0.7);">Username</label>
+                <div style="position: relative;">
+                    <i class="fas fa-user"
+                        style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4);"></i>
+                    <input type="text" name="username" class="form-control" placeholder="Choose a username" required
+                        style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding-left: 45px;">
+                </div>
             </div>
 
-            <div class="form-group" style="margin-top: 20px;">
-                <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" placeholder="Create a password" required>
+            <div class="form-group" style="margin-top: 25px;">
+                <label class="form-label" style="color: rgba(255,255,255,0.7);">Password</label>
+                <div style="position: relative;">
+                    <i class="fas fa-lock"
+                        style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4);"></i>
+                    <input type="password" name="password" class="form-control" placeholder="Create a password" required
+                        style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding-left: 45px;">
+                </div>
             </div>
 
             {% if role == 'student' %}
-            <div class="form-group" style="margin-top: 20px;">
-                <label class="form-label">Select Department</label>
-                <select name="dept_id" class="form-control" required>
-                    <option value="">-- Choose Department --</option>
+            <div class="form-group" style="margin-top: 25px;">
+                <label class="form-label" style="color: rgba(255,255,255,0.7);">Select Department</label>
+                <select name="dept_id" class="form-control" required
+                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                    <option value="" style="background: #0f172a;">-- Choose Department --</option>
                     {% for dept in departments %}
-                    <option value="{{ dept.id }}">{{ dept.name }} ({{ dept.code }})</option>
+                    <option value="{{ dept.id }}" style="background: #0f172a;">{{ dept.code }} - {{ dept.semester }} ({{
+                        dept.section }})</option>
                     {% endfor %}
                 </select>
             </div>
             {% elif role == 'teacher' %}
-            <div class="form-group" style="margin-top: 20px;">
-                <label class="form-label">Select Your Name</label>
-                <select name="teacher_id" class="form-control" required>
-                    <option value="">-- Select Your Name (Unregistered Only) --</option>
+            <div class="form-group" style="margin-top: 25px;">
+                <label class="form-label" style="color: rgba(255,255,255,0.7);">Select Your Name</label>
+                <select name="teacher_id" class="form-control" required
+                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;">
+                    <option value="" style="background: #0f172a;">-- Select Your Name --</option>
                     {% for teacher in teachers %}
-                    <option value="{{ teacher.id }}">{{ teacher.name }} ({{ teacher.department.code if
-                        teacher.department else 'N/A' }})</option>
+                    <option value="{{ teacher.id }}" style="background: #0f172a;">{{ teacher.name }} ({{
+                        teacher.department.code if teacher.department else 'N/A' }})</option>
                     {% endfor %}
                 </select>
             </div>
             {% endif %}
 
-            <button type="submit" class="btn btn-primary {{ 'btn-student' if role == 'student' else 'btn-teacher' }}"
-                style="width: 100%; justify-content: center; margin-top: 30px; padding: 12px;">
-                <i class="fas fa-check-circle"></i> &nbsp; Complete Registration
+            <button type="submit" class="btn btn-primary"
+                style="width: 100%; justify-content: center; margin-top: 35px; padding: 14px; font-weight: 600;">
+                Complete Registration
             </button>
         </form>
 
-        <div class="auth-footer">
-            Changed your mind? <a href="{{ url_for('main.register') }}">Go Back</a>
+        <div
+            style="text-align: center; margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;">
+            <a href="{{ url_for('main.register') }}"
+                style="color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.9rem;">
+                <i class="fas fa-arrow-left" style="margin-right: 5px;"></i> Go Back
+            </a>
         </div>
     </div>
 </div>
+
+<script>
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouse = { x: null, y: null, radius: 150 };
+
+    function setCanvasSize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', () => {
+        setCanvasSize();
+        init();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        mouse.x = e.x;
+        mouse.y = e.y;
+    });
+
+    setCanvasSize();
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 1;
+            this.speedX = (Math.random() - 0.5) * 1;
+            this.speedY = (Math.random() - 0.5) * 1;
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+
+            if (this.x > canvas.width) this.x = 0;
+            else if (this.x < 0) this.x = canvas.width;
+            if (this.y > canvas.height) this.y = 0;
+            else if (this.y < 0) this.y = canvas.height;
+
+            let dx = mouse.x - this.x;
+            let dy = mouse.y - this.y;
+            let distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < mouse.radius) {
+                const force = (mouse.radius - distance) / mouse.radius;
+                const directionX = dx / distance;
+                const directionY = dy / distance;
+                this.x += directionX * force * 2;
+                this.y += directionY * force * 2;
+            }
+        }
+        draw() {
+            ctx.fillStyle = 'rgba(129, 140, 248, 0.4)';
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    function init() {
+        particles = [];
+        let numberOfParticles = (canvas.width * canvas.height) / 10000;
+        for (let i = 0; i < numberOfParticles; i++) {
+            particles.push(new Particle());
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw();
+            for (let j = i; j < particles.length; j++) {
+                let dx = particles[i].x - particles[j].x;
+                let dy = particles[i].y - particles[j].y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance < 120) {
+                    ctx.strokeStyle = `rgba(129, 140, 248, ${0.3 * (1 - distance / 120)})`;
+                    ctx.lineWidth = 0.8;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+
+    init();
+    animate();
+</script>
 {% endblock %}

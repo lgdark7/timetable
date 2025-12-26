@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block icon %}<i class="fas fa-edit"></i>{% endblock %}
+{% block title %}Edit Timetable Entry{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 0 auto; padding: 40px;">
+    <div class="card-header" style="margin-bottom: 30px;">
+        <h3 style="margin: 0; color: var(--dark); font-weight: 700;">
+            Reschedule Period
+        </h3>
+        <p style="color: var(--text-muted); margin-top: 10px;">Update the day, time, or classroom for this session.</p>
+    </div>
+
+    <form action="{{ url_for('main.edit_timetable_entry', id=entry.id) }}" method="POST">
+        <div class="form-group">
+            <label class="form-label">Subject</label>
+            <input type="text" class="form-control" value="{{ entry.course.name }} ({{ entry.course.code }})" disabled
+                style="background: rgba(255,255,255,0.05); color: var(--text-muted);">
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <label class="form-label">Day of the Week</label>
+            <select name="day" class="form-control" required>
+                {% for day in days %}
+                <option value="{{ day }}" {% if day==entry.day %}selected{% endif %}>{{ day }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <label class="form-label">Timeslot</label>
+            <select name="timeslot" class="form-control" required>
+                {% for slot in time_slots %}
+                <option value="{{ slot }}" {% if slot==entry.timeslot %}selected{% endif %}>{{ slot }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group" style="margin-top: 20px;">
+            <label class="form-label">Classroom / Lab</label>
+            <select name="classroom_id" class="form-control" required>
+                {% for room in classrooms %}
+                <option value="{{ room.id }}" {% if room.id==entry.classroom_id %}selected{% endif %}>
+                    {{ room.name }} ({{ room.type }})
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        {% if current_user.role == 'admin' %}
+        <div class="form-group" style="margin-top: 20px;">
+            <label class="form-label">Teacher</label>
+            <select name="teacher_id" class="form-control" required>
+                {% for teacher in teachers %}
+                <option value="{{ teacher.id }}" {% if teacher.id==entry.teacher_id %}selected{% endif %}>
+                    {{ teacher.name }} ({{ teacher.department.code if teacher.department else 'N/A' }})
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        {% else %}
+        <input type="hidden" name="teacher_id" value="{{ entry.teacher_id }}">
+        {% endif %}
+
+        <div style="display: flex; gap: 15px; margin-top: 40px;">
+            <button type="submit" class="btn btn-primary" style="flex: 1; justify-content: center;">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+            <a href="{{ url_for('main.timetable') }}" class="btn btn-light" style="flex: 1; justify-content: center;">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

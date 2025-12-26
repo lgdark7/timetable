@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
-from models import db, Department, Classroom, Teacher, Course, Allocation, TimetableEntry, User
+from models import db, Department, Classroom, Teacher, Course, Allocation, TimetableEntry, User, DAYS, TIMESLOTS
 from scheduler import Scheduler
 from flask_login import login_user, logout_user, login_required, current_user
 import csv
@@ -30,10 +30,15 @@ def login():
         password = request.form.get('password')
         
         user = User.query.filter_by(username=username).first()
-        if user and user.password == password:
-            login_user(user)
-            flash(f'Welcome back, {username}!', 'success')
-            return redirect(url_for('main.dashboard'))
+        if user:
+            if user.password == password:
+                login_user(user)
+                flash(f'Welcome back, {username}!', 'success')
+                return redirect(url_for('main.dashboard'))
+            else:
+                flash('pass is wrong', 'danger')
+                return redirect(url_for('main.login'))
+        
         if username == 'admin' and password == 'admin' and not User.query.filter_by(username='admin').first():
             new_admin = User(username='admin', password='admin', role='admin')
             db.session.add(new_admin)
@@ -165,7 +170,12 @@ def upload_csv():
                     
             elif file_type == 'departments':
                 for row in reader:
-                    dept = Department(name=row['Name'], code=row['Code'])
+                    dept = Department(
+                        name=row['Name'], 
+                        code=row['Code'],
+                        section=row.get('Section', 'A'),
+                        semester=row.get('Semester', 'Semester 1')
+                    )
                     db.session.add(dept)
                     count += 1
             
@@ -188,11 +198,12 @@ def departments():
             return redirect(url_for('main.departments'))
         name = request.form.get('name')
         code = request.form.get('code')
-        if name and code:
-            dept = Department(name=name, code=code)
-            db.session.add(dept)
-            db.session.commit()
-            flash('Department added!', 'success')
+        section = request.form.get('section', 'A')
+        semester = request.form.get('semester', 'Semester 1')
+        dept = Department(name=name, code=code, section=section, semester=semester)
+        db.session.add(dept)
+        db.session.commit()
+        flash('Department added successfully!', 'success')
         return redirect(url_for('main.departments'))
     
     depts = Department.query.all()
@@ -283,7 +294,7 @@ def allocations():
     teachers = Teacher.query.all()
     return render_template('resources/allocations.html', allocations=allocs, courses=courses, teachers=teachers)
 
-@main.route('/departments/edit/<int:id>', methods=['GET', 'POST'])
+@main.route('/edit_department/<int:id>', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def edit_department(id):
@@ -291,8 +302,10 @@ def edit_department(id):
     if request.method == 'POST':
         dept.name = request.form.get('name')
         dept.code = request.form.get('code')
+        dept.section = request.form.get('section')
+        dept.semester = request.form.get('semester')
         db.session.commit()
-        flash('Department updated!', 'success')
+        flash('Department updated successfully!', 'success')
         return redirect(url_for('main.departments'))
     return render_template('resources/edit_department.html', dept=dept)
 
@@ -420,36 +433,151 @@ def clear_timetable():
         flash(f'Error clearing timetable: {e}', 'danger')
     return redirect(url_for('main.timetable'))
 
+@main.route('/timetable/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_timetable_entry(id):
+    entry = TimetableEntry.query.get_or_404(id)
+    
+    # Permission check: Admin or the teacher who owns the entry
+    if current_user.role != 'admin' and (current_user.role != 'teacher' or current_user.teacher_id != entry.teacher_id):
+        flash('Access denied. You can only edit your own sessions.', 'danger')
+        return redirect(url_for('main.timetable'))
+        
+    if request.method == 'POST':
+        new_day = request.form.get('day')
+        new_timeslot = request.form.get('timeslot')
+        new_classroom_id = int(request.form.get('classroom_id'))
+        new_teacher_id = int(request.form.get('teacher_id')) if current_user.role == 'admin' else entry.teacher_id
+        
+        # 1. Teacher Conflict check
+        teacher_busy = TimetableEntry.query.filter(
+            TimetableEntry.day == new_day,
+            TimetableEntry.timeslot == new_timeslot,
+            TimetableEntry.teacher_id == new_teacher_id,
+            TimetableEntry.id != entry.id
+        ).first()
+        if teacher_busy:
+            flash(f'Conflict: Teacher {teacher_busy.teacher.name} is already busy at this time.', 'danger')
+            return redirect(url_for('main.edit_timetable_entry', id=id))
+
+        # 2. Room Conflict check
+        room_busy = TimetableEntry.query.filter(
+            TimetableEntry.day == new_day,
+            TimetableEntry.timeslot == new_timeslot,
+            TimetableEntry.classroom_id == new_classroom_id,
+            TimetableEntry.id != entry.id
+        ).first()
+        if room_busy:
+            flash(f'Conflict: Classroom {room_busy.classroom.name} is already occupied.', 'danger')
+            return redirect(url_for('main.edit_timetable_entry', id=id))
+
+        # 3. Department/Batch Conflict check (Practical allowed 2, Theory 1)
+        dept_sessions = TimetableEntry.query.filter(
+            TimetableEntry.day == new_day,
+            TimetableEntry.timeslot == new_timeslot,
+            TimetableEntry.dept_id == entry.dept_id,
+            TimetableEntry.id != entry.id
+        ).all()
+        
+        is_practical = entry.course.type == 'Practical'
+        if is_practical:
+            if len(dept_sessions) >= 2:
+                flash('Conflict: Department already has 2 lab sessions at this time.', 'danger')
+                return redirect(url_for('main.edit_timetable_entry', id=id))
+        else:
+            if len(dept_sessions) >= 1:
+                flash('Conflict: Department already has a session scheduled at this time.', 'danger')
+                return redirect(url_for('main.edit_timetable_entry', id=id))
+
+        # Update entry
+        entry.day = new_day
+        entry.timeslot = new_timeslot
+        entry.classroom_id = new_classroom_id
+        entry.teacher_id = new_teacher_id
+            
+        try:
+            db.session.commit()
+            flash('Timetable entry updated successfully!', 'success')
+            return redirect(url_for('main.timetable'))
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error updating entry: {e}', 'danger')
+            
+    classrooms = Classroom.query.all()
+    teachers = Teacher.query.all() # Only used by admins
+    
+    return render_template('edit_timetable_entry.html', 
+                           entry=entry, 
+                           days=DAYS, 
+                           time_slots=TIMESLOTS, 
+                           classrooms=classrooms,
+                           teachers=teachers)
+
 @main.route('/timetable')
 @login_required
 def timetable():
+    slot_map = { t: i for i, t in enumerate(TIMESLOTS) }
+    teacher_schedule = None
+    teacher_profile = None
+    
+    # 1. Prepare Teacher's Personal View (if applicable)
+    if current_user.role == 'teacher' and current_user.teacher_id:
+        teacher_profile = Teacher.query.get(current_user.teacher_id)
+        teacher_entries = TimetableEntry.query.filter_by(teacher_id=current_user.teacher_id).all()
+        
+        teacher_schedule = { day: [{'entries': [], 'colspan': 1, 'skip': False} for _ in range(len(TIMESLOTS))] for day in DAYS }
+        
+        for entry in teacher_entries:
+            if entry.day in DAYS and entry.timeslot in slot_map:
+                idx = slot_map[entry.timeslot]
+                teacher_schedule[entry.day][idx]['entries'].append(entry)
+        
+        for day in DAYS:
+            slots = teacher_schedule[day]
+            i = 0
+            while i < len(TIMESLOTS):
+                cell = slots[i]
+                if cell['skip']: 
+                    i += 1
+                    continue
+                primary_entry = cell['entries'][0] if cell['entries'] else None
+                if primary_entry and primary_entry.course.type == 'Practical':
+                    duration = 1
+                    for j in range(i + 1, len(TIMESLOTS)):
+                        next_cell = slots[j]
+                        if next_cell['entries'] and next_cell['entries'][0].course_id == primary_entry.course_id:
+                            duration += 1
+                        else:
+                            break
+                    if duration > 1:
+                        cell['colspan'] = duration
+                        for k in range(1, duration):
+                            slots[i+k]['skip'] = True
+                    i += duration
+                else:
+                    i += 1
+
+    # 2. Prepare Regular Departmental View (for everyone)
     departments = Department.query.all()
     entries = TimetableEntry.query.all()
     
     timetable_data = {}
-    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-    time_slots = [
-        '10:00-10:50', '10:50-11:40', '11:40-12:30', '12:30-01:20', 
-        '02:00-02:50', '02:50-03:40', '03:40-04:30'
-    ]
-    slot_map = { t: i for i, t in enumerate(time_slots) }
-
     for dept in departments:
-        dept_schedule = { day: [{'entries': [], 'colspan': 1, 'skip': False} for _ in range(7)] for day in days }
+        dept_schedule = { day: [{'entries': [], 'colspan': 1, 'skip': False} for _ in range(len(TIMESLOTS))] for day in DAYS }
         timetable_data[dept] = dept_schedule
         
     for entry in entries:
         dept = next((d for d in departments if d.id == entry.dept_id), None)
-        if dept and entry.day in days and entry.timeslot in slot_map:
+        if dept and entry.day in DAYS and entry.timeslot in slot_map:
             idx = slot_map[entry.timeslot]
             if 0 <= idx < 7:
                  timetable_data[dept][entry.day][idx]['entries'].append(entry)
                  
     for dept in departments:
-        for day in days:
+        for day in DAYS:
             slots = timetable_data[dept][day]
             i = 0
-            while i < 7:
+            while i < len(TIMESLOTS):
                 cell = slots[i]
                 if cell['skip']: 
                     i += 1
@@ -459,7 +587,7 @@ def timetable():
                     duration = 1
                     course_ids = sorted([e.course_id for e in cell['entries']])
                     
-                    for j in range(i + 1, 7):
+                    for j in range(i + 1, len(TIMESLOTS)):
                         next_cell = slots[j]
                         next_course_ids = sorted([e.course_id for e in next_cell['entries']])
                         if next_course_ids == course_ids and next_course_ids:
@@ -475,4 +603,10 @@ def timetable():
                 else:
                     i += 1
 
-    return render_template('timetable.html', timetable_data=timetable_data, days=days, time_slots=time_slots, Department=Department)
+    return render_template('timetable.html', 
+                           timetable_data=timetable_data, 
+                           teacher_schedule=teacher_schedule,
+                           teacher_profile=teacher_profile,
+                           days=DAYS, 
+                           time_slots=TIMESLOTS, 
+                           Department=Department)
