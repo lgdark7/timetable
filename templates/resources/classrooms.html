@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-title-section">
+    <div class="page-title">
+        <i class="fas fa-door-open"></i>
+        <h1>Classroom Management</h1>
+    </div>
+</div>
+
+{% if current_user.is_authenticated and current_user.role == 'admin' %}
+<div class="card">
+    <div class="card-header">
+        <h3><i class="fas fa-plus"></i> Add New Classroom</h3>
+    </div>
+    <form method="POST">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+            <div class="form-group">
+                <label class="form-label">Room Name/Number</label>
+                <input type="text" name="name" class="form-control" required placeholder="e.g. 101 or Lab 1">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Capacity</label>
+                <input type="number" name="capacity" class="form-control" required value="60">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Type</label>
+                <select name="type" class="form-control">
+                    <option value="Classroom">Classroom</option>
+                    <option value="Lab">Lab</option>
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-check"></i> Add Classroom
+        </button>
+    </form>
+</div>
+{% endif %}
+
+<div class="card">
+    <div class="card-header">
+        <h3><i class="fas fa-list"></i> Existing Classrooms</h3>
+    </div>
+    <div class="timetable-responsive">
+        <table class="timetable-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Capacity</th>
+                    <th>Type</th>
+                    {% if current_user.is_authenticated and current_user.role == 'admin' %}<th>Actions</th>{% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for room in classrooms %}
+                <tr>
+                    <td>{{ room.id }}</td>
+                    <td><strong>{{ room.name }}</strong></td>
+                    <td>{{ room.capacity }}</td>
+                    <td>
+                        <span class="badge {% if room.type == 'Lab' %}badge-lab{% else %}badge-classroom{% endif %}">
+                            {{ room.type }}
+                        </span>
+                    </td>
+                    {% if current_user.is_authenticated and current_user.role == 'admin' %}
+                    <td>
+                        <a href="{{ url_for('main.edit_classroom', id=room.id) }}" class="btn btn-light"
+                            style="padding: 5px 10px; font-size: 0.8rem;">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a href="{{ url_for('main.delete_classroom', id=room.id) }}" class="btn btn-light text-danger"
+                            style="padding: 5px 10px; font-size: 0.8rem;" onclick="return confirm('Are you sure?')">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% else %}
+                <tr>
+                    <td {% if current_user.is_authenticated and current_user.role=='admin' %}colspan="5" {% else
+                        %}colspan="4" {% endif %} style="text-align: center; color: #8898aa; padding: 40px;">
+                        No classrooms found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

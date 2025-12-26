@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-brand" style="margin-bottom: 20px; font-size: 2rem; color: var(--primary);">
+                <i class="fas fa-calendar-alt"></i><br>
+                Intelligent Timetable
+            </div>
+            <h2>Welcome Back</h2>
+            <p>Sign in to access your dashboard</p>
+        </div>
+        <form action="{{ url_for('main.login') }}" method="POST">
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" name="username" class="form-control" placeholder="Enter username" required>
+            </div>
+            <div class="form-group" style="margin-top: 20px;">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" placeholder="Enter password" required>
+            </div>
+            <button type="submit" class="btn btn-primary"
+                style="width: 100%; justify-content: center; margin-top: 30px; padding: 12px;">
+                <i class="fas fa-sign-in-alt"></i> &nbsp; Sign In
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            Don't have an account? <br>
+            <a href="{{ url_for('main.register') }}" class="btn btn-light"
+                style="margin-top: 15px; width: 100%; border: 1px solid #e2e8f0;">
+                <i class="fas fa-user-plus"></i> &nbsp; Sign Up
+            </a>
+        </div>
+
+        <div
+            style="margin-top: 40px; text-align: center; font-size: 0.75rem; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 20px;">
+            <p>Default credentials (HOD): <strong>admin / admin</strong></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

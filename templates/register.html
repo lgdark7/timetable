@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card" style="max-width: 600px;">
+        <div class="auth-header">
+            <div class="auth-brand" style="margin-bottom: 20px; font-size: 2rem; color: var(--primary);">
+                <i class="fas fa-calendar-alt"></i><br>
+                Intelligent Timetable
+            </div>
+            <h2>Create Account</h2>
+            <p>Select your role to get started</p>
+        </div>
+
+        <div class="choice-container">
+            <a href="{{ url_for('main.register_teacher') }}" class="choice-card">
+                <div class="choice-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+                <div class="choice-title">Teacher</div>
+                <div class="choice-desc">Access your teaching schedule, manage workload, and track attendance.</div>
+                <div class="btn btn-primary" style="margin-top: 15px; font-size: 0.8rem; background: #6a11cb;">
+                    Register as Teacher
+                </div>
+            </a>
+
+            <a href="{{ url_for('main.register_student') }}" class="choice-card student">
+                <div class="choice-icon"><i class="fas fa-user-graduate"></i></div>
+                <div class="choice-title">Student</div>
+                <div class="choice-desc">View your class schedule, check attendance, and access course materials.
+                </div>
+                <div class="btn btn-primary"
+                    style="margin-top: 15px; font-size: 0.8rem; background: #10b981; border-color: #10b981;">
+                    Register as Student
+                </div>
+            </a>
+        </div>
+
+        <div class="auth-note">
+            <i class="fas fa-info-circle"></i>
+            <div>
+                <strong>Note:</strong> HOD/Admin accounts are created by system administrators. Please contact your
+                institution's IT department for administrative access.
+            </div>
+        </div>
+
+        <div class="auth-footer" style="margin-top: 30px;">
+            Already have an account? <a href="{{ url_for('main.login') }}">Sign In</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

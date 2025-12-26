@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-title-section">
+    <div class="page-title">
+        <i class="fas fa-edit"></i>
+        <h1>Edit Classroom</h1>
+    </div>
+</div>
+
+<div class="card">
+    <form method="POST">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+            <div class="form-group">
+                <label class="form-label">Room Name/Number</label>
+                <input type="text" name="name" class="form-control" required value="{{ room.name }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Capacity</label>
+                <input type="number" name="capacity" class="form-control" required value="{{ room.capacity }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Type</label>
+                <select name="type" class="form-control">
+                    <option value="Classroom" {% if room.type=='Classroom' %}selected{% endif %}>Classroom</option>
+                    <option value="Lab" {% if room.type=='Lab' %}selected{% endif %}>Lab</option>
+                </select>
+            </div>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+            <a href="{{ url_for('main.classrooms') }}" class="btn btn-light">
+                <i class="fas fa-times"></i> Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

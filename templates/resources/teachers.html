@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-title-section">
+    <div class="page-title">
+        <i class="fas fa-user-tie"></i>
+        <h1>Teacher Management</h1>
+    </div>
+</div>
+
+{% if current_user.role == 'admin' %}
+<div class="card">
+    <div class="card-header">
+        <h3><i class="fas fa-plus"></i> Add New Teacher</h3>
+    </div>
+    <form method="POST">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+            <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" name="name" class="form-control" required placeholder="e.g. John Doe">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Department</label>
+                <select name="dept_id" class="form-control" required>
+                    <option value="">Select Department</option>
+                    {% for dept in departments %}
+                    <option value="{{ dept.id }}">{{ dept.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-check"></i> Add Teacher
+        </button>
+    </form>
+</div>
+{% endif %}
+
+<div class="card">
+    <div class="card-header">
+        <h3><i class="fas fa-list"></i> Existing Teachers</h3>
+    </div>
+    <div class="timetable-responsive">
+        <table class="timetable-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Department</th>
+                    {% if current_user.role == 'admin' %}<th>Actions</th>{% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for teacher in teachers %}
+                <tr>
+                    <td>{{ teacher.id }}</td>
+                    <td><strong>{{ teacher.name }}</strong></td>
+                    <td>
+                        <span class="badge" style="background: #f6f9fc; color: #5e72e4; font-weight: 700;">
+                            {{ teacher.department.name if teacher.department else 'N/A' }}
+                        </span>
+                    </td>
+                    {% if current_user.role == 'admin' %}
+                    <td>
+                        <a href="{{ url_for('main.edit_teacher', id=teacher.id) }}" class="btn btn-light"
+                            style="padding: 5px 10px; font-size: 0.8rem;">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a href="{{ url_for('main.delete_teacher', id=teacher.id) }}" class="btn btn-light text-danger"
+                            style="padding: 5px 10px; font-size: 0.8rem;" onclick="return confirm('Are you sure?')">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" style="text-align: center; color: #8898aa; padding: 40px;">No teachers found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

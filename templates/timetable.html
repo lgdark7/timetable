@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% block icon %}<i class="fas fa-table"></i>{% endblock %}
+{% block title %}Weekly Timetables{% endblock %}
+
+{% block content %}
+<div class="action-header"
+    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <div style="display: flex; gap: 15px;">
+        <input type="text" id="deptSearch" class="form-control" placeholder="Search department..."
+            style="max-width: 250px;">
+    </div>
+    <div style="display: flex; gap: 10px;">
+        {% if current_user.role == 'admin' %}
+        <form action="{{ url_for('main.clear_timetable') }}" method="POST"
+            onsubmit="return confirm('Are you sure you want to delete ALL timetable entries? This cannot be undone.');">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-trash-alt"></i> Clear Timetable
+            </button>
+        </form>
+        {% endif %}
+        <button onclick="downloadPDF()" class="btn btn-primary">
+            <i class="fas fa-file-pdf"></i> Download PDF
+        </button>
+        <a href="{{ url_for('main.timetable') }}" class="btn btn-light">
+            <i class="fas fa-sync"></i> Refresh
+        </a>
+    </div>
+</div>
+
+<div id="timetable-content">
+    {% for dept, schedule in timetable_data.items() %}
+    {% set is_student_link = (current_user.role == 'student' and current_user.dept_id == dept.id) %}
+    {% set is_teacher_link = (current_user.role == 'teacher' and current_user.dept_id == dept.id) %}
+
+    <div class="card timetable-card {{ 'student-highlight' if is_student_link }} {{ 'teacher-highlight' if is_teacher_link }}"
+        data-dept="{{ dept.name|lower }}" style="padding: 20px; page-break-after: always;">
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <h3 style="margin: 0; color: var(--dark); font-weight: 700;">
+                {{ dept.name }} - Academic Timetable
+            </h3>
+            {% if current_user.dept_id == dept.id %}
+            <span class="badge {{ 'badge-student' if current_user.role == 'student' else 'badge-teacher' }}"
+                style="color: #fff; padding: 8px 15px; font-size: 0.8rem;">
+                <i class="fas fa-star"></i> Your Schedule
+            </span>
+            {% endif %}
+        </div>
+
+        <div class="timetable-responsive">
+            <table class="timetable-table">
+                <thead>
+                    <tr>
+                        <th class="day-header">Day / Time</th>
+                        {% for t in time_slots %}
+                        <th>{{ t }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for day in days %}
+                    <tr>
+                        <td class="day-header">{{ day }}</td>
+                        {% for cell in schedule[day] %}
+                        {% if not cell.skip %}
+                        {% set ns = namespace(is_mine=false) %}
+                        {% if cell.entries and current_user.role == 'teacher' %}
+                        {% for entry in cell.entries %}
+                        {% if entry.teacher_id == current_user.teacher_id %}
+                        {% set ns.is_mine = true %}
+                        {% endif %}
+                        {% endfor %}
+                        {% endif %}
+                        {% set is_practical = cell.entries and cell.entries[0].course.type == 'Practical' %}
+
+                        {% set td_class = "practical-session" if is_practical else "" %}
+                        {% if ns.is_mine %}{% set td_class = td_class ~ " my-session" %}{% endif %}
+                        <td colspan="{{ cell.colspan }}" class="{{ td_class.strip() }}">
+                            {% if cell.entries %}
+                            {% for entry in cell.entries %}
+                            {% set is_my_session = (current_user.role == 'teacher' and entry.teacher_id ==
+                            current_user.teacher_id) %}
+                            {% set div_class = "my-session-inner" if is_my_session else "" %}
+                            {% set div_style = "padding: 5px; border-bottom: 1px solid rgba(255,255,255,0.1);
+                            margin-bottom: 5px;" if not loop.last else "padding: 5px;" %}
+                            <div class="{{ div_class }}" style="{{ div_style }}">
+                                <div style="font-weight: 700; color: var(--primary); font-size: 0.95rem;">{{
+                                    entry.course.code }}</div>
+                                <div style="font-size: 0.8rem; color: var(--white); margin: 2px 0; opacity: 0.9;">{{
+                                    entry.classroom.name }}</div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">{{ entry.teacher.name }}
+                                </div>
+                                {% if entry.course.type == 'Practical' %}
+                                <span
+                                    style="font-size: 0.65rem; color: var(--secondary); text-transform: uppercase; font-weight: 800;">[
+                                    Lab ]</span>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            <span style="color: #adb5bd;">-</span>
+                            {% endif %}
+                        </td>
+                        {% endif %}
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="card" style="text-align: center; padding: 60px;">
+        <i class="fas fa-calendar-times" style="font-size: 3rem; color: #adb5bd; margin-bottom: 20px;"></i>
+        <h3>No Timetable Data Found</h3>
+        <p style="color: #8898aa;">Please ensure data is added and generate the timetable from the dashboard.</p>
+    </div>
+    {% endfor %}
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+    function downloadPDF() {
+        const element = document.getElementById('timetable-content');
+
+        // Add compact class for PDF generation
+        document.body.classList.add('pdf-compact');
+
+        const opt = {
+            margin: [5, 5],
+            filename: 'Timetable_{{ current_user.username }}_{{ current_user.role }}.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
+            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+            // Remove compact class after generation
+            document.body.classList.remove('pdf-compact');
+        });
+    }
+
+    // Search functionality with auto-filter
+    const searchInput = document.getElementById('deptSearch');
+
+    function applyFilter(term) {
+        const cards = document.querySelectorAll('.timetable-card');
+        cards.forEach(card => {
+            const dept = card.getAttribute('data-dept');
+            if (dept.includes(term.toLowerCase())) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    searchInput.addEventListener('input', (e) => applyFilter(e.target.value));
+
+    // Auto-filter on load for students/teachers
+    window.addEventListener('load', () => {
+        const autoFilterDept = document.getElementById('user-dept-name')?.value;
+        if (autoFilterDept) {
+            searchInput.value = autoFilterDept;
+            applyFilter(autoFilterDept);
+        }
+    });
+</script>
+
+{% if current_user.dept_id %}
+{% set user_dept = Department.query.get(current_user.dept_id) %}
+<input type="hidden" id="user-dept-name" value="{{ user_dept.name if user_dept else '' }}">
+{% endif %}
+{% endblock %}

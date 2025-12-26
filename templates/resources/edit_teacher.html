@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-title-section">
+    <div class="page-title">
+        <i class="fas fa-edit"></i>
+        <h1>Edit Teacher</h1>
+    </div>
+</div>
+
+<div class="card">
+    <form method="POST">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+            <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" name="name" class="form-control" required value="{{ teacher.name }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Department</label>
+                <select name="dept_id" class="form-control" required>
+                    <option value="">Select Department</option>
+                    {% for dept in departments %}
+                    <option value="{{ dept.id }}" {% if dept.id==teacher.dept_id %}selected{% endif %}>{{ dept.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+            <a href="{{ url_for('main.teachers') }}" class="btn btn-light">
+                <i class="fas fa-times"></i> Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

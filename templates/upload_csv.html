@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block icon %}<i class="fas fa-file-upload"></i>{% endblock %}
+{% block title %}Bulk Data Upload{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('main.dashboard') }}" class="btn btn-light shadow-sm">
+    <i class="fas fa-arrow-left"></i> Back to Dashboard
+</a>
+
+<div class="upload-grid">
+
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-upload text-primary"></i> Upload Data Files</h3>
+        </div>
+        <form action="{{ url_for('main.upload_csv') }}" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label class="form-label">File Type</label>
+                <select name="file_type" class="form-control" required>
+                    <option value="" selected disabled>Select file type...</option>
+                    <option value="teachers">Teachers</option>
+                    <option value="subjects">Subjects (Courses)</option>
+                    <option value="classrooms">Classrooms</option>
+                    <option value="departments">Departments</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">CSV File</label>
+                <input type="file" name="csv_file" class="form-control" accept=".csv" required>
+                <small class="text-muted mt-2 d-block">Please upload a CSV file with the appropriate format.</small>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">
+                <i class="fas fa-cloud-upload-alt"></i> Upload File
+            </button>
+        </form>
+    </div>
+
+
+    <div class="card">
+        <div class="card-header">
+            <h3><i class="fas fa-info-circle text-info"></i> File Format Guide</h3>
+        </div>
+
+        <div class="format-guide-item">
+            <label>Teachers CSV Format:</label>
+            <code>TeacherName,DepartmentCode,MaxHoursPerWeek,Email</code>
+        </div>
+
+        <div class="format-guide-item">
+            <label>Subjects CSV Format:</label>
+            <code>Name,Code,DepartmentCode,HoursPerWeek,Type(Theory/Practical)</code>
+        </div>
+
+        <div class="format-guide-item">
+            <label>Classrooms CSV Format:</label>
+            <code>Name,Capacity,Type(Classroom/Lab)</code>
+        </div>
+
+        <div class="format-guide-item">
+            <label>Departments CSV Format:</label>
+            <code>Name,Code</code>
+        </div>
+
+        <div class="sample-files-box">
+            <i class="fas fa-download"></i>
+            <div>
+                <strong>Sample Files:</strong> Check the <code>sample_data/</code> folder for example CSV files.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

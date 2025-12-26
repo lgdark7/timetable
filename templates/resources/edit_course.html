@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-title-section">
+    <div class="page-title">
+        <i class="fas fa-edit"></i>
+        <h1>Edit Subject</h1>
+    </div>
+</div>
+
+<div class="card">
+    <form method="POST">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+            <div class="form-group">
+                <label class="form-label">Subject Name</label>
+                <input type="text" name="name" class="form-control" required value="{{ course.name }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Subject Code</label>
+                <input type="text" name="code" class="form-control" required value="{{ course.code }}">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Department</label>
+                <select name="dept_id" class="form-control" required>
+                    {% for dept in departments %}
+                    <option value="{{ dept.id }}" {% if dept.id==course.dept_id %}selected{% endif %}>{{ dept.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Type</label>
+                <select name="type" class="form-control">
+                    <option value="Theory" {% if course.type=='Theory' %}selected{% endif %}>Theory</option>
+                    <option value="Practical" {% if course.type=='Practical' %}selected{% endif %}>Practical</option>
+                    <option value="Activity Class" {% if course.type=='Activity Class' %}selected{% endif %}>Activity
+                        Class</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Hours per Week</label>
+                <input type="number" name="hours_per_week" class="form-control" required
+                    value="{{ course.hours_per_week }}" min="1" max="10">
+            </div>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+            <a href="{{ url_for('main.courses') }}" class="btn btn-light">
+                <i class="fas fa-times"></i> Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

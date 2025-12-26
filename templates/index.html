@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block content %}
+<div class="intro" style="text-align: center; padding: 50px 0;">
+    <div style="margin-top: 30px;">
+        <a href="{{ url_for('main.dashboard') }}" class="btn">Go to Dashboard</a>
+        <a href="{{ url_for('main.timetable') }}" class="btn"
+            style="background: var(--secondary); color: var(--dark); margin-left: 10px;">View Timetables</a>
+    </div>
+</div>
+{% endblock %}

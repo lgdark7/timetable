@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-title-section">
+    <div class="page-title">
+        <i class="fas fa-book"></i>
+        <h1>Subject Management</h1>
+    </div>
+</div>
+
+{% if current_user.is_authenticated and current_user.role == 'admin' %}
+<div class="card">
+    <div class="card-header">
+        <h3><i class="fas fa-plus"></i> Add New Subject</h3>
+    </div>
+    <form method="POST">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+            <div class="form-group">
+                <label class="form-label">Subject Name</label>
+                <input type="text" name="name" class="form-control" required placeholder="e.g. Data Structures">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Subject Code</label>
+                <input type="text" name="code" class="form-control" required placeholder="e.g. CS101">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Department</label>
+                <select name="dept_id" class="form-control" required>
+                    {% for dept in departments %}
+                    <option value="{{ dept.id }}">{{ dept.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Type</label>
+                <select name="type" class="form-control">
+                    <option value="Theory">Theory</option>
+                    <option value="Practical">Practical</option>
+                    <option value="Activity Class">Activity Class</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Hours per Week</label>
+                <input type="number" name="hours_per_week" class="form-control" required value="3" min="1" max="10">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-check"></i> Add Subject
+        </button>
+    </form>
+</div>
+{% endif %}
+
+<div class="card">
+    <div class="card-header">
+        <h3><i class="fas fa-list"></i> Existing Subjects</h3>
+    </div>
+    <div class="timetable-responsive">
+        <table class="timetable-table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Dept</th>
+                    <th>Type</th>
+                    <th>Hours</th>
+                    {% if current_user.is_authenticated and current_user.role == 'admin' %}<th>Actions</th>{% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                <tr>
+                    <td><span class="badge badge-subject-code">{{ course.code }}</span></td>
+                    <td><strong>{{ course.name }}</strong></td>
+                    <td>{{ course.department.code }}</td>
+                    <td>
+                        <span
+                            class="badge {% if course.type == 'Practical' %}badge-practical{% elif course.type == 'Activity Class' %}badge-activity{% else %}badge-classroom{% endif %}">
+                            {{ course.type }}
+                        </span>
+                    </td>
+                    <td>{{ course.hours_per_week }} hrs</td>
+                    {% if current_user.is_authenticated and current_user.role == 'admin' %}
+                    <td>
+                        <a href="{{ url_for('main.edit_course', id=course.id) }}" class="btn btn-light"
+                            style="padding: 5px 10px; font-size: 0.8rem;">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <a href="{{ url_for('main.delete_course', id=course.id) }}" class="btn btn-light text-danger"
+                            style="padding: 5px 10px; font-size: 0.8rem;" onclick="return confirm('Are you sure?')">
+                            <i class="fas fa-trash"></i> Delete
+                        </a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% else %}
+                <tr>
+                    <td {% if current_user.is_authenticated and current_user.role=='admin' %}colspan="6" {% else
+                        %}colspan="5" {% endif %} style="text-align: center; color: #8898aa; padding: 40px;">
+                        No subjects found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

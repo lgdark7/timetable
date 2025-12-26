@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-brand" style="margin-bottom: 20px; font-size: 2rem; color: var(--primary);">
+                <i class="fas fa-calendar-alt"></i><br>
+                Intelligent Timetable
+            </div>
+            <h2>Join as {{ role|capitalize }}</h2>
+            <p>Enter your details below</p>
+        </div>
+
+        <form action="{{ url_for('main.register_' ~ role) }}" method="POST">
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" name="username" class="form-control" placeholder="Choose a username" required>
+            </div>
+
+            <div class="form-group" style="margin-top: 20px;">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" placeholder="Create a password" required>
+            </div>
+
+            {% if role == 'student' %}
+            <div class="form-group" style="margin-top: 20px;">
+                <label class="form-label">Select Department</label>
+                <select name="dept_id" class="form-control" required>
+                    <option value="">-- Choose Department --</option>
+                    {% for dept in departments %}
+                    <option value="{{ dept.id }}">{{ dept.name }} ({{ dept.code }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% elif role == 'teacher' %}
+            <div class="form-group" style="margin-top: 20px;">
+                <label class="form-label">Select Your Name</label>
+                <select name="teacher_id" class="form-control" required>
+                    <option value="">-- Select Your Name (Unregistered Only) --</option>
+                    {% for teacher in teachers %}
+                    <option value="{{ teacher.id }}">{{ teacher.name }} ({{ teacher.department.code if
+                        teacher.department else 'N/A' }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+
+            <button type="submit" class="btn btn-primary {{ 'btn-student' if role == 'student' else 'btn-teacher' }}"
+                style="width: 100%; justify-content: center; margin-top: 30px; padding: 12px;">
+                <i class="fas fa-check-circle"></i> &nbsp; Complete Registration
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            Changed your mind? <a href="{{ url_for('main.register') }}">Go Back</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
