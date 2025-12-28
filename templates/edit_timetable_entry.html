@@ -12,6 +12,48 @@
         <p style="color: var(--text-muted); margin-top: 10px;">Update the day, time, or classroom for this session.</p>
     </div>
 
+    {% if conflict_reason %}
+    <div class="alert alert-danger" role="alert"
+        style="border-radius: 12px; border-left: 5px solid #ef4444; background: rgba(239, 68, 68, 0.1); color: #b91c1c;">
+        <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 5px;"><i class="fas fa-exclamation-triangle"></i>
+            Conflict Detected</h4>
+        <p style="margin-bottom: 0;">{{ conflict_reason }}</p>
+    </div>
+
+    {% if suggestions %}
+    <div style="margin-bottom: 30px; animation: fadeIn 0.5s ease;">
+        <h5
+            style="color: var(--text-muted); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px;">
+            Suggested Alternatives</h5>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+            {% for sug in suggestions %}
+            <button type="button"
+                onclick="applySuggestion('{{ sug.day }}', '{{ sug.timeslot }}', '{{ sug.classroom.id }}')"
+                class="btn btn-outline-success"
+                style="text-align: left; padding: 15px; border-radius: 10px; border: 1px solid #10b981; background: rgba(16, 185, 129, 0.05); color: var(--dark); transition: all 0.2s;">
+                <div style="font-weight: 700; color: #059669; margin-bottom: 5px;">{{ sug.day }}</div>
+                <div style="font-size: 1.1rem; font-weight: 800; margin-bottom: 5px;">{{ sug.timeslot }}</div>
+                <div style="font-size: 0.85rem; color: var(--text-muted);"><i class="fas fa-door-open"></i> {{
+                    sug.classroom.name }}</div>
+            </button>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        function applySuggestion(day, timeslot, classroomId) {
+            document.querySelector('select[name="day"]').value = day;
+            document.querySelector('select[name="timeslot"]').value = timeslot;
+            document.querySelector('select[name="classroom_id"]').value = classroomId;
+            // Optional: Scroll to save button or auto-submit
+            document.querySelector('button[type="submit"]').scrollIntoView({ behavior: 'smooth' });
+            // Highlight the change
+            document.querySelector('form').style.opacity = '0.5';
+            setTimeout(() => { document.querySelector('form').style.opacity = '1'; }, 200);
+        }
+    </script>
+    {% endif %}
+    {% endif %}
+
     <form action="{{ url_for('main.edit_timetable_entry', id=entry.id) }}" method="POST">
         <div class="form-group">
             <label class="form-label">Subject</label>

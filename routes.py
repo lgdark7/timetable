@@ -156,6 +156,30 @@ def logout():
     flash('Logged out successfully.', 'success')
     return redirect(url_for('main.login'))
 
+@main.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm_password')
+
+        current_user.email = email
+
+        if password:
+            if password != confirm_password:
+                flash('Passwords do not match.', 'danger')
+                return redirect(url_for('main.profile'))
+            current_user.password = password
+            flash('Profile updated successfully (including password)!', 'success')
+        else:
+            flash('Profile details updated!', 'success')
+            
+        db.session.commit()
+        return redirect(url_for('main.profile'))
+
+    return render_template('profile.html')
+
 @main.route('/register')
 def register():
     return render_template('register.html')
@@ -543,85 +567,185 @@ def clear_timetable():
         flash(f'Error clearing timetable: {e}', 'danger')
     return redirect(url_for('main.timetable'))
 
+def check_conflict(day, timeslot, teacher_id, classroom_id, dept_id, ignore_entry_id=None):
+    """
+    Checks for conflicts and returns (conflict_found: bool, reason: str).
+    """
+    # 1. Teacher Conflict
+    teacher_busy = TimetableEntry.query.filter(
+        TimetableEntry.day == day,
+        TimetableEntry.timeslot == timeslot,
+        TimetableEntry.teacher_id == teacher_id,
+        TimetableEntry.id != ignore_entry_id
+    ).first()
+    if teacher_busy:
+        return True, f"Teacher {teacher_busy.teacher.name} is already teaching {teacher_busy.course.name} in Room {teacher_busy.classroom.name}."
+
+    # 2. Room Conflict
+    room_busy = TimetableEntry.query.filter(
+        TimetableEntry.day == day,
+        TimetableEntry.timeslot == timeslot,
+        TimetableEntry.classroom_id == classroom_id,
+        TimetableEntry.id != ignore_entry_id
+    ).first()
+    if room_busy:
+        return True, f"Classroom {room_busy.classroom.name} is already occupied by {room_busy.course.name} ({room_busy.teacher.name})."
+
+    # 3. Department/Batch Conflict
+    # We need to know if it's practical or theory to apply the limit logic (2 or 1)
+    # This check is slightly complex without the course object, but purely based on dept load:
+    dept_sessions = TimetableEntry.query.filter(
+        TimetableEntry.day == day,
+        TimetableEntry.timeslot == timeslot,
+        TimetableEntry.dept_id == dept_id,
+        TimetableEntry.id != ignore_entry_id
+    ).all()
+    
+    # Heuristic: If there are already 2 sessions/parts, it's full.
+    # Ideally we check the specific course type of the *current* entry being handled.
+    # For general suggestion generation, we might assume strictness.
+    if len(dept_sessions) >= 2:
+        return True, "Department already has 2 concurrent sessions (Practical/Batch limit reached)."
+    
+    # If 1 session exists, it MUST be a practical to allow another practical. 
+    # If it's a theory class, it blocks the whole department usually (unless batching is fully implemented).
+    # For now, we'll stick to the existing logic: simple count check.
+    
+    return False, None
+
+def get_suggestions(entry, limit=5):
+    """
+    Finds alternative valid slots for the given entry.
+    """
+    suggestions = []
+    classrooms = Classroom.query.all()
+    
+    # Shuffle to get random suggestions, not just Monday 9am every time
+    all_days = list(DAYS)
+    all_slots = list(TIMESLOTS)
+    random.shuffle(all_days)
+    random.shuffle(all_slots)
+    # Check if we should prefer same room type
+    preferred_room_type = entry.classroom.type
+
+    for day in all_days:
+        for slot in all_slots:
+            # Skip current slot
+            if day == entry.day and slot == entry.timeslot:
+                continue
+                
+            # For suggestions, we need to find A room that works
+            valid_room = None
+            
+            # Sort classrooms: preferred type first
+            sorted_rooms = sorted(classrooms, key=lambda r: 0 if r.type == preferred_room_type else 1)
+            
+            for room in sorted_rooms:
+                conflict, _ = check_conflict(day, slot, entry.teacher_id, room.id, entry.dept_id, entry.id)
+                if not conflict:
+                    # Also need to check if existing Department sessions are compatible with THIS entry type
+                    # (re-using the logic from the main validation)
+                    dept_sessions_count = TimetableEntry.query.filter(
+                        TimetableEntry.day == day,
+                        TimetableEntry.timeslot == slot,
+                        TimetableEntry.dept_id == entry.dept_id,
+                        TimetableEntry.id != entry.id
+                    ).count()
+                    
+                    is_practical = entry.course.type == 'Practical'
+                    if is_practical:
+                        if dept_sessions_count >= 2: continue
+                    else:
+                        if dept_sessions_count >= 1: continue
+
+                    valid_room = room
+                    break
+            
+            if valid_room:
+                suggestions.append({
+                    'day': day,
+                    'timeslot': slot,
+                    'classroom': valid_room
+                })
+                
+            if len(suggestions) >= limit:
+                return suggestions
+                
+    return suggestions
+
 @main.route('/timetable/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_timetable_entry(id):
     entry = TimetableEntry.query.get_or_404(id)
     
-    # Permission check: Admin or the teacher who owns the entry
+    # Permission check
     if current_user.role != 'admin' and (current_user.role != 'teacher' or current_user.teacher_id != entry.teacher_id):
         flash('Access denied. You can only edit your own sessions.', 'danger')
         return redirect(url_for('main.timetable'))
         
+    suggestions = []
+    conflict_reason = None
+    
     if request.method == 'POST':
         new_day = request.form.get('day')
         new_timeslot = request.form.get('timeslot')
         new_classroom_id = int(request.form.get('classroom_id'))
         new_teacher_id = int(request.form.get('teacher_id')) if current_user.role == 'admin' else entry.teacher_id
         
-        # 1. Teacher Conflict check
-        teacher_busy = TimetableEntry.query.filter(
-            TimetableEntry.day == new_day,
-            TimetableEntry.timeslot == new_timeslot,
-            TimetableEntry.teacher_id == new_teacher_id,
-            TimetableEntry.id != entry.id
-        ).first()
-        if teacher_busy:
-            flash(f'Conflict: Teacher {teacher_busy.teacher.name} is already busy at this time.', 'danger')
-            return redirect(url_for('main.edit_timetable_entry', id=id))
-
-        # 2. Room Conflict check
-        room_busy = TimetableEntry.query.filter(
-            TimetableEntry.day == new_day,
-            TimetableEntry.timeslot == new_timeslot,
-            TimetableEntry.classroom_id == new_classroom_id,
-            TimetableEntry.id != entry.id
-        ).first()
-        if room_busy:
-            flash(f'Conflict: Classroom {room_busy.classroom.name} is already occupied.', 'danger')
-            return redirect(url_for('main.edit_timetable_entry', id=id))
-
-        # 3. Department/Batch Conflict check (Practical allowed 2, Theory 1)
-        dept_sessions = TimetableEntry.query.filter(
-            TimetableEntry.day == new_day,
-            TimetableEntry.timeslot == new_timeslot,
-            TimetableEntry.dept_id == entry.dept_id,
-            TimetableEntry.id != entry.id
-        ).all()
+        # Validate using helper
+        # Note: We pass dept_id. For strict type checking vs existing sessions, we do it below.
+        conflict, reason = check_conflict(new_day, new_timeslot, new_teacher_id, new_classroom_id, entry.dept_id, entry.id)
         
-        is_practical = entry.course.type == 'Practical'
-        if is_practical:
-            if len(dept_sessions) >= 2:
-                flash('Conflict: Department already has 2 lab sessions at this time.', 'danger')
-                return redirect(url_for('main.edit_timetable_entry', id=id))
-        else:
-            if len(dept_sessions) >= 1:
-                flash('Conflict: Department already has a session scheduled at this time.', 'danger')
-                return redirect(url_for('main.edit_timetable_entry', id=id))
-
-        # Update entry
-        entry.day = new_day
-        entry.timeslot = new_timeslot
-        entry.classroom_id = new_classroom_id
-        entry.teacher_id = new_teacher_id
+        # Specific Check for Theory vs Practical limits (as seen in original code)
+        if not conflict:
+            dept_sessions = TimetableEntry.query.filter(
+                TimetableEntry.day == new_day,
+                TimetableEntry.timeslot == new_timeslot,
+                TimetableEntry.dept_id == entry.dept_id,
+                TimetableEntry.id != entry.id
+            ).all()
             
-        try:
-            db.session.commit()
-            flash('Timetable entry updated successfully!', 'success')
-            return redirect(url_for('main.timetable'))
-        except Exception as e:
-            db.session.rollback()
-            flash(f'Error updating entry: {e}', 'danger')
+            is_practical = entry.course.type == 'Practical'
+            if is_practical:
+                if len(dept_sessions) >= 2:
+                    conflict = True
+                    reason = "Department limit reached (max 2 parallel practical sessions)."
+            else:
+                if len(dept_sessions) >= 1:
+                    conflict = True
+                    reason = "Department limit reached (Theory classes cannot run parallel to other classes)."
+
+        if conflict:
+            flash(f'Conflict Detected: {reason}', 'danger')
+            conflict_reason = reason
+            suggestions = get_suggestions(entry)
+            # Fall through to render_template with suggestions
+        else:
+            # No conflict, save
+            entry.day = new_day
+            entry.timeslot = new_timeslot
+            entry.classroom_id = new_classroom_id
+            entry.teacher_id = new_teacher_id
+            
+            try:
+                db.session.commit()
+                flash('Timetable entry updated successfully!', 'success')
+                return redirect(url_for('main.timetable'))
+            except Exception as e:
+                db.session.rollback()
+                flash(f'Error updating entry: {e}', 'danger')
             
     classrooms = Classroom.query.all()
-    teachers = Teacher.query.all() # Only used by admins
+    teachers = Teacher.query.all()
     
     return render_template('edit_timetable_entry.html', 
                            entry=entry, 
                            days=DAYS, 
                            time_slots=TIMESLOTS, 
                            classrooms=classrooms,
-                           teachers=teachers)
+                           teachers=teachers,
+                           suggestions=suggestions,
+                           conflict_reason=conflict_reason)
 
 @main.route('/timetable')
 @login_required
@@ -957,3 +1081,31 @@ def reject_leave(id):
     db.session.commit()
     flash('Leave request rejected.', 'warning')
     return redirect(url_for('main.admin_leaves'))
+@main.route('/reports')
+@login_required
+def reports():
+    # 1. Faculty Workload (Sessions per Teacher)
+    teachers = Teacher.query.all()
+    teacher_data = {}
+    for t in teachers:
+        count = TimetableEntry.query.filter_by(teacher_id=t.id).count()
+        teacher_data[t.name] = count
+    
+    # 2. Department Activity (Sessions per Dept)
+    departments = Department.query.all()
+    dept_data = {}
+    for d in departments:
+        count = TimetableEntry.query.filter_by(dept_id=d.id).count()
+        dept_data[d.name] = count
+
+    # 3. Classroom Utilization (Sessions per Room)
+    classrooms = Classroom.query.all()
+    room_data = {}
+    for r in classrooms:
+        count = TimetableEntry.query.filter_by(classroom_id=r.id).count()
+        room_data[r.name] = count
+
+    return render_template('reports.html', 
+                         teacher_data=teacher_data,
+                         dept_data=dept_data,
+                         room_data=room_data)
