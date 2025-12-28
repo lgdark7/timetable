@@ -1,4 +1,3 @@
-/**
  * Cinematic 3D Parallax Effect
  * moves layers at different speeds to create depth.
  */
@@ -9,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
         { el: document.querySelector('.layer-bg'), speed: 0.02 },
         { el: document.querySelector('.layer-1'), speed: 0.05 },
         { el: document.querySelector('.layer-2'), speed: 0.08 },
-        // layer-overlay is static noise
     ];
 
     let mouseX = 0;
@@ -17,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let targetX = 0;
     let targetY = 0;
 
-    // Window center for parallax pivot
     let centerX = window.innerWidth / 2;
     let centerY = window.innerHeight / 2;
 
@@ -29,13 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', handleResize);
 
     document.addEventListener('mousemove', (e) => {
-        // Calculate distance from center (-1 to 1)
         targetX = (e.clientX - centerX) / centerX;
         targetY = (e.clientY - centerY) / centerY;
     });
 
     function animate() {
-        // Smooth interpolation (Lerp)
         mouseX += (targetX - mouseX) * 0.05;
         mouseY += (targetY - mouseY) * 0.05;
 

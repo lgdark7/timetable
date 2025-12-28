@@ -41,7 +41,6 @@
 
 <div id="timetable-content">
     {% if teacher_schedule %}
-    {# TEACHER DEDICATED VIEW #}
     <div class="card timetable-card teacher-highlight"
         style="padding: 15px; margin-bottom: 50px; border: 2px solid var(--primary);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
@@ -127,7 +126,6 @@
     </div>
     {% endif %}
 
-    {# ALWAYS SHOW DEPARTMENTAL VIEW (FOR SEARCH/REGULAR VIEW) #}
     {% for dept, schedule in timetable_data.items() %}
     {% set is_student_link = (current_user.role == 'student' and current_user.dept_id == dept.id) %}
     {% set is_teacher_link = (current_user.role == 'teacher' and current_user.dept_id == dept.id) %}
@@ -248,7 +246,6 @@
     function downloadPDF() {
         const element = document.getElementById('timetable-content');
 
-        // Add compact class for PDF generation
         document.body.classList.add('pdf-compact');
 
         const opt = {
@@ -261,7 +258,6 @@
         };
 
         html2pdf().set(opt).from(element).save().then(() => {
-            // Remove compact class after generation
             document.body.classList.remove('pdf-compact');
         });
     }
@@ -269,7 +265,6 @@
     function downloadSinglePDF(filename, elementId) {
         const element = document.getElementById(elementId);
 
-        // Add compact class for PDF generation
         document.body.classList.add('pdf-compact');
 
         const opt = {
@@ -281,12 +276,10 @@
         };
 
         html2pdf().set(opt).from(element).save().then(() => {
-            // Remove compact class after generation
             document.body.classList.remove('pdf-compact');
         });
     }
 
-    // Search functionality with auto-filter
     const searchInput = document.getElementById('deptSearch');
 
     function applyFilter(term) {
@@ -304,7 +297,6 @@
 
     searchInput.addEventListener('input', (e) => applyFilter(e.target.value));
 
-    // Auto-filter on load for students/teachers
     window.addEventListener('load', () => {
         const autoFilterDept = document.getElementById('user-dept-name')?.value;
         if (autoFilterDept) {

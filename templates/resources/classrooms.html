@@ -80,7 +80,7 @@
                 {% else %}
                 <tr>
                     <td {% if current_user.is_authenticated and current_user.role=='admin' %}colspan="5" {% else
-                        %}colspan="4" {% endif %} style="text-align: center; color: #8898aa; padding: 40px;">
+                        %}colspan="4" {% endif %} style="text-align: center; color: var(--text-muted); padding: 40px;">
                         No classrooms found.
                     </td>
                 </tr>

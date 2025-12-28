@@ -16,12 +16,10 @@
 </head>
 
 <body>
-    <!-- Futuristic Cyber-Grid Background -->
     <div class="cyber-grid-container">
         <div class="cyber-grid"></div>
         <div class="cyber-glow"></div>
         <div class="floating-particles">
-            <!-- Decorative tech particles -->
             <i></i><i></i><i></i><i></i><i></i><i></i>
         </div>
     </div>
@@ -31,7 +29,6 @@
     'main.register_teacher'] %}
 
     <div class="{{ 'app-wrapper' if not is_auth else '' }}">
-        <!-- Auth Page Floating Theme Toggle -->
         {% if is_auth %}
         <button id="authThemeToggle" class="auth-theme-toggle" title="Toggle Theme">
             <i class="fas fa-moon"></i>
@@ -50,7 +47,6 @@
                     <i class="fas fa-times"></i>
                 </div>
             </div>
-            <!-- Sidebar content truncated for brevity, it is unchanged -->
             <ul class="sidebar-nav">
                 <li class="nav-item {% if request.endpoint == 'main.dashboard' %}active{% endif %}">
                     <a href="{{ url_for('main.dashboard') }}" class="nav-link">
@@ -131,7 +127,6 @@
                     <div class="user-controls">
                         {% if current_user.is_authenticated %}
 
-                        <!-- Mailbox Icon -->
                         <a href="{{ url_for('main.mailbox') }}" class="icon-btn nav-mailbox-link" title="Mailbox"
                             style="margin-right: 15px; position: relative;">
                             <i class="fas fa-envelope-open-text nav-mailbox-icon"></i>
@@ -219,21 +214,17 @@
             {% block content %}{% endblock %}
     </div>
     </main>
-    <!-- Global Theme Toggle Script -->
     <script>
-        // Theme Toggle Logic
         const themeToggle = document.getElementById('themeToggle'); // Sidebar toggle
         const authThemeToggle = document.getElementById('authThemeToggle'); // Auth page toggle
         const html = document.documentElement;
 
-        // Helper to update label and icons
         const updateThemeUI = (isLight) => {
             const label = document.querySelector('.mode-label');
             if (label) {
                 label.textContent = isLight ? 'Light Mode' : 'Dark Mode';
             }
 
-            // Update Auth Toggle Icon
             if (authThemeToggle) {
                 const icon = authThemeToggle.querySelector('i');
                 if (isLight) {
@@ -246,7 +237,6 @@
             }
         };
 
-        // Load saved theme
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light') {
             html.classList.add('light-theme');
@@ -268,7 +258,6 @@
             authThemeToggle.addEventListener('click', handleThemeToggle);
         }
 
-        // User Profile Dropdown Toggle
         const profileToggle = document.getElementById('userProfileToggle');
         const dropdownMenu = document.getElementById('userDropdown');
 
@@ -278,7 +267,6 @@
                 dropdownMenu.classList.toggle('show');
             });
 
-            // Close dropdown when clicking outside
             document.addEventListener('click', (e) => {
                 if (!profileToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
                     dropdownMenu.classList.remove('show');
@@ -286,7 +274,6 @@
             });
         }
 
-        // Mobile Sidebar Logic
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const appSidebar = document.getElementById('appSidebar');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
@@ -310,7 +297,6 @@
             closeSidebarBtn.addEventListener('click', toggleSidebar);
         }
     </script>
-    <!-- Generation Loading Overlay -->
     <div id="generation-overlay"
         style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 9999; justify-content: center; align-items: center; flex-direction: column;">
         <div class="cyber-spinner" style="position: relative; width: 80px; height: 80px; margin-bottom: 30px;">
@@ -377,7 +363,6 @@
                     e.preventDefault(); // Stop immediate submit
                     overlay.style.display = 'flex'; // Show effect
 
-                    // Wait for 1 second before real submission
                     setTimeout(() => {
                         form.submit();
                     }, 1000);

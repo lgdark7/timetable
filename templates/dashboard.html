@@ -107,7 +107,6 @@
 </div>
 
 <div class="row" style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 30px;">
-    <!-- Chart Section -->
     <div class="card" style="flex: 2; min-width: 300px;">
         <div class="card-header">
             <h3><i class="fas fa-chart-pie"></i> Resource Distribution</h3>
@@ -117,7 +116,6 @@
         </div>
     </div>
 
-    <!-- Quick Actions (moved here for better layout) -->
     <div class="card" style="flex: 1; min-width: 250px;">
         <div class="card-header">
             <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
@@ -144,13 +142,11 @@
     </div>
 </div>
 
-<!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const ctx = document.getElementById('resourceChart').getContext('2d');
 
-        // Data from Flask
         const data = {
             labels: ['Departments', 'Teachers', 'Subjects', 'Classrooms'],
             datasets: [{
@@ -192,7 +188,6 @@
                     }
                 },
                 scales: {
-                    // No scales for doughnut
                 }
             }
         };
@@ -235,7 +230,6 @@
     </div>
 
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-        <!-- My Leaves -->
         <div>
             <h4 style="font-size: 1rem; margin-bottom: 10px; color: var(--text-muted);">My Upcoming Leaves</h4>
             {% if current_user.teacher_profile.leave_requests %}
@@ -271,7 +265,6 @@
             {% endif %}
         </div>
 
-        <!-- My Substitutions -->
         <div>
             <h4 style="font-size: 1rem; margin-bottom: 10px; color: var(--text-muted);">Assigned Substitutions</h4>
             {% if current_user.teacher_profile.substitutions %}

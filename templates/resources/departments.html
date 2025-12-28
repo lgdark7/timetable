@@ -61,7 +61,9 @@
                 <tr>
                     <td>{{ dept.id }}</td>
                     <td><strong>{{ dept.name }}</strong></td>
-                    <td><span class="badge" style="background: #f6f9fc; color: #5e72e4; font-weight: 700;">{{ dept.code
+                    <td><span class="badge"
+                            style="background: var(--input-bg); border: 1px solid var(--border-color); color: #5e72e4; font-weight: 700;">{{
+                            dept.code
                             }}</span></td>
                     <td><span class="badge badge-info">{{ dept.section }}</span></td>
                     <td><span class="badge badge-secondary">{{ dept.semester }}</span></td>
@@ -80,7 +82,8 @@
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="4" style="text-align: center; color: #8898aa; padding: 40px;">No departments found.
+                    <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 40px;">No departments
+                        found.
                     </td>
                 </tr>
                 {% endfor %}

@@ -17,8 +17,6 @@ class Department(db.Model):
     section = db.Column(db.String(10), nullable=True, default='A')
     semester = db.Column(db.String(20), nullable=True, default='Semester 1')
     
-    # Unique constraint moved to a composite check in real usage or just allowed
-    # For simplicity, we'll allow multiple sections/semesters with same code.
     courses = db.relationship('Course', backref='department', lazy=True, cascade="all, delete-orphan")
     teachers = db.relationship('Teacher', backref='department', lazy=True, cascade="all, delete-orphan")
     timetable_entries = db.relationship('TimetableEntry', backref='department', lazy=True, cascade="all, delete-orphan")

@@ -6,17 +6,19 @@
     --secondary: #14B8A6;
     --accent: #F43F5E;
 
-    /* Semantic Colors */
     --danger: #EF4444;
     --success: #10B981;
     --warning: #F59E0B;
 
-    /* Dark Mode - Obsidian Glass */
     --bg-main: #030712;
     --panel-bg: rgba(17, 24, 39, 0.7);
+    --card-bg: #1e293b;
     --glass-border: rgba(255, 255, 255, 0.08);
     --text-main: #F1F5F9;
     --text-muted: #94A3B8;
+
+    --dark: #0f172a;
+    --gray: #64748b;
 
     --sidebar-width: 280px;
     --header-height: 80px;
@@ -25,7 +27,6 @@
     --radius-md: 12px;
     --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
-    /* Inputs & Borders */
     --input-bg: rgba(255, 255, 255, 0.05);
     --border-color: rgba(255, 255, 255, 0.1);
 }
@@ -33,11 +34,15 @@
 .light-theme {
     --bg-main: #F1F5F9;
     --panel-bg: rgba(255, 255, 255, 0.9);
+    --card-bg: #ffffff;
     --glass-border: rgba(0, 0, 0, 0.08);
     --text-main: #0F172A;
     --text-muted: #475569;
     --input-bg: #FFFFFF;
     --border-color: rgba(0, 0, 0, 0.15);
+
+    --dark: #0f172a;
+    --gray: #64748b;
 }
 
 * {
@@ -53,17 +58,14 @@ html {
 
 body {
     background-color: transparent;
-    /* Canvas provides background */
     color: var(--text-main);
     display: flex;
     min-height: 100vh;
     overflow-x: hidden;
-    /* Beautiful Transition */
     transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1),
         color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Global Transitions for Theme Change */
 *,
 *::before,
 *::after {
@@ -427,7 +429,6 @@ select.form-control option {
     transition: var(--transition-smooth);
 }
 
-/* Specific Hover for Timetable Subject Blocks */
 .timetable-table td:not(.day-header):not(:empty):hover {
     transform: scale(1.05) translateY(-5px);
     border-color: var(--primary);
@@ -436,7 +437,6 @@ select.form-control option {
     position: relative;
 }
 
-/* Specific Hover for Management List Rows */
 .timetable-table tbody tr {
     transition: var(--transition-smooth);
 }
@@ -460,7 +460,6 @@ select.form-control option {
     box-shadow: 0 4px 15px var(--primary-glow);
 }
 
-/* Holographic Aurora Background */
 .aurora-container {
     position: fixed;
     top: 0;
@@ -494,7 +493,6 @@ select.form-control option {
     animation: auroraFlow 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Dark Mode - Neon Holographic */
 .aurora-container {
     background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #020617 100%);
 }
@@ -530,7 +528,6 @@ select.form-control option {
     animation-delay: -10s;
 }
 
-/* Light Mode - Dreamy Clouds */
 .light-theme .aurora-container {
     background: radial-gradient(circle at 50% 0%, #f0f9ff 0%, #e0f2fe 100%);
 }
@@ -576,7 +573,6 @@ select.form-control option {
 }
 
 
-/* Main Auth Container - Restored */
 .auth-wrapper {
     display: flex;
     justify-content: center;
@@ -595,22 +591,16 @@ select.form-control option {
     width: 100%;
     max-width: 480px;
 
-    /* Futuristic Glass */
     background: rgba(10, 15, 30, 0.65);
-    /* Dark semi-transparent base */
     backdrop-filter: blur(24px) saturate(140%);
     -webkit-backdrop-filter: blur(24px) saturate(140%);
 
-    /* Neon Borders & Glow */
     border: 1px solid rgba(139, 92, 246, 0.2);
     border-top: 1px solid rgba(139, 92, 246, 0.4);
     box-shadow:
         0 30px 60px -12px rgba(0, 0, 0, 0.6),
-        /* Deep depth shadow */
         0 0 30px rgba(139, 92, 246, 0.15),
-        /* Ambient Purple Glow */
         inset 0 0 20px rgba(139, 92, 246, 0.05);
-    /* Inner ambience */
     padding: 50px;
     border-radius: 24px;
     z-index: 10;
@@ -621,18 +611,13 @@ select.form-control option {
     animation: cardFloatUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
-/* Light Theme Auth Card */
 .light-theme .auth-card {
     background: rgba(255, 255, 255, 0.85);
-    /* Frosty white */
     border: 1px solid rgba(255, 255, 255, 0.9);
     box-shadow:
         0 20px 40px -10px rgba(0, 0, 0, 0.1),
-        /* Soft shadow */
         0 0 20px rgba(255, 255, 255, 0.5),
-        /* Glow */
         inset 0 0 0 1px rgba(255, 255, 255, 0.6);
-    /* Inner rim */
     color: #1f2937;
 }
 
@@ -681,7 +666,6 @@ select.form-control option {
     }
 }
 
-/* --- Futuristic Cyber-Grid Background --- */
 .cyber-grid-container {
     position: fixed;
     top: 0;
@@ -804,7 +788,6 @@ select.form-control option {
 }
 
 
-/* --- Auth Page Theme Toggle --- */
 .auth-theme-toggle {
     position: fixed;
     top: 20px;
@@ -841,21 +824,17 @@ select.form-control option {
     background: rgba(0, 0, 0, 0.1);
 }
 
-/* Light Mode Adaptation */
 .light-theme .cyber-grid-container {
     background: radial-gradient(circle at 50% -20%, #eff6ff 0%, #dbeafe 100%);
-    /* Brighter blue-ish white */
 }
 
 .light-theme .cyber-grid {
-    /* Significantly darker grid lines for better contrast against light background */
     background-image:
         linear-gradient(rgba(79, 70, 229, 0.4) 1px, transparent 1px),
         linear-gradient(90deg, rgba(79, 70, 229, 0.4) 1px, transparent 1px);
 }
 
 .light-theme .cyber-glow {
-    /* Stronger glow */
     background: radial-gradient(circle at 50% 0%, rgba(79, 70, 229, 0.25), transparent 60%);
 }
 
@@ -880,14 +859,11 @@ select.form-control option {
 .leaves-container .set div i {
     font-size: 30px;
     color: rgba(255, 255, 255, 0.1);
-    /* Subtle white leaves for dark mode */
     text-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
 }
 
-/* Light Theme Leaves */
 .light-theme .leaves-container .set div i {
     color: rgba(139, 92, 246, 0.3);
-    /* Purple leaves for light mode */
 }
 
 @keyframes animateLeaves {
@@ -923,7 +899,6 @@ select.form-control option {
     }
 }
 
-/* Ensure Auth Wrapper is centered */
 .auth-wrapper.glass-animation-mode {
     position: fixed;
     top: 0;
@@ -936,7 +911,6 @@ select.form-control option {
     z-index: 10;
 }
 
-/* Enhancing inputs for Glass UI */
 .auth-card .form-control {
     background: rgba(0, 0, 0, 0.2) !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
@@ -1291,7 +1265,6 @@ select.form-control option {
     color: #3b82f6;
 }
 
-/* Informational & Code Elements */
 code {
     background: rgba(0, 0, 0, 0.2);
     color: #F43F5E;
@@ -1445,7 +1418,6 @@ code {
     margin: 20px auto 0;
 }
 
-/* Compact Mode for PDF Generation */
 .pdf-compact .no-pdf {
     display: none !important;
 }
@@ -1483,7 +1455,6 @@ code {
     font-size: 0.75rem !important;
 }
 
-/* Page Entrance Animation */
 .main-area {
     animation: pageEnter 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
@@ -1502,7 +1473,6 @@ code {
 
 
 
-/* Button Shine Sweep Effect */
 .btn-primary {
     position: relative;
     overflow: hidden;
@@ -1548,7 +1518,6 @@ code {
     animation: pulse 2s infinite;
 }
 
-/* --- New Auth Helper Classes --- */
 .auth-brand-text {
     background: linear-gradient(135deg, #818cf8, #c084fc);
     -webkit-background-clip: text;
@@ -1586,7 +1555,6 @@ code {
     color: #111827;
 }
 
-/* Ensure focus state overrides for light theme */
 .light-theme .form-control:focus {
     background: white;
     border-color: #6366f1;
@@ -1602,11 +1570,9 @@ code {
 
 .light-theme .auth-card .form-control {
     border-color: #d1d5db;
-    /* Darker border for visibility */
     color: #111827 !important;
 }
 
-/* Strengthen general card borders in light mode */
 .light-theme .card {
     border: 1px solid #e5e7eb;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
@@ -1614,7 +1580,6 @@ code {
 
 .light-theme .form-control {
     border-color: #d1d5db;
-    /* Global input border darkening */
 }
 
 .auth-submit-btn {
@@ -1719,9 +1684,7 @@ code {
     color: #374151 !important;
 }
 
-/* --- Mobile Responsiveness --- */
 
-/* Mobile Menu Button - Hidden on Desktop */
 .mobile-menu-btn {
     display: none;
     background: transparent;
@@ -1734,7 +1697,6 @@ code {
 
 .close-sidebar-btn {
     display: none;
-    /* Hidden on desktop */
     margin-left: auto;
     font-size: 1.2rem;
     cursor: pointer;
@@ -1760,10 +1722,8 @@ code {
     visibility: visible;
 }
 
-/* Specific Media Queries for Mobile/Tablet */
 @media (max-width: 900px) {
 
-    /* Layout Adjustments */
     .app-wrapper {
         flex-direction: column;
     }
@@ -1790,7 +1750,6 @@ code {
 
     .top-header {
         justify-content: space-between;
-        /* Space for menu btn */
         padding: 0 20px;
     }
 
@@ -1800,10 +1759,8 @@ code {
 
     .content-body {
         padding: 20px 15px;
-        /* Reduced padding */
     }
 
-    /* Grids to Single Column */
     .upload-grid {
         grid-template-columns: 1fr;
     }
@@ -1812,13 +1769,11 @@ code {
         grid-template-columns: 1fr;
     }
 
-    /* Auth Page Adjustments */
     .auth-card {
         margin: 20px;
         max-width: 100%;
     }
 
-    /* Timetable Table Scroll */
     .timetable-responsive {
         width: 100%;
         overflow-x: auto;
@@ -1828,10 +1783,8 @@ code {
 
     .timetable-table {
         min-width: 800px;
-        /* Force scroll for wide tables */
     }
 
-    /* Font Size Adjustments */
     .page-title h1 {
         font-size: 1.5rem;
     }
@@ -1848,7 +1801,6 @@ code {
 
     .auth-card {
         padding: 30px 20px;
-        /* Reduced padding */
     }
 
     .auth-brand {
@@ -1857,17 +1809,14 @@ code {
 
     .btn {
         width: 100%;
-        /* Full width buttons on mobile */
         justify-content: center;
     }
 
     .header-meta-group .breadcrumb-mini {
         display: none;
-        /* Hide breadcrumb on very small screens */
     }
 }
 
-/* --- Beautiful 3D Mailbox Logo --- */
 .mailbox-hero {
     position: relative;
     padding: 60px 20px;
@@ -2063,7 +2012,6 @@ code {
     transform: scale(1.05);
 }
 
-/* --- Navbar Mailbox Icon --- */
 .nav-mailbox-icon {
     font-size: 1.4rem;
     color: var(--text-color);
@@ -2081,7 +2029,6 @@ code {
     filter: drop-shadow(0 0 5px rgba(124, 58, 237, 0.4));
 }
 
-/* Special Generate Button Styles */
 .btn-generate {
     background: linear-gradient(135deg, #6366f1, #8b5cf6, #d946ef);
     background-size: 200% 200%;

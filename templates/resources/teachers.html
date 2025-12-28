@@ -37,16 +37,49 @@
 {% endif %}
 
 <div class="card">
-    <div class="card-header">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
         <h3><i class="fas fa-list"></i> Existing Teachers</h3>
+        <input type="text" id="teacherSearch" onkeyup="filterTeachers()"
+            placeholder="Search by name, dept, or subject..." class="form-control" style="width: 300px;">
     </div>
     <div class="timetable-responsive">
+        <script>
+            function filterTeachers() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("teacherSearch");
+                filter = input.value.toUpperCase();
+                table = document.querySelector(".timetable-table");
+                tr = table.getElementsByTagName("tr");
+
+                for (i = 1; i < tr.length; i++) {
+                    var nameTd = tr[i].getElementsByTagName("td")[1];
+                    var deptTd = tr[i].getElementsByTagName("td")[2];
+                    var subjTd = tr[i].getElementsByTagName("td")[3];
+
+                    if (nameTd || deptTd || subjTd) {
+                        var nameTxt = nameTd ? nameTd.textContent || nameTd.innerText : "";
+                        var deptTxt = deptTd ? deptTd.textContent || deptTd.innerText : "";
+                        var subjTxt = subjTd ? subjTd.textContent || subjTd.innerText : "";
+
+                        if (nameTxt.toUpperCase().indexOf(filter) > -1 ||
+                            deptTxt.toUpperCase().indexOf(filter) > -1 ||
+                            subjTxt.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                        }
+                    }
+                }
+            }
+        </script>
         <table class="timetable-table">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
                     <th>Department</th>
+                    <th>Subjects</th>
+                    <th>Workload</th>
                     {% if current_user.role == 'admin' %}<th>Actions</th>{% endif %}
                 </tr>
             </thead>
@@ -56,10 +89,47 @@
                     <td>{{ teacher.id }}</td>
                     <td><strong>{{ teacher.name }}</strong></td>
                     <td>
-                        <span class="badge" style="background: #f6f9fc; color: #5e72e4; font-weight: 700;">
+                        <span class="badge"
+                            style="background: var(--input-bg); border: 1px solid var(--border-color); color: #5e72e4; font-weight: 700;">
                             {{ teacher.department.name if teacher.department else 'N/A' }}
                         </span>
                     </td>
+                    <td>
+                        {% if teacher.allocations %}
+                        {% for alloc in teacher.allocations %}
+                        <span class="badge"
+                            style="background: rgba(45, 206, 137, 0.1); color: #2dce89; border: 1px solid rgba(45, 206, 137, 0.2); margin-right: 5px;">
+                            {{ alloc.course.name }}
+                        </span>
+                        {% endfor %}
+                        {% else %}
+                        <span style="color: var(--text-muted);">No subjects assigned</span>
+                        {% endif %}
+                    </td>
+
+                    {% set ns = namespace(total=0) %}
+                    {% for alloc in teacher.allocations %}
+                    {% set ns.total = ns.total + alloc.course.hours_per_week %}
+                    {% endfor %}
+                    {% set pct = (ns.total / 20) * 100 %}
+                    {% if pct > 100 %}{% set pct = 100 %}{% endif %}
+
+                    {% set bar_color = '#10b981' %} {# Green #}
+                    {% if ns.total >= 15 %}{% set bar_color = '#f59e0b' %}{% endif %} {# Orange #}
+                    {% if ns.total >= 20 %}{% set bar_color = '#ef4444' %}{% endif %} {# Red #}
+
+                    <td style="min-width: 150px;">
+                        <div
+                            style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 3px;">
+                            <span style="font-weight: 700; color: {{ bar_color }};">{{ ns.total }} hrs</span>
+                            <span style="color: var(--text-muted);">/ 20</span>
+                        </div>
+                        <div
+                            style="background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 4px; height: 6px; width: 100%; overflow: hidden;">
+                            <div style="background: {{ bar_color }}; width: {{ pct }}%; height: 100%;"></div>
+                        </div>
+                    </td>
+
                     {% if current_user.role == 'admin' %}
                     <td>
                         <a href="{{ url_for('main.edit_teacher', id=teacher.id) }}" class="btn btn-light"
@@ -75,7 +145,8 @@
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="4" style="text-align: center; color: #8898aa; padding: 40px;">No teachers found.</td>
+                    <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 40px;">No teachers
+                        found.</td>
                 </tr>
                 {% endfor %}
             </tbody>

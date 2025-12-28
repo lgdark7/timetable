@@ -20,7 +20,6 @@ def admin_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-# ... (Previous imports remain same)
 
 @main.route('/mailbox')
 @login_required
@@ -101,9 +100,6 @@ def compose_message():
         flash(f'Message sent successfully to {count} users.', 'success')
         return redirect(url_for('main.mailbox'))
 
-    # users = User.query.filter(User.id != current_user.id).all()
-    # Better to show Teachers vs Students or just a flat list?
-    # Let's order by role then username
     users = User.query.filter(User.id != current_user.id).order_by(User.role, User.username).all()
     user_groups = [
         {'id': 'all_teachers', 'name': 'All Teachers'},
@@ -112,7 +108,6 @@ def compose_message():
     ]
     return render_template('compose_message.html', users=users, user_groups=user_groups)
 
-# ... (Existing Routes) ...
 
 
 
@@ -571,7 +566,6 @@ def check_conflict(day, timeslot, teacher_id, classroom_id, dept_id, ignore_entr
     """
     Checks for conflicts and returns (conflict_found: bool, reason: str).
     """
-    # 1. Teacher Conflict
     teacher_busy = TimetableEntry.query.filter(
         TimetableEntry.day == day,
         TimetableEntry.timeslot == timeslot,
@@ -581,7 +575,6 @@ def check_conflict(day, timeslot, teacher_id, classroom_id, dept_id, ignore_entr
     if teacher_busy:
         return True, f"Teacher {teacher_busy.teacher.name} is already teaching {teacher_busy.course.name} in Room {teacher_busy.classroom.name}."
 
-    # 2. Room Conflict
     room_busy = TimetableEntry.query.filter(
         TimetableEntry.day == day,
         TimetableEntry.timeslot == timeslot,
@@ -591,9 +584,6 @@ def check_conflict(day, timeslot, teacher_id, classroom_id, dept_id, ignore_entr
     if room_busy:
         return True, f"Classroom {room_busy.classroom.name} is already occupied by {room_busy.course.name} ({room_busy.teacher.name})."
 
-    # 3. Department/Batch Conflict
-    # We need to know if it's practical or theory to apply the limit logic (2 or 1)
-    # This check is slightly complex without the course object, but purely based on dept load:
     dept_sessions = TimetableEntry.query.filter(
         TimetableEntry.day == day,
         TimetableEntry.timeslot == timeslot,
@@ -601,15 +591,9 @@ def check_conflict(day, timeslot, teacher_id, classroom_id, dept_id, ignore_entr
         TimetableEntry.id != ignore_entry_id
     ).all()
     
-    # Heuristic: If there are already 2 sessions/parts, it's full.
-    # Ideally we check the specific course type of the *current* entry being handled.
-    # For general suggestion generation, we might assume strictness.
     if len(dept_sessions) >= 2:
         return True, "Department already has 2 concurrent sessions (Practical/Batch limit reached)."
     
-    # If 1 session exists, it MUST be a practical to allow another practical. 
-    # If it's a theory class, it blocks the whole department usually (unless batching is fully implemented).
-    # For now, we'll stick to the existing logic: simple count check.
     
     return False, None
 
@@ -620,31 +604,24 @@ def get_suggestions(entry, limit=5):
     suggestions = []
     classrooms = Classroom.query.all()
     
-    # Shuffle to get random suggestions, not just Monday 9am every time
     all_days = list(DAYS)
     all_slots = list(TIMESLOTS)
     random.shuffle(all_days)
     random.shuffle(all_slots)
-    # Check if we should prefer same room type
     preferred_room_type = entry.classroom.type
 
     for day in all_days:
         for slot in all_slots:
-            # Skip current slot
             if day == entry.day and slot == entry.timeslot:
                 continue
                 
-            # For suggestions, we need to find A room that works
             valid_room = None
             
-            # Sort classrooms: preferred type first
             sorted_rooms = sorted(classrooms, key=lambda r: 0 if r.type == preferred_room_type else 1)
             
             for room in sorted_rooms:
                 conflict, _ = check_conflict(day, slot, entry.teacher_id, room.id, entry.dept_id, entry.id)
                 if not conflict:
-                    # Also need to check if existing Department sessions are compatible with THIS entry type
-                    # (re-using the logic from the main validation)
                     dept_sessions_count = TimetableEntry.query.filter(
                         TimetableEntry.day == day,
                         TimetableEntry.timeslot == slot,
@@ -678,7 +655,6 @@ def get_suggestions(entry, limit=5):
 def edit_timetable_entry(id):
     entry = TimetableEntry.query.get_or_404(id)
     
-    # Permission check
     if current_user.role != 'admin' and (current_user.role != 'teacher' or current_user.teacher_id != entry.teacher_id):
         flash('Access denied. You can only edit your own sessions.', 'danger')
         return redirect(url_for('main.timetable'))
@@ -692,11 +668,8 @@ def edit_timetable_entry(id):
         new_classroom_id = int(request.form.get('classroom_id'))
         new_teacher_id = int(request.form.get('teacher_id')) if current_user.role == 'admin' else entry.teacher_id
         
-        # Validate using helper
-        # Note: We pass dept_id. For strict type checking vs existing sessions, we do it below.
         conflict, reason = check_conflict(new_day, new_timeslot, new_teacher_id, new_classroom_id, entry.dept_id, entry.id)
         
-        # Specific Check for Theory vs Practical limits (as seen in original code)
         if not conflict:
             dept_sessions = TimetableEntry.query.filter(
                 TimetableEntry.day == new_day,
@@ -719,9 +692,7 @@ def edit_timetable_entry(id):
             flash(f'Conflict Detected: {reason}', 'danger')
             conflict_reason = reason
             suggestions = get_suggestions(entry)
-            # Fall through to render_template with suggestions
         else:
-            # No conflict, save
             entry.day = new_day
             entry.timeslot = new_timeslot
             entry.classroom_id = new_classroom_id
@@ -754,23 +725,19 @@ def timetable():
     teacher_schedule = None
     teacher_profile = None
     
-    # Substitutions for TODAY
     today = date.today()
     day_index = today.weekday()
     today_name = DAYS[day_index] if day_index < 6 else None
     
     todays_substitutions = {}
     if today_name:
-        # Get active substitutions for today
         subs = Substitution.query.join(LeaveRequest).filter(
             LeaveRequest.date == today,
             LeaveRequest.status == 'Approved'
         ).all()
         
-        # Map: entry_id -> substitute_name
         todays_substitutions = { sub.timetable_entry_id: sub.substitute_teacher.name for sub in subs }
     
-    # 1. Prepare Teacher's Personal View (if applicable)
     if current_user.role == 'teacher' and current_user.teacher_id:
         teacher_profile = Teacher.query.get(current_user.teacher_id)
         teacher_entries = TimetableEntry.query.filter_by(teacher_id=current_user.teacher_id).all()
@@ -807,7 +774,6 @@ def timetable():
                 else:
                     i += 1
 
-    # 2. Prepare Regular Departmental View (for everyone)
     departments = Department.query.all()
     entries = TimetableEntry.query.all()
     
@@ -864,7 +830,6 @@ def timetable():
                            today_name=today_name)
 @main.route('/download/department/<int:dept_id>')
 def download_department_pdf(dept_id):
-    # Implementation placeholder or kept as is
     return redirect(url_for('main.dashboard'))
 
 @main.route('/leave', methods=['GET', 'POST'])
@@ -888,7 +853,6 @@ def request_leave():
              flash('Cannot apply for leave in the past.', 'danger')
              return redirect(url_for('main.request_leave'))
 
-        # Create Leave Request
         leave_request = LeaveRequest(
             teacher_id=current_user.teacher_id,
             date=leave_date,
@@ -897,7 +861,6 @@ def request_leave():
         db.session.add(leave_request)
         db.session.flush() # Get ID
 
-        # Calculate Day of Week
         day_index = leave_date.weekday() # 0=Mon, 6=Sun
         if day_index > 5: # Sunday
             flash('No classes on Sunday.', 'info')
@@ -907,9 +870,7 @@ def request_leave():
         day_name = DAYS[day_index]
         print(f"Applying leave for {day_name} ({leave_date})")
 
-        # COMMIT REQUEST AS PENDING - NO SUBSTITUTIONS YET
 
-        # 1. Notify Teacher
         msg_teacher = Message(
             recipient_id=current_user.id,
             sender_id=None, # System
@@ -919,7 +880,6 @@ def request_leave():
         )
         db.session.add(msg_teacher)
 
-        # 2. Notify Admins
         admins = User.query.filter_by(role='admin').all()
         for admin in admins:
             msg_admin = Message(
@@ -954,16 +914,13 @@ def approve_leave(id):
         return redirect(url_for('main.admin_leaves'))
     
     leave_request.status = 'Approved'
-    # Default message, will be updated if substitutions are made
     leave_request.admin_response = "Leave approved."
     db.session.flush()
 
-    # --- SUBSTITUTION LOGIC STARTS HERE ---
     leave_date = leave_request.date
     day_index = leave_date.weekday()
     day_name = DAYS[day_index]
     
-    # Validation: Sunday Check
     if day_index > 5:
         leave_request.status = 'Rejected'
         leave_request.reason += " (Auto-Rejected: Sunday)"
@@ -972,7 +929,6 @@ def approve_leave(id):
         flash('Leave on Sunday rejected automatically.', 'info')
         return redirect(url_for('main.admin_leaves'))
 
-    # Find Classes
     teacher_classes = TimetableEntry.query.filter_by(
         teacher_id=leave_request.teacher_id,
         day=day_name
@@ -982,14 +938,11 @@ def approve_leave(id):
     sub_messages = []
 
     for entry in teacher_classes:
-        # 1. Teachers busy with their own classes at this time
         busy_teachers_query = db.session.query(TimetableEntry.teacher_id).filter_by(
             day=day_name,
             timeslot=entry.timeslot
         )
 
-        # 2. Teachers who are already substituting at this time on this date
-        # Join Substitution -> LeaveRequest (check date) -> TimetableEntry (check timeslot)
         busy_substitutes_query = db.session.query(Substitution.substitute_teacher_id).join(
             LeaveRequest, Substitution.leave_id == LeaveRequest.id
         ).join(
@@ -1000,20 +953,17 @@ def approve_leave(id):
             TimetableEntry.timeslot == entry.timeslot
         )
 
-        # 3. Teachers who are on approved leave on this day
         teachers_on_leave_query = db.session.query(LeaveRequest.teacher_id).filter(
             LeaveRequest.date == leave_date,
             LeaveRequest.status == 'Approved'
         )
         
-        # Combine exclusions
         busy_with_classes = [r[0] for r in busy_teachers_query.all()]
         busy_substituting = [r[0] for r in busy_substitutes_query.all()]
         on_leave = [r[0] for r in teachers_on_leave_query.all()]
         
         excluded_teacher_ids = set(busy_with_classes + busy_substituting + on_leave + [leave_request.teacher_id])
         
-        # Query: Free teachers
         available_teachers = Teacher.query.filter(
             ~Teacher.id.in_(excluded_teacher_ids)
         ).all()
@@ -1040,8 +990,6 @@ def approve_leave(id):
         leave_request.admin_response = "Approved, but no substitutes were available."
         final_message = "Your leave has been approved, but we could not find available substitutes for your classes."
 
-    # SEND MESSAGE TO MAILBOX
-    # SEND MESSAGE TO MAILBOX
     teacher_user = User.query.filter_by(teacher_id=leave_request.teacher_id).first()
     if teacher_user:
         msg = Message(
@@ -1065,8 +1013,6 @@ def reject_leave(id):
     leave_request.status = 'Rejected'
     leave_request.admin_response = "Your leave request was declined by the administrator."
 
-    # SEND MESSAGE TO MAILBOX
-    # SEND MESSAGE TO MAILBOX
     teacher_user = User.query.filter_by(teacher_id=leave_request.teacher_id).first()
     if teacher_user:
         msg = Message(
@@ -1084,21 +1030,18 @@ def reject_leave(id):
 @main.route('/reports')
 @login_required
 def reports():
-    # 1. Faculty Workload (Sessions per Teacher)
     teachers = Teacher.query.all()
     teacher_data = {}
     for t in teachers:
         count = TimetableEntry.query.filter_by(teacher_id=t.id).count()
         teacher_data[t.name] = count
     
-    # 2. Department Activity (Sessions per Dept)
     departments = Department.query.all()
     dept_data = {}
     for d in departments:
         count = TimetableEntry.query.filter_by(dept_id=d.id).count()
         dept_data[d.name] = count
 
-    # 3. Classroom Utilization (Sessions per Room)
     classrooms = Classroom.query.all()
     room_data = {}
     for r in classrooms:

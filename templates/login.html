@@ -16,7 +16,6 @@
         <form action="{{ url_for('main.login') }}" method="POST">
             {% with messages = get_flashed_messages(with_categories=true) %}
 
-            {# Check for password error using namespace #}
             {% set ns = namespace(pass_wrong=false) %}
             {% for category, message in messages %}
             {% if message == 'pass is wrong' %}
@@ -24,7 +23,6 @@
             {% endif %}
             {% endfor %}
 
-            {# Display General Errors #}
             {% if messages %}
             {% for category, message in messages %}
             {% if message != 'pass is wrong' %}

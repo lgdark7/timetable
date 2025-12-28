@@ -44,9 +44,7 @@
             document.querySelector('select[name="day"]').value = day;
             document.querySelector('select[name="timeslot"]').value = timeslot;
             document.querySelector('select[name="classroom_id"]').value = classroomId;
-            // Optional: Scroll to save button or auto-submit
             document.querySelector('button[type="submit"]').scrollIntoView({ behavior: 'smooth' });
-            // Highlight the change
             document.querySelector('form').style.opacity = '0.5';
             setTimeout(() => { document.querySelector('form').style.opacity = '1'; }, 200);
         }

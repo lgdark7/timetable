@@ -4,7 +4,6 @@ from sqlalchemy import text
 def migrate():
     with app.app_context():
         try:
-            # Check if column exists
             db.session.execute(text("SELECT section FROM department LIMIT 1"))
             print("Column 'section' already exists.")
         except Exception:
