@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block icon %}<i class="fas fa-paper-plane"></i>{% endblock %}
+{% block title %}Compose Message{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3><i class="fas fa-pen"></i> Compose Message</h3>
+    </div>
+
+    <form method="POST">
+        <div class="form-group">
+            <label>Recipient Group (Optional):</label>
+            <select name="recipient_group" class="form-control"
+                style="background: rgba(255,255,255,0.05); color: var(--text-color); border: 1px solid rgba(255,255,255,0.1);">
+                <option value="" selected>None (Select Specific User below)</option>
+                {% for group in user_groups %}
+                <option value="{{ group.id }}">{{ group.name }}</option>
+                {% endfor %}
+            </select>
+            <small class="text-muted">Select a group OR a specific user below.</small>
+        </div>
+
+        <div class="form-group">
+            <label>Specific Recipient:</label>
+            <select name="recipient_id" class="form-control"
+                style="background: rgba(255,255,255,0.05); color: var(--text-color); border: 1px solid rgba(255,255,255,0.1);">
+                <option value="" disabled selected>Select Recipient...</option>
+                {% for user in users %}
+                <option value="{{ user.id }}">{{ user.role|capitalize }}: {{ user.username }} {% if user.teacher_profile
+                    %} ({{ user.teacher_profile.name }}) {% endif %}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Subject:</label>
+            <input type="text" name="subject" class="form-control" placeholder="Enter subject" required
+                style="background: rgba(255,255,255,0.05); color: var(--text-color); border: 1px solid rgba(255,255,255,0.1);">
+        </div>
+
+        <div class="form-group">
+            <label>Message Body:</label>
+            <textarea name="body" class="form-control" rows="6" placeholder="Type your message here..." required
+                style="background: rgba(255,255,255,0.05); color: var(--text-color); border: 1px solid rgba(255,255,255,0.1);"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Send Message</button>
+        <a href="{{ url_for('main.mailbox') }}" class="btn btn-danger">Cancel</a>
+    </form>
+</div>
+{% endblock %}

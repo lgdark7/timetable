@@ -18,6 +18,26 @@ login_manager.init_app(app)
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+@app.context_processor
+def inject_unread_count():
+    from flask_login import current_user
+    from models import Message
+    
+    if current_user.is_authenticated:
+        count = Message.query.filter_by(recipient_id=current_user.id, is_read=False).count()
+        return dict(unread_count=count)
+    return dict(unread_count=0)
+
+@app.errorhandler(404)
+def page_not_found(e):
+    from flask import render_template
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    from flask import render_template
+    return render_template('500.html'), 500
+
 app.register_blueprint(main)
 
 with app.app_context():

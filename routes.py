@@ -1,9 +1,12 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
-from models import db, Department, Classroom, Teacher, Course, Allocation, TimetableEntry, User, DAYS, TIMESLOTS
+from functools import wraps
+from models import db, Department, Course, Teacher, Classroom, Allocation, TimetableEntry, User, DAYS, TIMESLOTS, LeaveRequest, Substitution, Message
 from scheduler import Scheduler
 from flask_login import login_user, logout_user, login_required, current_user
 import csv
 import io
+import random
+from datetime import datetime, date
 
 main = Blueprint('main', __name__)
 
@@ -16,6 +19,103 @@ def admin_required(f):
             return redirect(url_for('main.dashboard'))
         return f(*args, **kwargs)
     return decorated_function
+
+# ... (Previous imports remain same)
+
+@main.route('/mailbox')
+@login_required
+def mailbox():
+    messages = Message.query.filter_by(recipient_id=current_user.id).order_by(Message.timestamp.desc()).all()
+    return render_template('mailbox.html', messages=messages)
+
+@main.route('/mailbox/read/<int:id>')
+@login_required
+def read_message(id):
+    msg = Message.query.get_or_404(id)
+    if msg.recipient_id != current_user.id:
+        flash('Access denied.', 'danger')
+        return redirect(url_for('main.mailbox'))
+    
+    msg.is_read = True
+    db.session.commit()
+    return render_template('read_message.html', message=msg)
+
+@main.route('/mailbox/clear', methods=['POST'])
+@login_required
+def clear_mailbox():
+    try:
+        num_deleted = Message.query.filter_by(recipient_id=current_user.id).delete()
+        db.session.commit()
+        flash(f'Mailbox cleared. {num_deleted} messages deleted.', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error clearing mailbox: {e}', 'danger')
+    return redirect(url_for('main.mailbox'))
+
+@main.route('/mailbox/send', methods=['GET', 'POST'])
+@login_required
+def compose_message():
+    if current_user.role != 'admin':
+        flash('Only admins can send messages.', 'danger')
+        return redirect(url_for('main.mailbox'))
+
+    if request.method == 'POST':
+        recipient_id = request.form.get('recipient_id')
+        recipient_group = request.form.get('recipient_group')
+        subject = request.form.get('subject')
+        body = request.form.get('body')
+
+        if not subject or not body:
+            flash('Subject and Body are required.', 'danger')
+            return redirect(url_for('main.compose_message'))
+        
+        recipients = []
+        if recipient_group:
+            if recipient_group == 'all_teachers':
+                recipients = User.query.filter_by(role='teacher').all()
+            elif recipient_group == 'all_students':
+                recipients = User.query.filter_by(role='student').all()
+            elif recipient_group == 'everyone':
+                recipients = User.query.filter(User.id != current_user.id).all()
+        elif recipient_id:
+             user = User.query.get(recipient_id)
+             if user: recipients = [user]
+        else:
+            flash('Please select a recipient or a group.', 'danger')
+            return redirect(url_for('main.compose_message'))
+
+        count = 0
+        for recipient in recipients:
+            if recipient.id == current_user.id: continue
+            msg = Message(
+                recipient_id=recipient.id,
+                sender_id=current_user.id,
+                subject=subject,
+                body=body,
+                category='Admin Message'
+            )
+            db.session.add(msg)
+            count += 1
+            
+        db.session.commit()
+        flash(f'Message sent successfully to {count} users.', 'success')
+        return redirect(url_for('main.mailbox'))
+
+    # users = User.query.filter(User.id != current_user.id).all()
+    # Better to show Teachers vs Students or just a flat list?
+    # Let's order by role then username
+    users = User.query.filter(User.id != current_user.id).order_by(User.role, User.username).all()
+    user_groups = [
+        {'id': 'all_teachers', 'name': 'All Teachers'},
+        {'id': 'all_students', 'name': 'All Students'},
+        {'id': 'everyone', 'name': 'Everyone'}
+    ]
+    return render_template('compose_message.html', users=users, user_groups=user_groups)
+
+# ... (Existing Routes) ...
+
+
+
 
 @main.route('/')
 def index():
@@ -178,6 +278,16 @@ def upload_csv():
                     )
                     db.session.add(dept)
                     count += 1
+            
+            elif file_type == 'allocations':
+                for row in reader:
+                    course = Course.query.filter_by(code=row.get('CourseCode')).first()
+                    teacher = Teacher.query.filter_by(name=row.get('TeacherName')).first()
+                    
+                    if course and teacher:
+                        alloc = Allocation(course_id=course.id, teacher_id=teacher.id)
+                        db.session.add(alloc)
+                        count += 1
             
             db.session.commit()
             flash(f'Successfully imported {count} items for {file_type}.', 'success')
@@ -520,6 +630,22 @@ def timetable():
     teacher_schedule = None
     teacher_profile = None
     
+    # Substitutions for TODAY
+    today = date.today()
+    day_index = today.weekday()
+    today_name = DAYS[day_index] if day_index < 6 else None
+    
+    todays_substitutions = {}
+    if today_name:
+        # Get active substitutions for today
+        subs = Substitution.query.join(LeaveRequest).filter(
+            LeaveRequest.date == today,
+            LeaveRequest.status == 'Approved'
+        ).all()
+        
+        # Map: entry_id -> substitute_name
+        todays_substitutions = { sub.timetable_entry_id: sub.substitute_teacher.name for sub in subs }
+    
     # 1. Prepare Teacher's Personal View (if applicable)
     if current_user.role == 'teacher' and current_user.teacher_id:
         teacher_profile = Teacher.query.get(current_user.teacher_id)
@@ -609,4 +735,225 @@ def timetable():
                            teacher_profile=teacher_profile,
                            days=DAYS, 
                            time_slots=TIMESLOTS, 
-                           Department=Department)
+                           Department=Department,
+                           todays_substitutions=todays_substitutions,
+                           today_name=today_name)
+@main.route('/download/department/<int:dept_id>')
+def download_department_pdf(dept_id):
+    # Implementation placeholder or kept as is
+    return redirect(url_for('main.dashboard'))
+
+@main.route('/leave', methods=['GET', 'POST'])
+@login_required
+def request_leave():
+    if current_user.role != 'teacher':
+        flash('Only teachers can request leave.', 'danger')
+        return redirect(url_for('main.dashboard'))
+    
+    if request.method == 'POST':
+        date_str = request.form.get('date')
+        reason = request.form.get('reason')
+        
+        try:
+            leave_date = datetime.strptime(date_str, '%Y-%m-%d').date()
+        except ValueError:
+            flash('Invalid date format.', 'danger')
+            return redirect(url_for('main.request_leave'))
+
+        if leave_date < date.today():
+             flash('Cannot apply for leave in the past.', 'danger')
+             return redirect(url_for('main.request_leave'))
+
+        # Create Leave Request
+        leave_request = LeaveRequest(
+            teacher_id=current_user.teacher_id,
+            date=leave_date,
+            reason=reason
+        )
+        db.session.add(leave_request)
+        db.session.flush() # Get ID
+
+        # Calculate Day of Week
+        day_index = leave_date.weekday() # 0=Mon, 6=Sun
+        if day_index > 5: # Sunday
+            flash('No classes on Sunday.', 'info')
+            db.session.commit()
+            return redirect(url_for('main.dashboard'))
+        
+        day_name = DAYS[day_index]
+        print(f"Applying leave for {day_name} ({leave_date})")
+
+        # COMMIT REQUEST AS PENDING - NO SUBSTITUTIONS YET
+
+        # 1. Notify Teacher
+        msg_teacher = Message(
+            recipient_id=current_user.id,
+            sender_id=None, # System
+            subject=f"Leave Request Received: {leave_request.date}",
+            body=f"Your leave request for {leave_request.date} has been received and is pending approval.",
+            category='Leave System'
+        )
+        db.session.add(msg_teacher)
+
+        # 2. Notify Admins
+        admins = User.query.filter_by(role='admin').all()
+        for admin in admins:
+            msg_admin = Message(
+                recipient_id=admin.id,
+                sender_id=current_user.id,
+                subject=f"New Leave Request: {current_user.username}",
+                body=f"Teacher {current_user.username} has requested leave for {leave_request.date}. Reason: {reason}. Please review in Admin Leaves.",
+                category='Leave Request'
+            )
+            db.session.add(msg_admin)
+
+        db.session.commit()
+        flash('Leave requested successfully. Pending Admin Approval. Confirmation sent to your mailbox.', 'success')
+        return redirect(url_for('main.dashboard'))
+
+    return render_template('leave_request.html', today=date.today())
+
+@main.route('/admin/leaves')
+@login_required
+@admin_required
+def admin_leaves():
+    leaves = LeaveRequest.query.filter_by(status='Pending').order_by(LeaveRequest.date.asc()).all()
+    return render_template('resources/admin_leaves.html', leaves=leaves)
+
+@main.route('/admin/leaves/approve/<int:id>', methods=['POST'])
+@login_required
+@admin_required
+def approve_leave(id):
+    leave_request = LeaveRequest.query.get_or_404(id)
+    if leave_request.status != 'Pending':
+        flash('Request already processed.', 'warning')
+        return redirect(url_for('main.admin_leaves'))
+    
+    leave_request.status = 'Approved'
+    # Default message, will be updated if substitutions are made
+    leave_request.admin_response = "Leave approved."
+    db.session.flush()
+
+    # --- SUBSTITUTION LOGIC STARTS HERE ---
+    leave_date = leave_request.date
+    day_index = leave_date.weekday()
+    day_name = DAYS[day_index]
+    
+    # Validation: Sunday Check
+    if day_index > 5:
+        leave_request.status = 'Rejected'
+        leave_request.reason += " (Auto-Rejected: Sunday)"
+        leave_request.admin_response = "Leave rejected automatically as it falls on a Sunday."
+        db.session.commit()
+        flash('Leave on Sunday rejected automatically.', 'info')
+        return redirect(url_for('main.admin_leaves'))
+
+    # Find Classes
+    teacher_classes = TimetableEntry.query.filter_by(
+        teacher_id=leave_request.teacher_id,
+        day=day_name
+    ).all()
+
+    substitution_count = 0
+    sub_messages = []
+
+    for entry in teacher_classes:
+        # 1. Teachers busy with their own classes at this time
+        busy_teachers_query = db.session.query(TimetableEntry.teacher_id).filter_by(
+            day=day_name,
+            timeslot=entry.timeslot
+        )
+
+        # 2. Teachers who are already substituting at this time on this date
+        # Join Substitution -> LeaveRequest (check date) -> TimetableEntry (check timeslot)
+        busy_substitutes_query = db.session.query(Substitution.substitute_teacher_id).join(
+            LeaveRequest, Substitution.leave_id == LeaveRequest.id
+        ).join(
+            TimetableEntry, Substitution.timetable_entry_id == TimetableEntry.id
+        ).filter(
+            LeaveRequest.date == leave_date,
+            LeaveRequest.status == 'Approved',
+            TimetableEntry.timeslot == entry.timeslot
+        )
+
+        # 3. Teachers who are on approved leave on this day
+        teachers_on_leave_query = db.session.query(LeaveRequest.teacher_id).filter(
+            LeaveRequest.date == leave_date,
+            LeaveRequest.status == 'Approved'
+        )
+        
+        # Combine exclusions
+        busy_with_classes = [r[0] for r in busy_teachers_query.all()]
+        busy_substituting = [r[0] for r in busy_substitutes_query.all()]
+        on_leave = [r[0] for r in teachers_on_leave_query.all()]
+        
+        excluded_teacher_ids = set(busy_with_classes + busy_substituting + on_leave + [leave_request.teacher_id])
+        
+        # Query: Free teachers
+        available_teachers = Teacher.query.filter(
+            ~Teacher.id.in_(excluded_teacher_ids)
+        ).all()
+
+        if available_teachers:
+            substitute = random.choice(available_teachers)
+            sub = Substitution(
+                leave_request=leave_request,
+                timetable_entry_id=entry.id,
+                substitute_teacher=substitute
+            )
+            db.session.add(sub)
+            substitution_count += 1
+            sub_messages.append(f"{entry.timeslot} ({substitute.name})")
+            
+    final_message = "Leave Approved."
+    if sub_messages:
+        leave_request.admin_response = "Approved. Substitutions assinged: " + ", ".join(sub_messages)
+        final_message = "Your leave has been approved. The following substitutions have been assigned:<br><ul>" + "".join([f"<li>{m}</li>" for m in sub_messages]) + "</ul>"
+    elif not teacher_classes:
+        leave_request.admin_response = "Approved. No classes found for this day."
+        final_message = "Your leave has been approved. You have no classes scheduled for this day."
+    else:
+        leave_request.admin_response = "Approved, but no substitutes were available."
+        final_message = "Your leave has been approved, but we could not find available substitutes for your classes."
+
+    # SEND MESSAGE TO MAILBOX
+    # SEND MESSAGE TO MAILBOX
+    teacher_user = User.query.filter_by(teacher_id=leave_request.teacher_id).first()
+    if teacher_user:
+        msg = Message(
+            recipient_id=teacher_user.id,
+            sender_id=current_user.id,
+            subject=f"Leave Approved: {leave_request.date}",
+            body=final_message,
+            category='Leave'
+        )
+        db.session.add(msg)
+
+    db.session.commit()
+    flash(f'Leave approved. {substitution_count} substitutions assigned.', 'success')
+    return redirect(url_for('main.admin_leaves'))
+
+@main.route('/admin/leaves/reject/<int:id>', methods=['POST'])
+@login_required
+@admin_required
+def reject_leave(id):
+    leave_request = LeaveRequest.query.get_or_404(id)
+    leave_request.status = 'Rejected'
+    leave_request.admin_response = "Your leave request was declined by the administrator."
+
+    # SEND MESSAGE TO MAILBOX
+    # SEND MESSAGE TO MAILBOX
+    teacher_user = User.query.filter_by(teacher_id=leave_request.teacher_id).first()
+    if teacher_user:
+        msg = Message(
+            recipient_id=teacher_user.id,
+            sender_id=current_user.id,
+            subject=f"Leave Rejected: {leave_request.date}",
+            body="Your leave request has been rejected.",
+            category='Leave'
+        )
+        db.session.add(msg)
+    
+    db.session.commit()
+    flash('Leave request rejected.', 'warning')
+    return redirect(url_for('main.admin_leaves'))

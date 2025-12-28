@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="auth-wrapper glass-animation-mode">
+    <div class="auth-card" style="text-align: center; max-width: 500px;">
+        <div style="font-size: 5rem; color: var(--primary); margin-bottom: 20px;">
+            <i class="fas fa-ghost"></i>
+        </div>
+        <h1 style="font-size: 3rem; font-weight: 800; margin-bottom: 10px; color: var(--text-main);">404</h1>
+        <h2 style="font-size: 1.5rem; margin-bottom: 20px; color: var(--text-muted);">Page Not Found</h2>
+        <p style="color: var(--text-muted); margin-bottom: 30px;">The page you are looking for seems to have vanished
+            into the cyber void.</p>
+
+        <a href="{{ url_for('main.index') }}" class="btn btn-primary" style="width: 100%; justify-content: center;">
+            <i class="fas fa-home"></i> Return Home
+        </a>
+    </div>
+</div>
+{% endblock %}

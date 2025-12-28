@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
+from datetime import datetime
 
 db = SQLAlchemy()
 
@@ -80,3 +81,36 @@ class User(db.Model, UserMixin):
 
     department = db.relationship('Department', backref='users', lazy=True)
     teacher_profile = db.relationship('Teacher', backref='user_account', uselist=False, lazy=True)
+
+class LeaveRequest(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'), nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    reason = db.Column(db.String(200), nullable=True)
+    status = db.Column(db.String(20), default='Pending') # Requires Admin Approval
+    admin_response = db.Column(db.String(200), nullable=True) # Feedback from admin
+
+    teacher = db.relationship('Teacher', backref='leave_requests')
+
+class Substitution(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    leave_id = db.Column(db.Integer, db.ForeignKey('leave_request.id'), nullable=False)
+    timetable_entry_id = db.Column(db.Integer, db.ForeignKey('timetable_entry.id'), nullable=False)
+    substitute_teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'), nullable=False)
+
+    leave_request = db.relationship('LeaveRequest', backref='substitutions')
+    original_entry = db.relationship('TimetableEntry', backref='substitutions')
+    substitute_teacher = db.relationship('Teacher', backref='substitutions')
+
+class Message(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True) # None = System
+    subject = db.Column(db.String(150), nullable=False)
+    body = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    is_read = db.Column(db.Boolean, default=False)
+    category = db.Column(db.String(50), default='System')
+
+    recipient = db.relationship('User', foreign_keys=[recipient_id], backref='messages_received')
+    sender = db.relationship('User', foreign_keys=[sender_id], backref='messages_sent')

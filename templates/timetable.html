@@ -6,9 +6,14 @@
 {% block content %}
 <div class="action-header"
     style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-    <div style="display: flex; gap: 15px;">
+    <div style="display: flex; gap: 15px; align-items: center;">
         <input type="text" id="deptSearch" class="form-control" placeholder="Search department..."
             style="max-width: 250px;">
+        {% if today_name %}
+        <span class="badge badge-info" style="font-size: 0.9rem; padding: 10px;">
+            Today is {{ today_name }} - Viewing Substitutions
+        </span>
+        {% endif %}
     </div>
     <div style="display: flex; gap: 10px;">
         {% if current_user.role == 'admin' %}
@@ -41,6 +46,10 @@
                 <span class="badge badge-teacher" style="color: #fff; padding: 8px 15px; font-size: 0.8rem;">
                     <i class="fas fa-star"></i> Interactive Weekly Overview
                 </span>
+                <a href="{{ url_for('main.request_leave') }}" class="btn btn-sm btn-primary no-pdf"
+                    style="padding: 6px 12px; border-radius: 8px; margin-right: 10px;">
+                    <i class="fas fa-calendar-minus"></i> Request Leave
+                </a>
                 <button onclick="downloadSinglePDF('Teacher_{{ teacher_profile.name }}', 'teacher-timetable-card')"
                     class="btn btn-sm btn-light no-pdf"
                     style="padding: 6px 12px; border: 1px solid #e2e8f0; border-radius: 8px;">
@@ -172,12 +181,15 @@
                             {% for entry in cell.entries %}
                             {% set is_my_sess = (current_user.role == 'teacher' and entry.teacher_id ==
                             current_user.teacher_id) %}
+
+                            {% set sub_name = todays_substitutions.get(entry.id) if (today_name == day) else None %}
+
                             <div class="{{ 'my-session-inner' if is_my_sess }}"
-                                style="{{ 'padding: 3px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 3px;' if not loop.last else 'padding: 3px;' }}">
+                                style="{{ 'padding: 3px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 3px;' if not loop.last else 'padding: 3px;' }}; {% if sub_name %} border-left: 3px solid #f59e0b; background: rgba(245, 158, 11, 0.1); {% endif %}">
                                 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                                     <div style="font-weight: 700; color: var(--primary); font-size: 0.95rem;">{{
                                         entry.course.code }}</div>
-                                    {% if current_user.role == 'admin' or is_my_sess %}
+                                    {% if (current_user.role == 'admin' or is_my_sess) and not sub_name %}
                                     <a href="{{ url_for('main.edit_timetable_entry', id=entry.id) }}" class="no-pdf"
                                         style="color: var(--text-muted); font-size: 0.8rem; opacity: 0.6; transition: var(--transition-smooth);"
                                         onmouseover="this.style.opacity='1'; this.style.color='var(--primary)'"
@@ -188,8 +200,20 @@
                                 </div>
                                 <div style="font-size: 0.75rem; color: var(--white); margin: 2px 0; opacity: 0.9;">{{
                                     entry.classroom.name }}</div>
-                                <div style="font-size: 0.7rem; color: var(--text-muted);">{{ entry.teacher.name }}
+
+                                <div style="font-size: 0.7rem; color: var(--text-muted);">
+                                    {% if sub_name %}
+                                    <span style="text-decoration: line-through; opacity: 0.7;">{{ entry.teacher.name
+                                        }}</span>
+                                    <br>
+                                    <span style="color: #f59e0b; font-weight: bold;">
+                                        <i class="fas fa-exchange-alt"></i> {{ sub_name }}
+                                    </span>
+                                    {% else %}
+                                    {{ entry.teacher.name }}
+                                    {% endif %}
                                 </div>
+
                                 {% if entry.course.type == 'Practical' %}
                                 <span
                                     style="font-size: 0.65rem; color: var(--secondary); text-transform: uppercase; font-weight: 800;">[

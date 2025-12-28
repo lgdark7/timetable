@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Leave Requests{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <h3><i class="fas fa-envelopes-bulk"></i> Leave Requests Console</h3>
+            <span class="badge badge-primary" style="font-size: 0.9rem; padding: 8px 15px;">{{ leaves|length }}
+                Pending</span>
+        </div>
+
+        {% if leaves %}
+        <div class="leave-requests-grid"
+            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px;">
+            {% for leave in leaves %}
+            <div class="leave-card glass-panel"
+                style="position: relative; overflow: hidden; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); background: rgba(30, 41, 59, 0.4); backdrop-filter: blur(10px); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+
+                <!-- Decorative Header Accent -->
+                <div style="height: 6px; background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899); width: 100%;">
+                </div>
+
+                <div style="padding: 25px; display: flex; flex-direction: column; height: 100%;">
+
+                    <!-- Header -->
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px;">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div
+                                style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #4f46e5, #9333ea); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                                {{ leave.teacher.name[:1] }}
+                            </div>
+                            <div>
+                                <h4 style="margin: 0; font-size: 1.1rem; color: var(--text-main); font-weight: 700;">{{
+                                    leave.teacher.name }}</h4>
+                                <span
+                                    style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-top: 3px;">
+                                    <i class="fas fa-calendar-alt" style="margin-right: 5px; color: #8b5cf6;"></i>
+                                    {{ leave.date.strftime('%B %d, %Y') }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- "Letter" Body -->
+                    <div
+                        style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 15px; margin-bottom: 25px; flex-grow: 1; border: 1px solid rgba(255,255,255,0.05);">
+                        <i class="fas fa-quote-left"
+                            style="color: rgba(255,255,255,0.1); font-size: 1.2rem; margin-bottom: 5px;"></i>
+                        <p
+                            style="margin: 0; color: var(--text-main); font-style: italic; font-size: 0.95rem; line-height: 1.6;">
+                            {{ leave.reason }}
+                        </p>
+                    </div>
+
+                    <!-- Actions Footer -->
+                    <div style="display: flex; gap: 12px; margin-top: auto;">
+                        <form action="{{ url_for('main.approve_leave', id=leave.id) }}" method="POST" style="flex: 1;">
+                            <button type="submit" class="btn btn-success"
+                                style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 12px; padding: 10px;">
+                                <i class="fas fa-check-circle"></i> Approve
+                            </button>
+                        </form>
+                        <form action="{{ url_for('main.reject_leave', id=leave.id) }}" method="POST" style="flex: 1;">
+                            <button type="submit" class="btn btn-danger"
+                                style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 12px; padding: 10px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444;">
+                                <i class="fas fa-times-circle"></i> Reject
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div
+            style="background: rgba(30, 41, 59, 0.4); border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); text-align: center; padding: 60px 20px; color: var(--text-muted); backdrop-filter: blur(10px);">
+            <div
+                style="width: 80px; height: 80px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto;">
+                <i class="fas fa-inbox" style="font-size: 3rem; opacity: 0.5; color: var(--primary);"></i>
+            </div>
+            <h4 style="color: var(--text-main); margin-bottom: 10px;">All Caught Up!</h4>
+            <p style="font-size: 1rem; margin: 0;">No pending leave requests at the moment.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

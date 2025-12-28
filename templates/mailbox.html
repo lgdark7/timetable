@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block icon %}<i class="fas fa-envelope"></i>{% endblock %}
+{% block title %}Mailbox{% endblock %}
+
+{% block content %}
+<div class="card">
+    <!-- 3D Cyber Mail Bot Hero Section -->
+    <div class="mailbox-hero">
+        <div class="mail-logo-container">
+            <div class="envelope-3d">
+                <div class="envelope-flap"></div>
+                <div class="envelope-pocket"></div>
+                <div class="envelope-letter">
+                    <div class="letter-lines"></div>
+                </div>
+            </div>
+            <div class="envelope-glow"></div>
+        </div>
+
+        <div class="mailbox-header-content">
+            <div class="mailbox-actions">
+                {% if current_user.role == 'admin' %}
+                <a href="{{ url_for('main.compose_message') }}" class="btn btn-primary glow-btn">
+                    <i class="fas fa-paper-plane"></i> Compose New
+                </a>
+                {% endif %}
+
+                {% if messages %}
+                <form action="{{ url_for('main.clear_mailbox') }}" method="POST"
+                    onsubmit="return confirm('Are you sure you want to delete ALL messages? This cannot be undone.');"
+                    style="display:inline;">
+                    <button type="submit" class="btn btn-danger glow-btn-danger">
+                        <i class="fas fa-trash-alt"></i> Purge Logs
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% if messages %}
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+        {% for msg in messages %}
+        <a href="{{ url_for('main.read_message', id=msg.id) }}"
+            style="display: block; text-decoration: none; color: inherit;">
+            <div class="message-card" style="
+                    padding: 15px; 
+                    border-radius: 10px; 
+                    background: {% if msg.is_read %}rgba(255,255,255,0.02){% else %}rgba(255,255,255,0.08){% endif %}; 
+                    border-left: 4px solid {% if msg.is_read %}transparent{% else %}var(--primary){% endif %};
+                    transition: all 0.2s ease;">
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                    <span style="font-weight: {% if msg.is_read %}normal{% else %}bold{% endif %}; font-size: 1rem;">
+                        {% if not msg.is_read %}<i class="fas fa-circle"
+                            style="font-size: 0.5rem; color: var(--primary); margin-right: 5px;"></i>{% endif %}
+                        {{ msg.subject }}
+                    </span>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">{{ msg.timestamp.strftime('%d %b %H:%M')
+                        }}</span>
+                </div>
+                <div
+                    style="font-size: 0.9rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                    {{ msg.body | striptags }}
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+        <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 20px; opacity: 0.3;"></i>
+        <p>Your mailbox is empty.</p>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .message-card:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        transform: translateX(5px);
+    }
+</style>
+{% endblock %}

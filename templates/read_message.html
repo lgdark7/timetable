@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block icon %}<i class="fas fa-envelope-open-text"></i>{% endblock %}
+{% block title %}Read Message{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="margin-bottom: 20px;">
+        <a href="{{ url_for('main.mailbox') }}" class="btn btn-light btn-sm"><i class="fas fa-arrow-left"></i> Back to
+            Inbox</a>
+    </div>
+
+    <div style="padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px;">
+        <h2 style="font-size: 1.5rem; color: var(--text-main); margin-bottom: 10px;">{{ message.subject }}</h2>
+        <div style="display: flex; justify-content: space-between; color: var(--text-muted); font-size: 0.9rem;">
+            <span>From: System/Admin</span>
+            <span>{{ message.timestamp.strftime('%d %b, %Y at %H:%M') }}</span>
+        </div>
+    </div>
+
+    <div class="message-body" style="line-height: 1.6; color: var(--text-main); font-size: 1rem;">
+        {{ message.body | safe }}
+    </div>
+
+    {% if message.category == 'Leave' %}
+    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary"><i class="fas fa-eye"></i> View on
+            Dashboard</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

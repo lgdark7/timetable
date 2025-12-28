@@ -4,32 +4,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TimeTable Manager</title>
+    <title>TimeTable Manager | AI-Powered Scheduling</title>
+    <meta name="description"
+        content="Intelligent academic timetable management system with automated scheduling, conflict detection, and role-based access control.">
+    <meta name="keywords" content="timetable, scheduling, academic, college, automatic scheduler, python flask">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📅</text></svg>">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <div class="orb-container">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
+    <!-- Futuristic Cyber-Grid Background -->
+    <div class="cyber-grid-container">
+        <div class="cyber-grid"></div>
+        <div class="cyber-glow"></div>
+        <div class="floating-particles">
+            <!-- Decorative tech particles -->
+            <i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
     </div>
-    <canvas id="particleCanvas"
-        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.6;"></canvas>
+
+
     {% set is_auth = request.endpoint in ['main.login', 'main.register', 'main.register_student',
     'main.register_teacher'] %}
 
     <div class="{{ 'app-wrapper' if not is_auth else '' }}">
+        <!-- Auth Page Floating Theme Toggle -->
+        {% if is_auth %}
+        <button id="authThemeToggle" class="auth-theme-toggle" title="Toggle Theme">
+            <i class="fas fa-moon"></i>
+        </button>
+        {% endif %}
+
         {% if not is_auth %}
 
-        <aside class="sidebar">
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <aside class="sidebar" id="appSidebar">
             <div class="sidebar-header">
                 <i class="fas fa-calendar-alt"></i>
                 <h2>TimeTable Manager</h2>
+                <div class="close-sidebar-btn" id="closeSidebar">
+                    <i class="fas fa-times"></i>
+                </div>
             </div>
-
+            <!-- Sidebar content truncated for brevity, it is unchanged -->
             <ul class="sidebar-nav">
                 <li class="nav-item {% if request.endpoint == 'main.dashboard' %}active{% endif %}">
                     <a href="{{ url_for('main.dashboard') }}" class="nav-link">
@@ -41,6 +62,7 @@
                         <i class="fas fa-table"></i> Timetables
                     </a>
                 </li>
+
                 {% if current_user.is_authenticated and current_user.role == 'admin' %}
                 <li class="nav-item {% if request.endpoint == 'main.upload_csv' %}active{% endif %}">
                     <a href="{{ url_for('main.upload_csv') }}" class="nav-link">
@@ -108,10 +130,37 @@
         <main class="{{ 'main-area' if not is_auth else '' }}">
             {% if not is_auth %}
             <div class="top-header">
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
                 <div class="header-meta-group">
                     <div class="breadcrumb-mini">{{ request.endpoint.split('.')[-1].replace('_', ' ') }}</div>
                     <div class="user-controls">
                         {% if current_user.is_authenticated %}
+
+                        <!-- Mailbox Icon -->
+                        <a href="{{ url_for('main.mailbox') }}" class="icon-btn nav-mailbox-link" title="Mailbox"
+                            style="margin-right: 15px; position: relative;">
+                            <i class="fas fa-envelope-open-text nav-mailbox-icon"></i>
+                            {% if unread_count > 0 %}
+                            <span style="
+                                position: absolute;
+                                top: -5px;
+                                right: -8px;
+                                background: #ef4444;
+                                color: white;
+                                border-radius: 50%;
+                                width: 18px;
+                                height: 18px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                font-size: 0.7rem;
+                                font-weight: bold;
+                                border: 2px solid var(--bg-secondary);
+                            ">{{ unread_count }}</span>
+                            {% endif %}
+                        </a>
                         <div class="mode-switcher" id="themeToggle" title="Switch Interface Mode">
                             <div class="mode-track">
                                 <div class="mode-thumb">
@@ -146,7 +195,6 @@
                     </div>
                 </div>
             </div>
-            {% endif %}
 
             <div class="page-title-section">
                 <div class="page-title">
@@ -156,6 +204,7 @@
                     </h1>
                 </div>
             </div>
+            {% endif %}
 
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -172,133 +221,53 @@
             {% block content %}{% endblock %}
     </div>
     </main>
-    </div>
-
-    {% if not is_auth %}
+    <!-- Global Theme Toggle Script -->
     <script>
-        // Particle Network Effect
-        const canvas = document.getElementById('particleCanvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        let mouse = { x: null, y: null, radius: 150 };
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-
-        window.addEventListener('resize', resizeCanvas);
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.x;
-            mouse.y = e.y;
-        });
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 1;
-                this.speedX = (Math.random() - 0.5) * 0.8;
-                this.speedY = (Math.random() - 0.5) * 0.8;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-
-                if (this.x > canvas.width) this.x = 0;
-                if (this.x < 0) this.x = canvas.width;
-                if (this.y > canvas.height) this.y = 0;
-                if (this.y < 0) this.y = canvas.height;
-
-                // Mouse interaction
-                let dx = mouse.x - this.x;
-                let dy = mouse.y - this.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance < mouse.radius) {
-                    if (mouse.x > this.x && this.x > 10) this.x -= 2;
-                    if (mouse.x < this.x && this.x < canvas.width - 10) this.x += 2;
-                    if (mouse.y > this.y && this.y > 10) this.y -= 2;
-                    if (mouse.y < this.y && this.y < canvas.height - 10) this.y += 2;
-                }
-            }
-            draw() {
-                ctx.fillStyle = document.body.classList.contains('light-theme') ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.4)';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function init() {
-            particles = [];
-            let numberOfParticles = (canvas.width * canvas.height) / 9000;
-            for (let i = 0; i < numberOfParticles; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        function connect() {
-            let opacityValue = 1;
-            for (let a = 0; a < particles.length; a++) {
-                for (let b = a; b < particles.length; b++) {
-                    let dx = particles[a].x - particles[b].x;
-                    let dy = particles[a].y - particles[b].y;
-                    let distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < 150) {
-                        opacityValue = 1 - (distance / 150);
-                        const color = document.body.classList.contains('light-theme') ? `rgba(139, 92, 246, ${opacityValue * 0.15})` : `rgba(139, 92, 246, ${opacityValue * 0.25})`;
-                        ctx.strokeStyle = color;
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[a].x, particles[a].y);
-                        ctx.lineTo(particles[b].x, particles[b].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-            }
-            connect();
-            requestAnimationFrame(animate);
-        }
-
-        resizeCanvas();
-        init();
-        animate();
-
         // Theme Toggle Logic
-        const themeToggle = document.getElementById('themeToggle');
-        const body = document.body;
+        const themeToggle = document.getElementById('themeToggle'); // Sidebar toggle
+        const authThemeToggle = document.getElementById('authThemeToggle'); // Auth page toggle
+        const html = document.documentElement;
 
-        // Helper to update label
-        const updateModeLabel = (isLight) => {
+        // Helper to update label and icons
+        const updateThemeUI = (isLight) => {
             const label = document.querySelector('.mode-label');
             if (label) {
                 label.textContent = isLight ? 'Light Mode' : 'Dark Mode';
+            }
+
+            // Update Auth Toggle Icon
+            if (authThemeToggle) {
+                const icon = authThemeToggle.querySelector('i');
+                if (isLight) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
             }
         };
 
         // Load saved theme
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light') {
-            body.classList.add('light-theme');
-            updateModeLabel(true);
+            html.classList.add('light-theme');
+            updateThemeUI(true);
         }
 
+        const handleThemeToggle = () => {
+            html.classList.toggle('light-theme');
+            const isLight = html.classList.contains('light-theme');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            updateThemeUI(isLight);
+        };
+
         if (themeToggle) {
-            themeToggle.addEventListener('click', () => {
-                body.classList.toggle('light-theme');
-                const isLight = body.classList.contains('light-theme');
-                localStorage.setItem('theme', isLight ? 'light' : 'dark');
-                updateModeLabel(isLight);
-            });
+            themeToggle.addEventListener('click', handleThemeToggle);
+        }
+
+        if (authThemeToggle) {
+            authThemeToggle.addEventListener('click', handleThemeToggle);
         }
 
         // User Profile Dropdown Toggle
@@ -318,8 +287,33 @@
                 }
             });
         }
+
+        // Mobile Sidebar Logic
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const appSidebar = document.getElementById('appSidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const closeSidebarBtn = document.getElementById('closeSidebar');
+
+        const toggleSidebar = () => {
+            appSidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+            document.body.style.overflow = appSidebar.classList.contains('active') ? 'hidden' : '';
+        };
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', toggleSidebar);
+        }
+
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', toggleSidebar);
+        }
+
+        if (closeSidebarBtn) {
+            closeSidebarBtn.addEventListener('click', toggleSidebar);
+        }
     </script>
-    {% endif %}
+    <script src="{{ url_for('static', filename='js/parallax.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/tilt-3d.js') }}"></script>
 </body>
 
 </html>

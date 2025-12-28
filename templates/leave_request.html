@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Request Leave{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper glass-animation-mode"
+    style="position: relative; height: auto; min-height: 80vh; padding-top: 50px;">
+    <div class="auth-card" style="max-width: 600px;">
+        <div class="auth-header">
+            <div class="auth-brand">
+                <i class="fas fa-calendar-minus"></i>
+                <span class="auth-brand-text">Request Leave</span>
+            </div>
+            <h2>Leave Application</h2>
+            <p>Select a date to apply for leave. We will handle the substitutions automatically.</p>
+        </div>
+
+        <form action="{{ url_for('main.request_leave') }}" method="POST">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="auth-alert-error"
+                style="{% if category == 'success' %}border-color: #10b981; color: #10b981; background: rgba(16,185,129,0.1);{% endif %}">
+                <i
+                    class="fas {% if category == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+            <div class="form-group">
+                <label class="form-label">Date of Leave</label>
+                <div class="input-icon-wrapper">
+                    <i class="fas fa-calendar-day input-icon"></i>
+                    <input type="date" name="date" class="form-control form-control-has-icon" required
+                        min="{{ today }}">
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 25px;">
+                <label class="form-label">Reason (Optional)</label>
+                <div class="input-icon-wrapper">
+                    <i class="fas fa-comment-dots input-icon"></i>
+                    <input type="text" name="reason" class="form-control form-control-has-icon"
+                        placeholder="e.g., Personal reason, Sick leave">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary auth-submit-btn">
+                Submit Request
+            </button>
+        </form>
+
+        <div class="auth-footer" style="text-align: center; margin-top: 30px;">
+            <a href="{{ url_for('main.dashboard') }}" class="btn btn-light auth-create-account-btn"
+                style="width: auto; padding: 0 20px; display: inline-flex;">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
