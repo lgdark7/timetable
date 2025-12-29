@@ -5,7 +5,20 @@ from flask_login import LoginManager
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'dev_key_for_project'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///timetable.db'
+
+import sys
+import os
+
+if getattr(sys, 'frozen', False):
+    
+    data_dir = os.path.join(os.environ['APPDATA'], 'TimetableManager')
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
+    db_path = os.path.join(data_dir, 'timetable.db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+else:
+    # Running in development mode
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///timetable.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
