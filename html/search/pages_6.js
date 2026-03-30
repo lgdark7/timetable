@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['6_201_20application_20entry_20point_20app_20py_0',['6.1 APPLICATION ENTRY POINT (app.py)',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md51',1,'']]],
+  ['6_201_20architectural_20pattern_1',['6.1 Architectural Pattern',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md219',1,'']]],
+  ['6_202_201_20authentication_20and_20registration_2',['6.2.1 AUTHENTICATION AND REGISTRATION',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md56',1,'']]],
+  ['6_202_202_20data_20administration_20crud_3',['6.2.2 DATA ADMINISTRATION (CRUD)',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md58',1,'']]],
+  ['6_202_203_20the_20scheduling_20controls_4',['6.2.3 THE SCHEDULING CONTROLS',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md60',1,'']]],
+  ['6_202_204_20timetable_20display_20logic_5',['6.2.4 TIMETABLE DISPLAY LOGIC',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md62',1,'']]],
+  ['6_202_205_20leave_20and_20substitution_20controller_6',['6.2.5 LEAVE AND SUBSTITUTION CONTROLLER',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md64',1,'']]],
+  ['6_202_206_20internal_20mailbox_20logic_7',['6.2.6 INTERNAL MAILBOX LOGIC',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md66',1,'']]],
+  ['6_202_20architecture_20diagram_8',['6.2 Architecture Diagram',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md220',1,'']]],
+  ['6_202_20route_20definitions_20and_20controllers_20routes_20py_9',['6.2 ROUTE DEFINITIONS AND CONTROLLERS (routes.py)',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md54',1,'']]],
+  ['6_203_20file_20structure_20analysis_10',['6.3 File Structure Analysis',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md221',1,'']]],
+  ['6_203_20utility_20scripts_20checkers_20and_20migrations_11',['6.3 UTILITY SCRIPTS (Checkers and Migrations)',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md67',1,'']]],
+  ['6_204_20component_20interactions_12',['6.4 Component Interactions',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md222',1,'']]],
+  ['6_20constraint_20summary_13',['10.6 Constraint Summary',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md280',1,'']]],
+  ['6_20crud_20routes_20summary_14',['9.6 CRUD Routes Summary',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md259',1,'']]],
+  ['6_20csv_20upload_15',['20.6 CSV Upload',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md367',1,'']]],
+  ['6_20data_20model_3a_20teacher_16',['7.6 Data Model: Teacher',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md232',1,'']]],
+  ['6_20database_20initialization_17',['8.3.6 Database Initialization',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md250',1,'']]],
+  ['6_20internal_20mailbox_20logic_18',['6.2.6 INTERNAL MAILBOX LOGIC',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md66',1,'']]],
+  ['6_20months_20_3a_20user_20experience_19',['Phase 2 (6 months): User Experience',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md461',1,'']]],
+  ['6_20system_20architecture_20',['6. System Architecture',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md218',1,'']]],
+  ['6_20table_3a_20timetable_5fentry_20the_20result_20table_21',['4.2.6 TABLE: timetable_entry (The Result Table)',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md32',1,'']]],
+  ['6_3a_20activity_20class_20assignment_22',['Step 6: ACTIVITY CLASS ASSIGNMENT',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md275',1,'']]],
+  ['6_3a_20first_20admin_20login_23',['STEP 6: First Admin Login',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md335',1,'']]]
+];

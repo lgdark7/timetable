@@ -1,0 +1,40 @@
+\doxysection{models.\+Department Class Reference}
+\hypertarget{classmodels_1_1_department}{}\label{classmodels_1_1_department}\index{models.Department@{models.Department}}
+Inheritance diagram for models.\+Department:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classmodels_1_1_department}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classmodels_1_1_department_a67f3fa0144013b180cffd1db24cc3f90}\label{classmodels_1_1_department_a67f3fa0144013b180cffd1db24cc3f90} 
+{\bfseries id} = db.\+Column(db.\+Integer, primary\+\_\+key=True)
+\item 
+\Hypertarget{classmodels_1_1_department_af6bb81b243ef2094ea20bd3abcc97152}\label{classmodels_1_1_department_af6bb81b243ef2094ea20bd3abcc97152} 
+{\bfseries name} = db.\+Column(db.\+String(100), nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_department_abb80cf7d3d914aee8cafa6ebff96ffc7}\label{classmodels_1_1_department_abb80cf7d3d914aee8cafa6ebff96ffc7} 
+{\bfseries code} = db.\+Column(db.\+String(10), nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_department_a43c0d6773b2395543a41c92d49ccbf90}\label{classmodels_1_1_department_a43c0d6773b2395543a41c92d49ccbf90} 
+{\bfseries section} = db.\+Column(db.\+String(10), nullable=True, default=\textquotesingle{}A\textquotesingle{})
+\item 
+\Hypertarget{classmodels_1_1_department_a23a802a2278f6c866f63fe86f2b74f89}\label{classmodels_1_1_department_a23a802a2278f6c866f63fe86f2b74f89} 
+{\bfseries semester} = db.\+Column(db.\+String(20), nullable=True, default=\textquotesingle{}Semester 1\textquotesingle{})
+\item 
+\Hypertarget{classmodels_1_1_department_a6a85d613d6cbef4136ba24f02d46427f}\label{classmodels_1_1_department_a6a85d613d6cbef4136ba24f02d46427f} 
+{\bfseries courses} = db.\+relationship(\textquotesingle{}\doxymbox{\hyperlink{classmodels_1_1_course}{Course}}\textquotesingle{}, backref=\textquotesingle{}department\textquotesingle{}, lazy=True, cascade="{}all, delete-\/orphan"{})
+\item 
+\Hypertarget{classmodels_1_1_department_a85ad4fe8430454af150b03fd58603a9c}\label{classmodels_1_1_department_a85ad4fe8430454af150b03fd58603a9c} 
+{\bfseries teachers} = db.\+relationship(\textquotesingle{}\doxymbox{\hyperlink{classmodels_1_1_teacher}{Teacher}}\textquotesingle{}, backref=\textquotesingle{}department\textquotesingle{}, lazy=True, cascade="{}all, delete-\/orphan"{})
+\item 
+\Hypertarget{classmodels_1_1_department_a28805c43636b5fdd491ac7c921c7c195}\label{classmodels_1_1_department_a28805c43636b5fdd491ac7c921c7c195} 
+{\bfseries timetable\+\_\+entries} = db.\+relationship(\textquotesingle{}\doxymbox{\hyperlink{classmodels_1_1_timetable_entry}{Timetable\+Entry}}\textquotesingle{}, backref=\textquotesingle{}department\textquotesingle{}, lazy=True, cascade="{}all, delete-\/orphan"{})
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+models.\+py\end{DoxyCompactItemize}

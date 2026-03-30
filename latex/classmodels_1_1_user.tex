@@ -1,0 +1,43 @@
+\doxysection{models.\+User Class Reference}
+\hypertarget{classmodels_1_1_user}{}\label{classmodels_1_1_user}\index{models.User@{models.User}}
+Inheritance diagram for models.\+User:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classmodels_1_1_user}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classmodels_1_1_user_a9a9aa1a53e9b8722a5f98595ceb52ae7}\label{classmodels_1_1_user_a9a9aa1a53e9b8722a5f98595ceb52ae7} 
+{\bfseries id} = db.\+Column(db.\+Integer, primary\+\_\+key=True)
+\item 
+\Hypertarget{classmodels_1_1_user_af91e045e43995203fdf1d5c8367bd612}\label{classmodels_1_1_user_af91e045e43995203fdf1d5c8367bd612} 
+{\bfseries username} = db.\+Column(db.\+String(80), unique=True, nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_user_a8adb818833979fd1f6a642a8ef50bce7}\label{classmodels_1_1_user_a8adb818833979fd1f6a642a8ef50bce7} 
+{\bfseries password} = db.\+Column(db.\+String(120), nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_user_aaa88e21675421b6cebbef6eb5597046b}\label{classmodels_1_1_user_aaa88e21675421b6cebbef6eb5597046b} 
+{\bfseries email} = db.\+Column(db.\+String(120), nullable=True)
+\item 
+\Hypertarget{classmodels_1_1_user_a88f3d4745f3ad2acaaf65a459bb647db}\label{classmodels_1_1_user_a88f3d4745f3ad2acaaf65a459bb647db} 
+{\bfseries role} = db.\+Column(db.\+String(20), nullable=False, default=\textquotesingle{}student\textquotesingle{})
+\item 
+\Hypertarget{classmodels_1_1_user_a784e137ac23890f3922503c003bcad60}\label{classmodels_1_1_user_a784e137ac23890f3922503c003bcad60} 
+{\bfseries dept\+\_\+id} = db.\+Column(db.\+Integer, db.\+Foreign\+Key(\textquotesingle{}department.\+id\textquotesingle{}), nullable=True)
+\item 
+\Hypertarget{classmodels_1_1_user_aa0ee731504eede072e790f777532f675}\label{classmodels_1_1_user_aa0ee731504eede072e790f777532f675} 
+{\bfseries teacher\+\_\+id} = db.\+Column(db.\+Integer, db.\+Foreign\+Key(\textquotesingle{}teacher.\+id\textquotesingle{}), nullable=True)
+\item 
+\Hypertarget{classmodels_1_1_user_a959629b886d696b35d18aae9d78a709c}\label{classmodels_1_1_user_a959629b886d696b35d18aae9d78a709c} 
+{\bfseries department} = db.\+relationship(\textquotesingle{}\doxymbox{\hyperlink{classmodels_1_1_department}{Department}}\textquotesingle{}, backref=\textquotesingle{}users\textquotesingle{}, lazy=True)
+\item 
+\Hypertarget{classmodels_1_1_user_a5a3e021c6dea1ba68a85dc55ed4eea3f}\label{classmodels_1_1_user_a5a3e021c6dea1ba68a85dc55ed4eea3f} 
+{\bfseries teacher\+\_\+profile} = db.\+relationship(\textquotesingle{}\doxymbox{\hyperlink{classmodels_1_1_teacher}{Teacher}}\textquotesingle{}, backref=\textquotesingle{}user\+\_\+account\textquotesingle{}, uselist=False, lazy=True)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+models.\+py\end{DoxyCompactItemize}

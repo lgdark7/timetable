@@ -1,0 +1,40 @@
+\doxysection{models.\+Course Class Reference}
+\hypertarget{classmodels_1_1_course}{}\label{classmodels_1_1_course}\index{models.Course@{models.Course}}
+Inheritance diagram for models.\+Course:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classmodels_1_1_course}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classmodels_1_1_course_a09d4f9b04972aa51669860c54100918c}\label{classmodels_1_1_course_a09d4f9b04972aa51669860c54100918c} 
+{\bfseries id} = db.\+Column(db.\+Integer, primary\+\_\+key=True)
+\item 
+\Hypertarget{classmodels_1_1_course_a4b8a4fdabc8a2f86a43656880362f660}\label{classmodels_1_1_course_a4b8a4fdabc8a2f86a43656880362f660} 
+{\bfseries name} = db.\+Column(db.\+String(100), nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_course_ae56bfaee26399b3cc5c13e36f163a62d}\label{classmodels_1_1_course_ae56bfaee26399b3cc5c13e36f163a62d} 
+{\bfseries code} = db.\+Column(db.\+String(20), nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_course_af6262cd5ad7521960033a47a4d0b4809}\label{classmodels_1_1_course_af6262cd5ad7521960033a47a4d0b4809} 
+{\bfseries dept\+\_\+id} = db.\+Column(db.\+Integer, db.\+Foreign\+Key(\textquotesingle{}department.\+id\textquotesingle{}), nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_course_ad3b0bdd28546c8bcb34fc402551ced57}\label{classmodels_1_1_course_ad3b0bdd28546c8bcb34fc402551ced57} 
+{\bfseries type} = db.\+Column(db.\+String(20), nullable=False, default=\textquotesingle{}Theory\textquotesingle{})
+\item 
+\Hypertarget{classmodels_1_1_course_ad96d78fdef4027c1acfee3a4619f7be0}\label{classmodels_1_1_course_ad96d78fdef4027c1acfee3a4619f7be0} 
+{\bfseries hours\+\_\+per\+\_\+week} = db.\+Column(db.\+Integer, nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_course_a401bdff41570d72647a0ea507cf1f2ab}\label{classmodels_1_1_course_a401bdff41570d72647a0ea507cf1f2ab} 
+{\bfseries allocations} = db.\+relationship(\textquotesingle{}\doxymbox{\hyperlink{classmodels_1_1_allocation}{Allocation}}\textquotesingle{}, backref=\textquotesingle{}course\textquotesingle{}, lazy=True, cascade="{}all, delete-\/orphan"{})
+\item 
+\Hypertarget{classmodels_1_1_course_aa1e1fe8617531004a889acff00329a80}\label{classmodels_1_1_course_aa1e1fe8617531004a889acff00329a80} 
+{\bfseries timetable\+\_\+entries} = db.\+relationship(\textquotesingle{}\doxymbox{\hyperlink{classmodels_1_1_timetable_entry}{Timetable\+Entry}}\textquotesingle{}, backref=\textquotesingle{}course\textquotesingle{}, lazy=True, cascade="{}all, delete-\/orphan"{})
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+models.\+py\end{DoxyCompactItemize}

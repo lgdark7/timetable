@@ -1,0 +1,31 @@
+\doxysection{models.\+Classroom Class Reference}
+\hypertarget{classmodels_1_1_classroom}{}\label{classmodels_1_1_classroom}\index{models.Classroom@{models.Classroom}}
+Inheritance diagram for models.\+Classroom:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classmodels_1_1_classroom}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classmodels_1_1_classroom_a434483615a7171d4ad37ff115eea1b93}\label{classmodels_1_1_classroom_a434483615a7171d4ad37ff115eea1b93} 
+{\bfseries id} = db.\+Column(db.\+Integer, primary\+\_\+key=True)
+\item 
+\Hypertarget{classmodels_1_1_classroom_ae51b8c5a67a681d80701db263c56f219}\label{classmodels_1_1_classroom_ae51b8c5a67a681d80701db263c56f219} 
+{\bfseries name} = db.\+Column(db.\+String(50), unique=True, nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_classroom_a8ba507a4533a2a663966629c81f3cf08}\label{classmodels_1_1_classroom_a8ba507a4533a2a663966629c81f3cf08} 
+{\bfseries capacity} = db.\+Column(db.\+Integer, nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_classroom_a95f76d3cfe5279faa757199d1e4161bb}\label{classmodels_1_1_classroom_a95f76d3cfe5279faa757199d1e4161bb} 
+{\bfseries type} = db.\+Column(db.\+String(20), nullable=False, default=\textquotesingle{}\doxymbox{\hyperlink{classmodels_1_1_classroom}{Classroom}}\textquotesingle{})
+\item 
+\Hypertarget{classmodels_1_1_classroom_a2f617e8b6315ed0d9090c56cab8f7d66}\label{classmodels_1_1_classroom_a2f617e8b6315ed0d9090c56cab8f7d66} 
+{\bfseries timetable\+\_\+entries} = db.\+relationship(\textquotesingle{}\doxymbox{\hyperlink{classmodels_1_1_timetable_entry}{Timetable\+Entry}}\textquotesingle{}, backref=\textquotesingle{}classroom\textquotesingle{}, lazy=True, cascade="{}all, delete-\/orphan"{})
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+models.\+py\end{DoxyCompactItemize}

@@ -1,0 +1,46 @@
+\doxysection{models.\+Message Class Reference}
+\hypertarget{classmodels_1_1_message}{}\label{classmodels_1_1_message}\index{models.Message@{models.Message}}
+Inheritance diagram for models.\+Message:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classmodels_1_1_message}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classmodels_1_1_message_a0402c306f4ec2826d18297ceb2b65082}\label{classmodels_1_1_message_a0402c306f4ec2826d18297ceb2b65082} 
+{\bfseries id} = db.\+Column(db.\+Integer, primary\+\_\+key=True)
+\item 
+\Hypertarget{classmodels_1_1_message_a9127560f14d5430a8287b923a2407286}\label{classmodels_1_1_message_a9127560f14d5430a8287b923a2407286} 
+{\bfseries recipient\+\_\+id} = db.\+Column(db.\+Integer, db.\+Foreign\+Key(\textquotesingle{}user.\+id\textquotesingle{}), nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_message_a8664cd0963cef072a8dd25bd7814cd3c}\label{classmodels_1_1_message_a8664cd0963cef072a8dd25bd7814cd3c} 
+{\bfseries sender\+\_\+id} = db.\+Column(db.\+Integer, db.\+Foreign\+Key(\textquotesingle{}user.\+id\textquotesingle{}), nullable=True)
+\item 
+\Hypertarget{classmodels_1_1_message_aa93e5d89b6532a735c8de9a9c8f23d85}\label{classmodels_1_1_message_aa93e5d89b6532a735c8de9a9c8f23d85} 
+{\bfseries subject} = db.\+Column(db.\+String(150), nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_message_a4c0900c9f3fd3ca7ab60aeea357da54d}\label{classmodels_1_1_message_a4c0900c9f3fd3ca7ab60aeea357da54d} 
+{\bfseries body} = db.\+Column(db.\+Text, nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_message_a5daeb82b040d18a5a9ad24cfa2d78c72}\label{classmodels_1_1_message_a5daeb82b040d18a5a9ad24cfa2d78c72} 
+{\bfseries timestamp} = db.\+Column(db.\+Date\+Time, default=datetime.\+utcnow)
+\item 
+\Hypertarget{classmodels_1_1_message_a0cf5d4a4dbc0031f94efafbdf63e4c35}\label{classmodels_1_1_message_a0cf5d4a4dbc0031f94efafbdf63e4c35} 
+{\bfseries is\+\_\+read} = db.\+Column(db.\+Boolean, default=False)
+\item 
+\Hypertarget{classmodels_1_1_message_a06619457cd0e1ea066191f3373062eaa}\label{classmodels_1_1_message_a06619457cd0e1ea066191f3373062eaa} 
+{\bfseries category} = db.\+Column(db.\+String(50), default=\textquotesingle{}System\textquotesingle{})
+\item 
+\Hypertarget{classmodels_1_1_message_a2e135e9fbd0bb97846190b74efa273fa}\label{classmodels_1_1_message_a2e135e9fbd0bb97846190b74efa273fa} 
+{\bfseries recipient} = db.\+relationship(\textquotesingle{}\doxymbox{\hyperlink{classmodels_1_1_user}{User}}\textquotesingle{}, foreign\+\_\+keys=\+[recipient\+\_\+id]\+, backref=\textquotesingle{}messages\+\_\+received\textquotesingle{})
+\item 
+\Hypertarget{classmodels_1_1_message_abef1f6d16b9a1c548909841fc8056878}\label{classmodels_1_1_message_abef1f6d16b9a1c548909841fc8056878} 
+{\bfseries sender} = db.\+relationship(\textquotesingle{}\doxymbox{\hyperlink{classmodels_1_1_user}{User}}\textquotesingle{}, foreign\+\_\+keys=\+[sender\+\_\+id]\+, backref=\textquotesingle{}messages\+\_\+sent\textquotesingle{})
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+models.\+py\end{DoxyCompactItemize}

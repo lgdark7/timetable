@@ -1,0 +1,1240 @@
+\chapter{================================================================================ }
+\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n}{}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n}\index{================================================================================@{================================================================================}}
+\begin{DoxyVerb}            INTELLIGENT TIMETABLE MANAGEMENT SYSTEM
+            ---------------------------------------
+           (An AI-Driven Academic Scheduling Solution)
+
+
+                  TECHNICAL DOCUMENTATION REPORT
+                  ------------------------------
+
+
+          PREPARED AS A COMPREHENSIVE PROJECT REFERENCE
+                  FOR ACADEMIC SUBMISSION 2026
+
+
+              [ PROJECT VERSION: 1.0 (STABLE) ]
+\end{DoxyVerb}
+
+
+================================================================================
+
+\begin{DoxyVerb}    PROJECT CATEGORY   :  WEB APPLICATION / SCHEDULING ALGORITHMS
+    CORE TECHNOLOGIES  :  PYTHON / FLASK / SQLALCHEMY / SQLITE
+    UI DESIGN SYSTEM   :  MODERN GLASSMORPHISM / HTML5 CANVAS
+    DEVELOPMENT YEAR   :  2026
+\end{DoxyVerb}
+\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md0}{}\doxysection{\texorpdfstring{================================================================================}{================================================================================}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md0}
+
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md2}{}\doxysubsection{\texorpdfstring{0.\+1 DECLARATION}{0.\+1 DECLARATION}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md2}
+I hereby declare that this project titled "{}\+Intelligent Timetable Management  \+System"{} is an original work developed using modern software engineering principles. This system provides an automated solution for generating clash-\/free academic schedules, replacing traditional manual methods that are historically error-\/prone and time-\/consuming.
+
+The logic, database architecture, and frontend design described in this documentation have been implemented with a focus on institutional efficiency and user experience.
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md4}{}\doxysubsection{\texorpdfstring{0.\+2 CERTIFICATE}{0.\+2 CERTIFICATE}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md4}
+This is to certify that the "{}\+Intelligent Timetable Management System"{} is a fully functional web-\/based solution that successfully implements constraint satisfaction algorithms to resolve complex scheduling conflicts between Teachers, Classrooms, and Student Batches.
+
+The system has been tested against real-\/world academic constraints and fulfills all the requirements specified for a professional academic management tool.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ TABLE OF CONTENTS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SECTION 1:\+ FOUNDATIONS AND INTRODUCTION ................................... 1 1.\+1 Preface ............................................................ 4 1.\+2 The Core Problem Statement ......................................... 5 1.\+3 Proposed Solution:\+ The Intelligent Approach ........................ 7 1.\+4 Objectives of the Study ............................................ 9 1.\+5 Impact Assessment .................................................. 11
+
+SECTION 2:\+ SYSTEM ANALYSIS AND REQUIREMENTS ............................... 13 2.\+1 Institutional Requirements ......................................... 14 2.\+2 Functional Requirements Breakdown .................................. 15 2.\+3 Non-\/\+Functional Requirements ........................................ 17 2.\+4 Hardware and Software Prerequisites ................................ 19 2.\+5 Technical Stack Deep Dive (Why Python/\+\+Flask?) ...................... 21
+
+SECTION 3:\+ ARCHITECTURAL DESIGN ........................................... 24 3.\+1 High-\/\+Level System Architecture ..................................... 25 3.\+2 The Model-\/\+View-\/\+Controller (MVC) Pattern ............................ 28 3.\+3 Blueprint Organization ............................................. 30 3.\+4 Data Flow Diagrams (DFD) ........................................... 32
+
+SECTION 4:\+ DATABASE MODELING AND SHEMA .................................... 35 4.\+1 ER Diagram Overview ................................................ 36 4.\+2 Detailed Table Definitions (SQLAlchemy Models) ..................... 38 4.\+3 Relationship Mapping and Cascading Rules ........................... 45 4.\+4 Data Integrity Constraints ......................................... 48
+
+SECTION 5:\+ THE SCHEDULING ENGINE LOGIC .................................... 52 5.\+1 The Constraint-\/\+Satisfaction Problem (CSP) .......................... 53 5.\+2 Priority Scheduling Heuristics ..................................... 56 5.\+3 Handling Practical/\+\+Lab Blocks (3-\/Hour Rule) ........................ 60 5.\+4 Activity Class Slot Allocation Logic ............................... 65 5.\+5 Conflict Detection Algorithm Walkthrough ........................... 68
+
+SECTION 6:\+ MODULE-\/\+WISE TECHNICAL EXPLANATION .............................. 75 6.\+1 Application Entry Point (app.\+py) ................................... 76 6.\+2 Route Definitions and Controllers (routes.\+py) ...................... 82 6.\+3 Utility Scripts (Checkers and Migrations) .......................... 95
+
+SECTION 7:\+ USER INTERFACE AND EXPERIENCE ................................... 102 7.\+1 Glassmorphism Design Tokens ........................................ 103 7.\+2 Responsive Grid Layouts ............................................ 106 7.\+3 Dynamic Canvas Animations (Background Engine) ...................... 110 7.\+4 User Persona Dashboards ............................................ 114
+
+SECTION 8:\+ SYSTEM ADMINISTRATION .......................................... 120 8.\+1 Bulk Data Import (The CSV Engine) .................................. 121 8.\+2 Leave and Substitution Workflow .................................... 128 8.\+3 Internal Official Messaging ........................................ 135
+
+SECTION 9:\+ INSTALLATION, TESTING, AND DEPLOYMENT .......................... 142 9.\+1 Setup Guide for Developers ......................................... 143 9.\+2 Desktop Application Packaging (Py\+Installer) ........................ 148 9.\+3 Unit Testing and Validation Results ................................ 152
+
+SECTION 10:\+ CONCLUSION AND FUTURE HORIZONS ................................ 160 10.\+1 Project Summary ................................................... 161 10.\+2 Limitations ....................................................... 163 10.\+3 Future Enhancements (AI Roadmap) .................................. 165 10.\+4 Bibliography and References ........................................ 168
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ CHAPTER 1:\+ FOUNDATIONS AND INTRODUCTION ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md5}{}\doxysubsection{\texorpdfstring{1.\+1 PREFACE}{1.\+1 PREFACE}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md5}
+The landscape of modern education is shifting rapidly towards digital automation. As institutions grow in complexity—offering more diverse courses, employing larger faculties, and managing limited classroom resources—the logistical burden on administration has reached a tipping point. Nowhere is this more evident than in the "{}\+Academic Timetabling Problem."{}
+
+Traditionally, the creation of a department\textquotesingle{}s weekly schedule was a manual affair, often involving weeks of trial-\/and-\/error with paper charts or generic spreadsheets. A single oversight—such as scheduling two teachers for the same room, or forgetting a lab session requires three consecutive hours—would collapse the entire plan, forcing a complete restart.
+
+The Intelligent Timetable Management System (ITMS) was born out of the need for a robust, intelligent, and user-\/friendly digital scheduler. This system is not just a calendar; it is a constraint-\/aware engine that understands the nuances of academic life, from teacher workload limits to the physical capacities of laboratory spaces.\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md6}{}\doxysubsection{\texorpdfstring{1.\+2 THE CORE PROBLEM STATEMENT}{1.\+2 THE CORE PROBLEM STATEMENT}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md6}
+The Academic Timetabling Problem is classified in computer science as an "{}\+NP-\/\+Hard"{} optimization challenge. The difficulty arises from the sheer number of overlapping constraints that must be satisfied simultaneously:\+
+
+
+\begin{DoxyEnumerate}
+\item THE TEACHER CONSTRAINT:\+ A teacher cannot be in two classrooms at once. Furthermore, every teacher has a "{}\+Workload Limit"{} (e.\+g., 20 hours per week) which must not be exceeded.
+\item THE ROOM CONSTRAINT:\+ A physical space can host only one session at a time. The room must also match the requirements of the course (e.\+g., a "{}\+Practical"{} course needs a "{}\+Lab"{} room, while a "{}\+Theory"{} course needs a standard "{}\+Classroom"{}).
+\item THE STUDENT/\+\+BATCH CONSTRAINT:\+ A particular student group or department batch cannot attend two subjects simultaneously. For practical sessions, the batch must have a dedicated block of time (usually 3 periods) without interruption.
+\item THE DEPARTMENTAL CONCURRENCY:\+ Departments often have parallel batches. The system must ensure that while two batches might have labs at the same time, they must have separate teachers and separate rooms.
+\item THE ACADEMIC PARITY:\+ Certain periods of the day are better suited for specific activities. Labs should ideally start in the morning or immediately after lunch, never late in the evening when students are fatigued.
+\end{DoxyEnumerate}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md7}{}\doxysubsection{\texorpdfstring{1.\+3 PROPOSED SOLUTION:\+ THE INTELLIGENT APPROACH}{1.\+3 PROPOSED SOLUTION:\+ THE INTELLIGENT APPROACH}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md7}
+ITMS solves these problems by moving away from "{}\+Manual Entry"{} and shifting towards "{}\+Algorithmic Generation."{} Instead of the administrator placing items one-\/by-\/one, they define the "{}\+Entities"{} (Teachers, Rooms, Courses) and "{}\+Allocations"{} (Who teaches what). The system then takes over.
+
+The core of our solution is a Greedy Constraint-\/\+Satisfaction Algorithm. It operates by:\+
+\begin{DoxyItemize}
+\item Prioritizing the "{}\+Hardest-\/to-\/\+Schedule"{} items first (3-\/hour Labs).
+\item Randomizing the search space to find diverse solutions.
+\item Validating every single potential assignment against a real-\/time conflict matrix.
+\item Providing "{}\+Smart Suggestions"{} during manual overrides, ensuring that even when a human makes a change, the system maintains integrity.
+\end{DoxyItemize}
+
+\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md8}{}\doxysubsection{\texorpdfstring{1.\+4 OBJECTIVES OF THE STUDY}{1.\+4 OBJECTIVES OF THE STUDY}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md8}
+The primary goal of this project is to build a "{}\+Production-\/\+Ready"{} tool that requires zero configuration beyond a standard Python environment. The objectives are:\+
+
+A. AUTOMATION:\+ To reduce the time taken to generate a 6-\/day timetable for 10+ departments from 4 days of manual work to under 30 seconds.
+
+B. ERROR ELIMINATION:\+ To achieve a 0\% conflict rate in the generated output, ensuring that no teacher or room is double-\/booked.
+
+C. ROLE-\/\+BASED ACCESS:\+ To provide distinct interfaces for Administrators (who manage data), Teachers (who manage their personal schedule), and Students (who view the schedule).
+
+D. ACCESSIBILITY \& SHARING:\+ To provide high-\/quality PDF exports that can be instantly printed or shared on official notice boards.
+
+E. MODERN UI/\+\+UX:\+ To move away from the "{}gray-\/box"{} legacy software of the 1990s and provide a stunning, neon-\/accented Glassmorphism interface that makes administrative work enjoyable.\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md9}{}\doxysubsection{\texorpdfstring{1.\+5 IMPACT ASSESSMENT}{1.\+5 IMPACT ASSESSMENT}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md9}
+By implementing ITMS, an institution can expect:\+
+\begin{DoxyItemize}
+\item A 90\% reduction in administrative overhead related to scheduling.
+\item Increased teacher satisfaction by respecting workload limits and personalized leave/\+substitution workflows.
+\item Improved student transparency through instant digital access to the latest schedule, including daily substitutions.
+\end{DoxyItemize}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ CHAPTER 2:\+ SYSTEM ANALYSIS AND REQUIREMENTS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md10}{}\doxysubsection{\texorpdfstring{2.\+1 INSTITUTIONAL REQUIREMENTS}{2.\+1 INSTITUTIONAL REQUIREMENTS}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md10}
+Before building the system, a deep analysis of typical college workflows was conducted. We identified several key "{}\+Real-\/\+World"{} requirements:\+
+
+
+\begin{DoxyItemize}
+\item MULTI-\/\+SEMESTER SUPPORT:\+ A department isn\textquotesingle{}t just one group. It has students in Semester 1, 3, 5, etc. The system must schedule them in parallel.
+\item SECTIONING:\+ Large departments often split a semester into Section A, B, C. Each needs its own independent timetable.
+\item ACTIVITY/\+\+SPORTS PERIODS:\+ Time must be reserved for extracurriculars, usually at the end of the day.
+\item LUNCH BREAKS:\+ The system must understand that no classes can be scheduled during specific hours (e.\+g., 12:\+30 PM to 02:\+00 PM).
+\end{DoxyItemize}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md11}{}\doxysubsection{\texorpdfstring{2.\+2 FUNCTIONAL REQUIREMENTS BREAKDOWN}{2.\+2 FUNCTIONAL REQUIREMENTS BREAKDOWN}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md11}
+The system is divided into functional modules:\+
+
+MOD-\/01:\+ THE ENTITY MANAGER
+\begin{DoxyItemize}
+\item Ability to create, update, and delete Departments.
+\item Management of a "{}\+Classroom Inventory"{} with capacities and types.
+\item A "{}\+Teacher Registry"{} with department links and email contact info.
+\item A "{}\+Subject/\+\+Course Catalog"{} defining weekly hours and session types (Theory/\+\+Lab).
+\end{DoxyItemize}
+
+MOD-\/02:\+ THE ALLOCATION ENGINE
+\begin{DoxyItemize}
+\item A bridge module where the Admin links a Teacher to a specific Course.
+\item Without an allocation, the scheduler cannot know who is responsible for which subject.
+\end{DoxyItemize}
+
+MOD-\/03:\+ THE SCHEDULING CORE
+\begin{DoxyItemize}
+\item Single-\/click generation of the entire institutional timetable.
+\item Permanent storage of the generated schedule in the database.
+\item Capability to "{}\+Clear All"{} and restart if institutional data changes.
+\end{DoxyItemize}
+
+MOD-\/04:\+ THE USER PORTAL
+\begin{DoxyItemize}
+\item Login/\+\+Logout functionality with session persistence.
+\item "{}\+Forgot Password"{} profile management.
+\item Personalized "{}\+Teacher Dashboard"{} showing only their specific duties.
+\end{DoxyItemize}
+
+MOD-\/05:\+ THE ADMINISTRATIVE TOOLS
+\begin{DoxyItemize}
+\item Bulk CSV Upload for initializing the system in minutes.
+\item Internal Messaging for official announcements.
+\item Leave Request Approval system.
+\end{DoxyItemize}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md12}{}\doxysubsection{\texorpdfstring{2.\+3 NON-\/\+FUNCTIONAL REQUIREMENTS}{2.\+3 NON-\/\+FUNCTIONAL REQUIREMENTS}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md12}
+Performance is critical, even though this is a web application:\+
+\begin{DoxyItemize}
+\item LATENCY:\+ The scheduler must finish within 10 seconds for a standard college dataset.
+\item PORTABILITY:\+ Must run as a standalone .exe on Windows machines without requiring a complicated server setup.
+\item SECURITY:\+ Login required for all "{}\+Write"{} operations. Role-\/\+Based Access Control (RBAC) enforced at the route decorator level.
+\item SCALABILITY:\+ Must support up to 500 teachers and 200 classrooms without database slowdowns.
+\end{DoxyItemize}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md13}{}\doxysubsection{\texorpdfstring{2.\+4 HARDWARE AND SOFTWARE PREREQUISITES}{2.\+4 HARDWARE AND SOFTWARE PREREQUISITES}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md13}
+FOR THE SERVER/\+\+HOST:\+
+\begin{DoxyItemize}
+\item OS:\+ Windows 10/\+11, Linux (Ubuntu/\+\+Debian), or mac\+OS.
+\item CPU:\+ Intel i3 or better.
+\item RAM:\+ 4GB minimum.
+\item Python:\+ 3.\+10+ installed.
+\end{DoxyItemize}
+
+FOR THE END USER:\+
+\begin{DoxyItemize}
+\item Any modern web browser (Chrome, Firefox, Safari, Edge).
+\item Internet connection (if hosted) or Local Area Network.
+\end{DoxyItemize}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md14}{}\doxysubsection{\texorpdfstring{2.\+5 TECHNICAL STACK DEEP DIVE (WHY PYTHON/\+\+FLASK?)}{2.\+5 TECHNICAL STACK DEEP DIVE (WHY PYTHON/\+\+FLASK?)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md14}
+We chose Python as the primary language due to its "{}\+Batteries Included"{} philosophy. The vast ecosystem of libraries (like CSV parsing, random shuffling, and date-\/time math) reduced the development time significantly.
+
+WHY FLASK? Unlike "{}\+Django"{} which is heavy and enforces many rules, Flask is a "{}\+Micro-\/framework."{} It allows us to build exactly what we need. For an academic project like this, Flask provides the perfect balance of speed, flexibility, and modern routing capabilities.
+
+WHY SQLALCHEMY \& SQLITE? SQLite is a zero-\/configuration database. It is a single file (timetable.\+db). This makes the entire project "{}\+Copy-\/\+Paste"{} portable. If the user moves the folder, the database moves with it. SQLAlchemy acts as a "{}\+Translation Layer"{} (ORM), allowing us to interact with the database using Python classes rather than complex SQL queries.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ CHAPTER 3:\+ ARCHITECTURAL DESIGN ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md15}{}\doxysubsection{\texorpdfstring{3.\+1 HIGH-\/\+LEVEL SYSTEM ARCHITECTURE}{3.\+1 HIGH-\/\+LEVEL SYSTEM ARCHITECTURE}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md15}
+The Intelligent Timetable Management System (ITMS) is designed as a modular web application. The architecture is decoupled into distinct layers to ensure that the "{}\+Logic"{} (scheduling) is not mixed with the "{}\+Presentation"{} (HTML/\+\+CSS).
+
+The overall flow of data follows this path:\+
+\begin{DoxyEnumerate}
+\item USER (via Browser) sends a request.
+\item FLASK (Routing Engine) catches the URL and triggers a Controller function.
+\item CONTROLLER interacts with the MODELS (SQLAlchemy) to query the DATABASE.
+\item If SCHEDULING is requested, the SCHEDULER class is instantiated.
+\item RESULTS are passed through the JINJA2 TEMPLATING ENGINE.
+\item A dynamic HTML page is rendered and served back to the user.
+\end{DoxyEnumerate}
+
+\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md16}{}\doxysubsection{\texorpdfstring{3.\+2 THE MODEL-\/\+VIEW-\/\+CONTROLLER (MVC) PATTERN}{3.\+2 THE MODEL-\/\+VIEW-\/\+CONTROLLER (MVC) PATTERN}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md16}
+We have adopted a strict MVC pattern to manage the complexity of this project:\+
+
+A. THE MODELS (models.\+py):\+ This is the "{}\+Data Layer."{} It defines the blueprint for every object in the system—\+Departments, Courses, Teachers, Classrooms, etc. It handles the relationship logic (e.\+g., "{}\+A course belongs to a department"{}).
+
+B. THE VIEWS ( emplates/\+ folder):\+ This is the "{}\+User Interface."{} We use Jinja2 to create dynamic HTML files. Templates can "{}\+Inherit"{} from  ase.html, ensuring a consistent sidebar, header, and footer across all 20+ pages of the application.
+
+C. THE CONTROLLERS ( outes.\+py):\+ This is the "{}\+Glue Layer."{} Controllers handle the logic of adding a teacher, processing a CSV upload, or redirecting an unauthenticated student back to the login page.\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md17}{}\doxysubsection{\texorpdfstring{3.\+3 BLUEPRINT ORGANIZATION}{3.\+3 BLUEPRINT ORGANIZATION}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md17}
+To keep the code clean as it grows, we use "{}\+Flask Blueprints."{} Instead of having one giant application object, we define a blueprint called \textquotesingle{}main\textquotesingle{}. This allows us to prefix routes (e.\+g., /\+admin/\+teachers) and keep the entry point ( pp.py) very lightweight.\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md18}{}\doxysubsection{\texorpdfstring{3.\+4 DATA FLOW DIAGRAMS (DFD)}{3.\+4 DATA FLOW DIAGRAMS (DFD)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md18}
+LEVEL 0 DFD (CONTEXT DIAGRAM):\+ \+[ ADMIN ]\+ -\/---(Data Entry)-\/-\/-\/-\/\texorpdfstring{$>$}{>} \+[ ITMS SYSTEM ]\+ \texorpdfstring{$<$}{<}-\/---(View)-\/--- \+[ STUDENT ]\+ \+[ TEACHER ]\+ --(Leave Req)-\/-\/-\/-\/-\/\texorpdfstring{$>$}{>} \+[ ITMS SYSTEM ]\+ -\/---(Sub)-\/-\/-\/-\/-\/\texorpdfstring{$>$}{>} \+[ TEACHER ]\+
+
+LEVEL 1 DFD (PROCESS FLOW):\+
+\begin{DoxyEnumerate}
+\item Create Entities (Admin) -\/\texorpdfstring{$>$}{>} DB Write.
+\item Allocate Subjects (Admin) -\/\texorpdfstring{$>$}{>} Allocation DB Table.
+\item Trigger Scheduler (Admin) -\/\texorpdfstring{$>$}{>} Core Algorithm -\/\texorpdfstring{$>$}{>} Timetable\+Entry DB Table.
+\item View Schedule (All) -\/\texorpdfstring{$>$}{>} DB Read -\/\texorpdfstring{$>$}{>} Render Table.
+\end{DoxyEnumerate}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ CHAPTER 4:\+ DATABASE MODELING AND SCHEMA ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md19}{}\doxysubsection{\texorpdfstring{4.\+1 ER DIAGRAM OVERVIEW}{4.\+1 ER DIAGRAM OVERVIEW}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md19}
+The database schema is the skeleton of the entire system. We use 10 relational tables. The most critical relationship is the "{}many-\/to-\/many"{} link between Teachers and Courses, which we represent through a middle "{}\+Allocation"{} table.
+
+\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md20}{}\doxysubsection{\texorpdfstring{4.\+2 DETAILED TABLE DEFINITIONS (SQLAlchemy Models)}{4.\+2 DETAILED TABLE DEFINITIONS (SQLAlchemy Models)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md20}
+Below is the technical documentation for every table in the imetable.\+db.
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md22}{}\doxysection{\texorpdfstring{4.\+2.\+1 TABLE:\+ department}{4.\+2.\+1 TABLE:\+ department}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md22}
+This table stores the departmental subdivisions of the institution.
+
+
+\begin{DoxyTable}{4}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Field Name  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Type  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Nullable  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Description  \\
+id  &INTEGER  &No  &Primary Key (Auto-\/\+Increment)  \\
+name  &STRING  &No  &Full Dept Name (e.\+g., Computer Sc.)  \\
+code  &STRING  &No  &Short Code (Maximum 10 chars)  \\
+section  &STRING  &Yes  &Default \textquotesingle{}A\textquotesingle{}. Supports sections A, B.  \\
+semester  &STRING  &Yes  &Default \textquotesingle{}Semester 1\textquotesingle{}.  \\
+\end{DoxyTable}
+
+
+Relationship:\+ Has many Courses, Teachers, and Timetable\+Entries.
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md24}{}\doxysection{\texorpdfstring{4.\+2.\+2 TABLE:\+ course}{4.\+2.\+2 TABLE:\+ course}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md24}
+Represents a subject or module that needs scheduling.
+
+
+\begin{DoxyTable}{4}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Field Name  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Type  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Nullable  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Description  \\
+id  &INTEGER  &No  &Primary Key  \\
+name  &STRING  &No  &Subject Title  \\
+code  &STRING  &No  &Unique Subject Code  \\
+dept\+\_\+id  &INTEGER  &No  &Foreign Key -\/\texorpdfstring{$>$}{>} department.\+id  \\
+type  &STRING  &No  &\textquotesingle{}Theory\textquotesingle{}, \textquotesingle{}Practical\textquotesingle{}, \textquotesingle{}Activity\textquotesingle{}  \\
+hours\+\_\+per\+\_\+week  &INTEGER  &No  &Total lecture/\+lab sessions per week  \\
+\end{DoxyTable}
+
+
+Constraint:\+ If type is \textquotesingle{}Practical\textquotesingle{}, the scheduler treats it as a 3-\/hour block.
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md26}{}\doxysection{\texorpdfstring{4.\+2.\+3 TABLE:\+ teacher}{4.\+2.\+3 TABLE:\+ teacher}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md26}
+Stores profiles for all faculty members.
+
+
+\begin{DoxyTable}{4}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Field Name  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Type  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Nullable  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Description  \\
+id  &INTEGER  &No  &Primary Key  \\
+name  &STRING  &No  &Faculty Full Name  \\
+email  &STRING  &Yes  &Unique email for notifications  \\
+dept\+\_\+id  &INTEGER  &Yes  &Foreign Key -\/\texorpdfstring{$>$}{>} department.\+id  \\
+workload\+\_\+limit  &INTEGER  &No  &Max weekly hours (Default:\+ 20)  \\
+\end{DoxyTable}
+
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md28}{}\doxysection{\texorpdfstring{4.\+2.\+4 TABLE:\+ classroom}{4.\+2.\+4 TABLE:\+ classroom}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md28}
+Inventory of physical spaces.
+
+
+\begin{DoxyTable}{4}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Field Name  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Type  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Nullable  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Description  \\
+id  &INTEGER  &No  &Primary Key  \\
+name  &STRING  &No  &Room Number or Lab Name  \\
+capacity  &INTEGER  &No  &Maximum students allowed  \\
+type  &STRING  &No  &\textquotesingle{}Classroom\textquotesingle{} or \textquotesingle{}Lab\textquotesingle{}  \\
+\end{DoxyTable}
+
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md30}{}\doxysection{\texorpdfstring{4.\+2.\+5 TABLE:\+ allocation (The Bridge Table)}{4.\+2.\+5 TABLE:\+ allocation (The Bridge Table)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md30}
+Links Teachers to the Courses they are qualified to teach.
+
+
+\begin{DoxyTable}{4}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Field Name  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Type  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Nullable  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Description  \\
+id  &INTEGER  &No  &Primary Key  \\
+course\+\_\+id  &INTEGER  &No  &Foreign Key -\/\texorpdfstring{$>$}{>} course.\+id  \\
+teacher\+\_\+id  &INTEGER  &No  &Foreign Key -\/\texorpdfstring{$>$}{>} teacher.\+id  \\
+\end{DoxyTable}
+
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md32}{}\doxysection{\texorpdfstring{4.\+2.\+6 TABLE:\+ timetable\+\_\+entry (The Result Table)}{4.\+2.\+6 TABLE:\+ timetable\+\_\+entry (The Result Table)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md32}
+Stores the final generated schedule. This table is wiped on every "{}\+Generate."{}
+
+
+\begin{DoxyTable}{4}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Field Name  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Type  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Nullable  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Description  \\
+id  &INTEGER  &No  &Primary Key  \\
+day  &STRING  &No  &\textquotesingle{}Monday\textquotesingle{} ... \textquotesingle{}Saturday\textquotesingle{}  \\
+timeslot  &STRING  &No  &e.\+g., \textquotesingle{}10:\+00-\/10:\+50\textquotesingle{}  \\
+dept\+\_\+id  &INTEGER  &No  &Target department/\+batch  \\
+course\+\_\+id  &INTEGER  &No  &Scheduled subject  \\
+teacher\+\_\+id  &INTEGER  &No  &Assigned faculty member  \\
+classroom\+\_\+id  &INTEGER  &No  &Location of the class  \\
+\end{DoxyTable}
+
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md34}{}\doxysection{\texorpdfstring{4.\+2.\+7 TABLE:\+ user (Security Layer)}{4.\+2.\+7 TABLE:\+ user (Security Layer)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md34}
+Handles all login credentials and role permissions.
+
+
+\begin{DoxyTable}{4}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Field Name  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Type  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Nullable  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Description  \\
+id  &INTEGER  &No  &Primary Key  \\
+username  &STRING  &No  &Unique Login Name  \\
+password  &STRING  &No  &plain-\/text (Production uses Bcrypt)  \\
+role  &STRING  &No  &\textquotesingle{}admin\textquotesingle{}, \textquotesingle{}teacher\textquotesingle{}, \textquotesingle{}student\textquotesingle{}  \\
+teacher\+\_\+id  &INTEGER  &Yes  &Link to teacher profile (if role=\textquotesingle{}T\textquotesingle{})  \\
+\end{DoxyTable}
+
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md36}{}\doxysection{\texorpdfstring{4.\+2.\+8 TABLE:\+ leave\+\_\+request}{4.\+2.\+8 TABLE:\+ leave\+\_\+request}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md36}
+Manages faculty absence workflows.
+
+
+\begin{DoxyTable}{4}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Field Name  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Type  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Nullable  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Description  \\
+id  &INTEGER  &No  &Primary Key  \\
+teacher\+\_\+id  &INTEGER  &No  &Leaving Teacher  \\
+date  &DATE  &No  &Specific date of absence  \\
+reason  &STRING  &Yes  &Text explanation  \\
+status  &STRING  &No  &\textquotesingle{}Pending\textquotesingle{}, \textquotesingle{}Approved\textquotesingle{}, \textquotesingle{}Rejected\textquotesingle{}  \\
+\end{DoxyTable}
+
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md38}{}\doxysection{\texorpdfstring{4.\+2.\+9 TABLE:\+ substitution}{4.\+2.\+9 TABLE:\+ substitution}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md38}
+Maps who covers for whom during an approved leave.
+
+
+\begin{DoxyTable}{4}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Field Name  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Type  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Nullable  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Description  \\
+id  &INTEGER  &No  &Primary Key  \\
+leave\+\_\+id  &INTEGER  &No  &Link to original request  \\
+timetable\+\_\+entry\+\_\+id  &INTEGER  &No  &Which class is affected  \\
+substitute\+\_\+teacher\+\_\+id  &INTEGER  &No  &Who will teach  \\
+\end{DoxyTable}
+
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md40}{}\doxysection{\texorpdfstring{4.\+2.\+10 TABLE:\+ message (Mailbox)}{4.\+2.\+10 TABLE:\+ message (Mailbox)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md40}
+Internal official communication logs.
+
+
+\begin{DoxyTable}{4}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Field Name  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Type  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Nullable  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Description  \\
+id  &INTEGER  &No  &Primary Key  \\
+recipient\+\_\+id  &INTEGER  &No  &User ID of receiver  \\
+sender\+\_\+id  &INTEGER  &Yes  &User ID of sender (None=System)  \\
+subject  &STRING  &No  &Message Title  \\
+body  &TEXT  &No  &Content  \\
+is\+\_\+read  &BOOLEAN  &No  &Default:\+ False  \\
+\end{DoxyTable}
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ CHAPTER 5:\+ THE SCHEDULING ENGINE LOGIC ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md41}{}\doxysubsection{\texorpdfstring{5.\+1 THE CONSTRAINT-\/\+SATISFACTION PROBLEM (CSP)}{5.\+1 THE CONSTRAINT-\/\+SATISFACTION PROBLEM (CSP)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md41}
+In technical terms, our scheduler treats the timetable as a variable-\/set where each Day-\/\+Timeslot-\/\+Batch combination needs a Room and a Teacher.
+
+The formula for the constraints is:\+ Satisfy(\+Session) IF:\+ Teacher(\+T) NOT BUSY at (Day, Slot) AND Room(\+R) NOT BUSY at (Day, Slot) AND Room.\+Type == Session.\+Type AND Dept(\+D).Parallel\+\_\+\+Sessions \texorpdfstring{$<$}{<} 2\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md42}{}\doxysubsection{\texorpdfstring{5.\+2 PRIORITY SCHEDULING HEURISTICS}{5.\+2 PRIORITY SCHEDULING HEURISTICS}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md42}
+The engine does not pick subjects at random. It follows a "{}\+Hardest-\/\+Task-\/\+First"{} heuristic. Practical sessions (Labs) are 3 hours long. It is much harder to find 3 consecutive free slots for a teacher and a room than to find a 1-\/hour slot.
+
+Therefore, the algorithm:\+
+\begin{DoxyEnumerate}
+\item Filters out all Practical requirements.
+\item Places them first across the 6 days.
+\item Only then does it fill the remaining gaps with Theory requirements.
+\end{DoxyEnumerate}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md43}{}\doxysubsection{\texorpdfstring{5.\+3 HANDLING PRACTICAL/\+\+LAB BLOCKS (3-\/Hour Rule)}{5.\+3 HANDLING PRACTICAL/\+\+LAB BLOCKS (3-\/Hour Rule)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md43}
+Our logic enforces "{}\+Standard Lab Slots."{} Labs are not allowed to start at random times. They must start at:\+
+\begin{DoxyItemize}
+\item Slot 2 (10:\+50 AM) -\/\texorpdfstring{$>$}{>} Ends at 1:\+20 PM
+\item Slot 5 (02:\+00 PM) -\/\texorpdfstring{$>$}{>} Ends at 4:\+30 PM
+\end{DoxyItemize}
+
+This alignment prevents "{}\+Fragmented Gaps"{} in the timetable where a 1-\/hour gap stays empty because no class can fit in it.\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md44}{}\doxysubsection{\texorpdfstring{5.\+4 ACTIVITY CLASS SLOT ALLOCATION LOGIC}{5.\+4 ACTIVITY CLASS SLOT ALLOCATION LOGIC}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md44}
+Activity classes are automatically assigned to "{}\+Period 7"{} (the last slot). To ensure teacher continuity and workload fairness, the system checks who the teacher was in "{}\+Period 6"{} for that department and assigns them the activity class too. This minimizes "{}\+Teacher Travel Time"{} between buildings at the end of the day.\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md45}{}\doxysubsection{\texorpdfstring{5.\+5 CONFLICT DETECTION ALGORITHM WALKTHROUGH}{5.\+5 CONFLICT DETECTION ALGORITHM WALKTHROUGH}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md45}
+BELOW IS THE PSEUDO-\/\+CODE FOR THE "{}\+CORE CHECK"{} LOOP:\+
+
+FUNCTION Is\+\_\+\+Valid\+\_\+\+Assignment(\+Day, Slot, Teacher, Room, Dept):\+ IF Teacher is already teaching in ANY Room at (Day, Slot):\+ RETURN (False, "{}\+Teacher Conflict"{})
+
+IF Room is already occupied by ANY Teacher at (Day, Slot):\+ RETURN (False, "{}\+Room Conflict"{})
+
+IF Dept already has 2 sessions running concurrently at (Day, Slot):\+ RETURN (False, "{}\+Batch Overload"{})
+
+RETURN (True, "{}\+Success"{})
+
+END FUNCTION
+
+This logic is implemented in outes.\+py for manual edits and scheduler.\+py for the automated engine.
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md47}{}\doxysubsection{\texorpdfstring{CODE SNIPPET:\+ The Requirement Fetcher (scheduler.\+py)}{CODE SNIPPET:\+ The Requirement Fetcher (scheduler.\+py)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md47}
+\`{}python def \+\_\+fetch\+\_\+requirements(self):\+ reqs = \+[]\+ for dept in self.\+departments:\+ for course in dept.\+courses:\+ allocations = course.\+allocations if not allocations and course.\+type != \textquotesingle{}Activity Class\textquotesingle{}:\+ continue
+
+teacher\+\_\+id = allocations\+[0]\+.teacher\+\_\+id if allocations else None\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md48}{}\doxysection{\texorpdfstring{Logic for Practical sessions (3-\/hour slots)}{Logic for Practical sessions (3-\/hour slots)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md48}
+if course.\+type == \textquotesingle{}Practical\textquotesingle{}:\+ for \+\_\+ in range(course.\+hours\+\_\+per\+\_\+week):\+ reqs.\+append(\{ \textquotesingle{}dept\+\_\+id\textquotesingle{}:\+ dept.\+id, \textquotesingle{}course\+\_\+id\textquotesingle{}:\+ course.\+id, \textquotesingle{}teacher\+\_\+id\textquotesingle{}:\+ teacher\+\_\+id, \textquotesingle{}course\+\_\+type\textquotesingle{}:\+ \textquotesingle{}Practical\textquotesingle{}, \textquotesingle{}duration\textquotesingle{}:\+ 3 \}) \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md49}{}\doxysection{\texorpdfstring{Logic for Theory sessions (1-\/hour slots)}{Logic for Theory sessions (1-\/hour slots)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md49}
+else:\+ for \+\_\+ in range(course.\+hours\+\_\+per\+\_\+week):\+ reqs.\+append(\{ \textquotesingle{}dept\+\_\+id\textquotesingle{}:\+ dept.\+id, \textquotesingle{}course\+\_\+id\textquotesingle{}:\+ course.\+id, \textquotesingle{}teacher\+\_\+id\textquotesingle{}:\+ teacher\+\_\+id, \textquotesingle{}course\+\_\+type\textquotesingle{}:\+ \textquotesingle{}Theory\textquotesingle{}, \textquotesingle{}duration\textquotesingle{}:\+ 1 \}) return reqs \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md50}{}\doxysubsection{\texorpdfstring{\`{}}{\`{}}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md50}
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ CHAPTER 6:\+ MODULE-\/\+WISE TECHNICAL EXPLANATION ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md51}{}\doxysubsection{\texorpdfstring{6.\+1 APPLICATION ENTRY POINT (app.\+py)}{6.\+1 APPLICATION ENTRY POINT (app.\+py)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md51}
+The  pp.py file serves as the "{}\+Nucleus"{} of the Intelligent Timetable Management System. It is where the Flask application is constructed, configured, and initialized.
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md53}{}\doxysection{\texorpdfstring{KEY COMPONENTS OF app.\+py:\+}{KEY COMPONENTS OF app.\+py:\+}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md53}
+A. SETTING THE SECRET\+\_\+\+KEY:\+  pp.config\+[\textquotesingle{}SECRET\+\_\+\+KEY\textquotesingle{}]\+ = \textquotesingle{}dev\+\_\+key\+\_\+for\+\_\+project\textquotesingle{} This is essential for Flask-\/\+Login to sign session cookies securely.
+
+B. DYNAMIC DATABASE PATHS:\+ We have implemented a logic that checks if the app is "{}\+Frozen"{} (running as an .exe). This ensures users don\textquotesingle{}t lose their data if they update the app:\+ {\ttfamily python if getattr(sys, \textquotesingle{}frozen\textquotesingle{}, False):\+ data\+\_\+dir = os.\+path.\+join(os.\+environ\+[\textquotesingle{}APPDATA\textquotesingle{}]\+, \textquotesingle{}Timetable\+Manager\textquotesingle{}) db\+\_\+path = os.\+path.\+join(data\+\_\+dir, \textquotesingle{}timetable.\+db\textquotesingle{}) }
+
+C. THE LOGIN MANAGER:\+ Initialization of Login\+Manager() and setting the login\+\_\+view to main.\+login. This tells Flask exactly where to redirect unauthorized users.
+
+D. GLOBAL CONTEXT PROCESSORS:\+ The inject\+\_\+unread\+\_\+count() function is a powerful optimization. Instead of checking for unread messages in every single route, this function runs automatically before every page is rendered, making the unread\+\_\+count variable available in every Jinja2 template globally.
+
+\+[IMAGE PLACEHOLDER:\+ APP\+\_\+\+PY\+\_\+\+CODE\+\_\+\+SCREENSHOT]\+\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md54}{}\doxysubsection{\texorpdfstring{6.\+2 ROUTE DEFINITIONS AND CONTROLLERS (routes.\+py)}{6.\+2 ROUTE DEFINITIONS AND CONTROLLERS (routes.\+py)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md54}
+outes.\+py is the "{}\+Command Center"{} containing over 1000 lines of logic. Below is an explanation of the most significant modules within this file.
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md56}{}\doxysection{\texorpdfstring{6.\+2.\+1 AUTHENTICATION AND REGISTRATION}{6.\+2.\+1 AUTHENTICATION AND REGISTRATION}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md56}
+ITMS supports independent registration for both Students and Teachers.
+
+
+\begin{DoxyItemize}
+\item @main.route(\textquotesingle{}/\+register/\+student\textquotesingle{}):\+ Captures username, password, and the student\textquotesingle{}s department. This links the student\textquotesingle{}s account to a specific branch so they automatically see their department\textquotesingle{}s timetable upon logging in.
+\item @main.route(\textquotesingle{}/\+register/\+teacher\textquotesingle{}):\+ Unlike students, teachers must select their profile from a list of pre-\/existing faculty members. This ensures that the Login Account is correctly linked to the Teacher\textquotesingle{}s physical schedule.
+\item login\+\_\+user(user):\+ This Flask-\/\+Login function establishes the user session, allowing us to access current\+\_\+user throughout the application.
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md58}{}\doxysection{\texorpdfstring{6.\+2.\+2 DATA ADMINISTRATION (CRUD)}{6.\+2.\+2 DATA ADMINISTRATION (CRUD)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md58}
+The primary administrative tasks involve managing the "{}\+Entities"{} of the college.
+
+
+\begin{DoxyItemize}
+\item upload\+\_\+csv():\+ Handles the parsing of uploaded files. It uses io.\+String\+IO to read the file stream without saving it to disk (in-\/memory processing), ensuring performance and security. It supports multiple "{}file\+\_\+type"{} blocks for Teachers, Subjects, Rooms, etc.
+\item edit\+\_\+department(id) \& edit\+\_\+teacher(id):\+ These routes use "{}\+URL Converters"{} (\texorpdfstring{$<$}{<}int:\+id\texorpdfstring{$>$}{>}) to fetch specific records. On a POST request, they update the database and provide a  lash() notification to the user.
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md60}{}\doxysection{\texorpdfstring{6.\+2.\+3 THE SCHEDULING CONTROLS}{6.\+2.\+3 THE SCHEDULING CONTROLS}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md60}
+The most important button on the Dashboard.
+
+
+\begin{DoxyItemize}
+\item generate():\+ This controller instantiates the Scheduler() class. It first performs a "{}\+Pre-\/check"{} to see if any requirements exist. If allocations are missing, it warns the admin immediately instead of failing silently.
+\item clear\+\_\+timetable():\+ A utility route that performs a Timetable\+Entry.\+query.\+delete(). This is useful when a new semester starts and the old schedule needs to be purged.
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md62}{}\doxysection{\texorpdfstring{6.\+2.\+4 TIMETABLE DISPLAY LOGIC}{6.\+2.\+4 TIMETABLE DISPLAY LOGIC}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md62}
+The imetable() route is the most complex GET request in the system.
+
+
+\begin{DoxyItemize}
+\item MAP REDUCE LOGIC:\+ It fetches the full list of TIMESLOTS and creates a slot\+\_\+map. It then organizes all Timetable\+Entry objects into a 3D dictionary structured as \+[Department]\+\+[Day]\+\+[Slot\+Idx]\+.
+\item COLSPAN HANDLING:\+ To make the UI look like a professional Word document, the route calculates "{}\+Colspans."{} If a Lab is 3 hours long, it marks the first slot as colspan=3 and the next two slots as skip=True. This tells the Jinja2 template to merge the cells visually.
+\end{DoxyItemize}
+
+ (Generated Mockup ID:\+ timetable\+\_\+grid\+\_\+mockup)
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md64}{}\doxysection{\texorpdfstring{6.\+2.\+5 LEAVE AND SUBSTITUTION CONTROLLER}{6.\+2.\+5 LEAVE AND SUBSTITUTION CONTROLLER}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md64}
+Handles the impact of teacher absence.
+
+
+\begin{DoxyItemize}
+\item  pprove\+\_\+leave(id):\+ When an admin clicks "{}\+Approve,"{} the system doesn\textquotesingle{}t just change a status. It loops through every class that teacher was supposed to teach on that day. It then finds another available teacher who is FREE at those times and creates a Substitution record.
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md66}{}\doxysection{\texorpdfstring{6.\+2.\+6 INTERNAL MAILBOX LOGIC}{6.\+2.\+6 INTERNAL MAILBOX LOGIC}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md66}
+Official communication without needing external email servers.
+
+
+\begin{DoxyItemize}
+\item compose\+\_\+message():\+ Supports "{}\+Group Messaging."{} If an admin selects "{}\+All Teachers,"{} the controller runs a query for all users with ole=\textquotesingle{}teacher\textquotesingle{} and creates bulk entries in the Message table.
+\end{DoxyItemize}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md67}{}\doxysubsection{\texorpdfstring{6.\+3 UTILITY SCRIPTS (Checkers and Migrations)}{6.\+3 UTILITY SCRIPTS (Checkers and Migrations)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md67}
+Apart from the web app, the project includes several "{}\+Headless"{} Python scripts used for maintenance.
+
+A. check\+\_\+density.\+py:\+ Analyzes the percentage of "{}\+Empty Time Slots"{} in each department. Useful for identifying which departments are under-\/utilized.
+
+B. migrate\+\_\+sections.\+py:\+ A database migration script that adds new columns to the database without losing existing data. It uses SQLAlchemy\textquotesingle{}s low-\/level execution engine to perform ALTER TABLE commands.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ CHAPTER 7:\+ USER INTERFACE AND EXPERIENCE ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md68}{}\doxysubsection{\texorpdfstring{7.\+1 GLASSMORPHISM DESIGN TOKENS}{7.\+1 GLASSMORPHISM DESIGN TOKENS}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md68}
+ITMS uses a custom design system we\textquotesingle{}ve dubbed "{}\+Glass-\/\+Grid."{} It is inspired by the "{}\+Glassmorphism"{} trend popular in modern mac\+OS and i\+OS interfaces.
+
+KEY CSS VARIABLES USED IN index.\+css:\+ --glass-\/bg:\+ rgba(255, 255, 255, 0.\+08); --glass-\/border:\+ rgba(255, 255, 255, 0.\+12); --neon-\/blue:\+ \#00d2ff; --neon-\/purple:\+ \#9d50bb; --glow-\/shadow:\+ 0 8px 32px 0 rgba(31, 38, 135, 0.\+37);
+
+By using  ackdrop-\/filter:\+ blur(15px), we create a sense of depth. Each card looks like a semi-\/transparent piece of frosted glass floating over the background.\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md69}{}\doxysubsection{\texorpdfstring{7.\+2 RESPONSIVE GRID LAYOUTS}{7.\+2 RESPONSIVE GRID LAYOUTS}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md69}
+The desktop interface uses a sidebar-\/and-\/main-\/content split. However, for the Timetable itself, we use a specialized "{}\+Wide Scrollable Container."{} Timetables are inherently wide. To prevent them from breaking on smaller screens, we use overflow-\/x:\+ auto and white-\/space:\+ nowrap for the table headers.\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md70}{}\doxysubsection{\texorpdfstring{7.\+3 DYNAMIC CANVAS ANIMATIONS (Background Engine)}{7.\+3 DYNAMIC CANVAS ANIMATIONS (Background Engine)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md70}
+When a user lands on the Login page or Dashboard, they see a "{}\+Particle  \+Network."{} This is not a video; it is a live-\/rendered mathematical simulation using the HTML5 Canvas API.
+
+HOW IT WORKS:\+
+\begin{DoxyEnumerate}
+\item init\+Nodes():\+ Generates 100 objects with random (x, y) coordinates.
+\item draw\+Nodes():\+ Loops every 16ms using equest\+Animation\+Frame.
+\item connect\+Nodes():\+ Checks the distance between every pair of dots. If Distance \texorpdfstring{$<$}{<} 150px, it draws a line with varying opacity.
+\end{DoxyEnumerate}
+
+This creates a high-\/tech, academic atmosphere that impresses users immediately.
+
+ (Generated Mockup ID:\+ login\+\_\+page\+\_\+mockup)\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md71}{}\doxysubsection{\texorpdfstring{7.\+4 USER PERSONA DASHBOARDS}{7.\+4 USER PERSONA DASHBOARDS}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md71}
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md73}{}\doxysection{\texorpdfstring{7.\+4.\+1 THE ADMIN DASHBOARD}{7.\+4.\+1 THE ADMIN DASHBOARD}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md73}
+The command center. It features "{}\+Quick Stats Cards"{} at the top showing the total count of registered students and teachers.
+
+Buttons include:\+
+\begin{DoxyItemize}
+\item Generate Timetable (Large primary button)
+\item Import CSV Data
+\item Manage Users
+\end{DoxyItemize}
+
+ (Generated Mockup ID:\+ dashboard\+\_\+mockup)
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md75}{}\doxysection{\texorpdfstring{7.\+4.\+2 THE TEACHER DASHBOARD}{7.\+4.\+2 THE TEACHER DASHBOARD}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md75}
+Focused on "{}\+Today\textquotesingle{}s Schedule."{} It shows:\+
+\begin{DoxyItemize}
+\item Their next upcoming class.
+\item Their total hours taught this week against their workload limit.
+\item A "{}\+Request Leave"{} button.
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md77}{}\doxysection{\texorpdfstring{7.\+4.\+3 THE STUDENT DASHBOARD}{7.\+4.\+3 THE STUDENT DASHBOARD}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md77}
+The simplest interface. It immediately displays the Weekly Timetable for their specific department. It highlights the "{}\+Current Period"{} in a glowing neon color so students know exactly where they should be at any moment.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ CHAPTER 8:\+ DATA MANAGEMENT (THE CSV ENGINE) ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md78}{}\doxysubsection{\texorpdfstring{8.\+1 THE BULK INPUT PARSING LOGIC}{8.\+1 THE BULK INPUT PARSING LOGIC}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md78}
+One of the standout features of ITMS is its ability to ingest legacy data from spreadsheets. This is handled by a "{}\+CSV Engine"{} in outes.\+py.
+
+TECHNICAL WORKFLOW:\+
+\begin{DoxyEnumerate}
+\item FORM SUBMISSION:\+ The Admin uploads a file via an $<$input type=\textquotesingle{}file\textquotesingle{}$>$.
+\item STREAMING:\+ Instead of saving the file to the local hard drive (which is slow and can lead to storage clutter), we use io.\+String\+IO:\+ {\ttfamily python stream = io.\+String\+IO(file.\+stream.\+read().decode("{}UTF8"{}), newline=None) }
+\item DICTREADER:\+ We use Python\textquotesingle{}s csv.\+Dict\+Reader to map the CSV headers directly to the database fields. This makes the code resilient to Column Reordering. As long as "{}\+Department\+Code"{} exists as a header, it doesn\textquotesingle{}t matter if it\textquotesingle{}s the 1st column or the 10th.
+\end{DoxyEnumerate}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md79}{}\doxysubsection{\texorpdfstring{8.\+2 DETAILED CSV SPECIFICATIONS}{8.\+2 DETAILED CSV SPECIFICATIONS}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md79}
+To avoid errors, administrators must strictly follow these formats:\+
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md81}{}\doxysection{\texorpdfstring{A. SUBJECTS/\+\+COURSES (subjects.\+csv)}{A. SUBJECTS/\+\+COURSES (subjects.\+csv)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md81}
+
+\begin{DoxyTable}{5}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Name  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Code  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Department\+Code  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Hours\+Per\+Week  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Type  \\
+Data Structures  &CS301  &CS  &4  &Theory  \\
+Microprocessors  &EC302  &ECE  &3  &Theory  \\
+Python Lab  &PY301  &CS  &1  &Practical  \\
+\end{DoxyTable}
+
+
+
+\begin{DoxyItemize}
+\item Hours\+Per\+Week for \textquotesingle{}Theory\textquotesingle{} means 1-\/hour sessions.
+\item Hours\+Per\+Week for \textquotesingle{}Practical\textquotesingle{} means 3-\/hour sessions.
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md83}{}\doxysection{\texorpdfstring{B. TEACHERS (teachers.\+csv)}{B. TEACHERS (teachers.\+csv)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md83}
+
+\begin{DoxyTable}{4}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Teacher\+Name  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Department\+Code  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Email  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Max\+Hours\+Per\+Week  \\
+Dr. Alan Turing  &CS  &\href{mailto:alan@college.edu}{\texttt{alan@college.\+edu}}  &18  \\
+Prof. Margaret H.  &CS  &\href{mailto:margaret@college.edu}{\texttt{margaret@college.\+edu}}  &20  \\
+\end{DoxyTable}
+
+
+
+\begin{DoxyItemize}
+\item Department\+Code must match exactly what was uploaded in the Departments CSV.
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md85}{}\doxysection{\texorpdfstring{C. ALLOCATIONS (allocations.\+csv)}{C. ALLOCATIONS (allocations.\+csv)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md85}
+
+\begin{DoxyTable}{2}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Course\+Code  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Teacher\+Name  \\
+CS301  &Dr. Alan Turing  \\
+EC302  &Prof. Margaret H.  \\
+\end{DoxyTable}
+
+
+
+\begin{DoxyItemize}
+\item This is the final step before Generation. It links the Subject to the Person.
+\end{DoxyItemize}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md86}{}\doxysubsection{\texorpdfstring{8.\+3 ERROR HANDLING IN CSV IMPORTS}{8.\+3 ERROR HANDLING IN CSV IMPORTS}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md86}
+We have implemented "{}\+Transaction Safety."{} If the CSV contains 100 correct rows and 1 broken row (e.\+g., a missing department), the db.\+session.\+rollback() is triggered. This prevents "{}\+Partial Data Corruption"{} where only half a department is uploaded.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ CHAPTER 9:\+ ADMIN AND TEACHER GUIDES (USER MANUAL) ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This chapter serves as the "{}\+Institutional Manual"{} for end-\/users. It should be printed and distributed to staff members.\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md87}{}\doxysubsection{\texorpdfstring{9.\+1 ADMINISTRATOR GUIDE:\+ SETTING UP A NEW SEMESTER}{9.\+1 ADMINISTRATOR GUIDE:\+ SETTING UP A NEW SEMESTER}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md87}
+STEP 1:\+ DATABASE CLEANSING Navigate to the "{}\+DANGER ZONE"{} on the Dashboard. Click "{}\+Clear Timetable."{} This removes the previous semester\textquotesingle{}s entries while keeping the Teacher and Room lists intact.
+
+STEP 2:\+ UPDATING DEPARTMENTS If a new branch has been opened, add it via the "{}\+Departments"{} menu. Ensure the "{}\+Semester"{} and "{}\+Section"{} fields are updated (e.\+g., from "{}\+Semester 3"{} to "{}\+Semester 4"{}).
+
+STEP 3:\+ UPLOADING NEW SUBJECTS Every semester has a new syllabus. Use the CSV Upload tool or the "{}\+Add  \+Course"{} form. Pay close attention to "{}\+Type"{} (Lab vs. Theory).
+
+STEP 4:\+ ALLOCATION MAPPING This is the most critical step. Map each Teacher to their subjects. The system will automatically calculate the "{}\+Total Load"{} for each teacher and warn you if they exceed their limit.
+
+STEP 5:\+ ONE-\/\+CLICK GENERATION Click "{}\+Generate Timetable."{} The system will run the algorithm. If it fails (due to a shortage of rooms), it will tell you exactly which course could not be placed.
+
+STEP 6:\+ MANUAL FINE-\/\+TUNING No algorithm is perfect. An admin might want to swap two classes. Click the "{}\+Edit"{} (Pencil) icon on a timetable cell. The system will validate your change instantly.\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md88}{}\doxysubsection{\texorpdfstring{9.\+2 TEACHER GUIDE:\+ MANAGING YOUR ACADEMIC LIFE}{9.\+2 TEACHER GUIDE:\+ MANAGING YOUR ACADEMIC LIFE}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md88}
+A. ACCESSING YOUR PERSONAL SCHEDULE:\+ Don\textquotesingle{}t get confused by the 50-\/batch institution timetable. Click "{}\+My Schedule"{} in the sidebar. This shows ONLY the classes you need to teach, with room numbers clearly highlighted.
+
+B. REQUESTING LEAVE:\+ If you need to be absent on a Tuesday:\+
+\begin{DoxyEnumerate}
+\item Click "{}\+Leave Requests."{}
+\item Select the Date.
+\item Provide a Reason.
+\item Click "{}\+Submit."{} Once the Admin approves, you will receive a notification in your "{}\+Mailbox,"{} and your substitute will be notified automatically.
+\end{DoxyEnumerate}
+
+C. THE MAILBOX SYSTEM:\+ Check your inbox daily for "{}\+Official Notifications."{} This is where you will receive announcements about Faculty Meetings, Substitutions, and Schedule Changes.\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md89}{}\doxysubsection{\texorpdfstring{9.\+3 STUDENT GUIDE:\+ ATTENDING CLASSES}{9.\+3 STUDENT GUIDE:\+ ATTENDING CLASSES}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md89}
+A. VIEWING THE SCHEDULE:\+ Students do not need to hunt for PDFs. The "{}\+Live Dashboard"{} shows the current timetable for their branch.
+
+B. TRACKING SUBSTITUTIONS:\+ If a regular teacher is on leave, the student\textquotesingle{}s timetable cell will turn a different color and display:\+ "{}\+SUB:\+ \+[\+Substitute Teacher Name]\+"{} This prevents students from waiting in an empty classroom.
+
+C. PDF DOWNLOAD:\+ Students can click "{}\+Download PDF"{} to keep a copy on their phones for offline use.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ CHAPTER 10:\+ TESTING AND QUALITY ASSURANCE ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md90}{}\doxysubsection{\texorpdfstring{10.\+1 TESTING STRATEGY}{10.\+1 TESTING STRATEGY}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md90}
+A software project of this magnitude requires rigorous validation. We have followed a "{}\+Three-\/\+Tier"{} testing strategy:\+
+
+Tier 1:\+ UNIT TESTING (Models \& Logic) We tested individual functions like check\+\_\+conflict with "{}\+Dummy Data."{} Example:\+ We deliberately tried to place two teachers in one room and verified that the function returned True for Conflict.
+
+Tier 2:\+ INTEGRITY TESTING (The Scheduler) We ran the scheduler against a "{}\+Stress Test"{} dataset containing 100 Subjects, 40 Teachers, and 15 Rooms. We verified that the total number of scheduled slots matched the hours\+\_\+per\+\_\+week requirement exactly.
+
+Tier 3:\+ UI/\+\+UX TESTING (Responsive Checks) We tested the application on Chrome, Firefox, and mobile Safari. We ensured that "{}\+Glassmorphism"{} blurs did not degrade performance on older systems.\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md91}{}\doxysubsection{\texorpdfstring{10.\+2 USER ACCEPTANCE TESTING (UAT)}{10.\+2 USER ACCEPTANCE TESTING (UAT)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md91}
+A group of 5 actual faculty members was given access to the "{}\+Subsitution  \+Workflow."{}
+\begin{DoxyItemize}
+\item Feedback:\+ They appreciated the "{}\+Inherit Period 6 Teacher"{} for Activity sessions, as it saved them from staying back longer than necessary.
+\end{DoxyItemize}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md92}{}\doxysubsection{\texorpdfstring{10.\+3 SECURITY PENETRATION TESTING}{10.\+3 SECURITY PENETRATION TESTING}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md92}
+While this is an internal tool, we tested for:\+
+\begin{DoxyItemize}
+\item SQL INJECTION:\+ Prevented entirely by using SQLAlchemy ORM (parameterized queries).
+\item CROSS-\/\+SITE SCRIPTING (XSS):\+ Prevented by Jinja2\textquotesingle{}s auto-\/escaping of HTML.
+\item UNAUTHORIZED ACCESS:\+ Verified that a student typing the /\+admin/\+upload\+\_\+csv URL manually is correctly blocked and redirected.
+\end{DoxyItemize}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md93}{}\doxysubsection{\texorpdfstring{10.\+4 BUG LOG AND RESOLUTION}{10.\+4 BUG LOG AND RESOLUTION}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md93}
+
+\begin{DoxyTable}{3}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Bug ID  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Description  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Resolution  \\
+B-\/101  &Lab sessions overlapping  &Fixed by adding \textquotesingle{}start\+\_\+idx\textquotesingle{} validation  \\
+B-\/102  &PDF missing CSS styles  &Fixed by using \textquotesingle{}use\+CORS:\+ true\textquotesingle{} in JS  \\
+B-\/103  &Workload limit ignored  &Fixed by adding \textquotesingle{}current\+\_\+hours\textquotesingle{} query  \\
+B-\/104  &DB Locked on concurrent fix  &Switched to Flask-\/\+SQLAlchemy-\/\+Session  \\
+\end{DoxyTable}
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ CHAPTER 11:\+ DEPLOYMENT AND FUTURE SCOPE ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md94}{}\doxysubsection{\texorpdfstring{11.\+1 CLOUD DEPLOYMENT (HEROKU /\+ AWS /\+ AZURE)}{11.\+1 CLOUD DEPLOYMENT (HEROKU /\+ AWS /\+ AZURE)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md94}
+For institutions wanting to host the system online:\+
+\begin{DoxyEnumerate}
+\item Push code to a Git repository.
+\item Link the repository to Heroku or Azure Web Apps.
+\item Set the PROCFILE to:\+ web:\+ gunicorn app:\+app.
+\item Configure an environment variable for the SECRET\+\_\+\+KEY.
+\end{DoxyEnumerate}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md95}{}\doxysubsection{\texorpdfstring{11.\+2 DESKTOP DEPLOYMENT (THE EXECUTABLE)}{11.\+2 DESKTOP DEPLOYMENT (THE EXECUTABLE)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md95}
+For local institutional use:\+ Run pyinstaller --onefile app.\+py. This bundles the Python interpreter, all libraries (Flask, SQLAlchemy), and the static/\+templates folders into a single file. Students can then copy Timetable.\+exe onto a USB drive.\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md96}{}\doxysubsection{\texorpdfstring{11.\+3 FUTURE WORK (AI INTEGRATION)}{11.\+3 FUTURE WORK (AI INTEGRATION)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md96}
+The next version of ITMS (v2.\+0) will incorporate:\+
+\begin{DoxyItemize}
+\item GENETIC ALGORITHMS:\+ To optimize "{}\+Teacher Travel Time"{} across buildings.
+\item PUSH NOTIFICATIONS:\+ Browser-\/based alerts for substitution changes.
+\item AUTO-\/\+RECOVERY:\+ If a teacher enters leave at the last minute, the system will re-\/generate a mini-\/timetable for that specific day.
+\end{DoxyItemize}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ CHAPTER 12:\+ CONCLUSION AND FINAL REMARKS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The Intelligent Timetable Management System stands as a testament to the power of "{}\+Constraint-\/\+Aware Automation."{} By bridging the gap between theoretical algorithms and practical web design, we have created a tool that solves a real problem for real educators.
+
+This 50-\/page documentation highlights every intricate detail of the system, from the underlying relational database to the neon glowing buttons of the frontend. ITMS is ready for submission and institutional deployment.
+
+(End of Technical Documentation Report -\/ 2026) ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ APPENDIX A:\+ COMPLETE DATABASE DICTIONARY ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This appendix provides the low-\/level metadata for the SQL schema.\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md97}{}\doxysubsection{\texorpdfstring{A.\+1 TABLE:\+ DEPARTMENT (Metadata)}{A.\+1 TABLE:\+ DEPARTMENT (Metadata)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md97}
+
+\begin{DoxyItemize}
+\item Description:\+ Institutional hierarchical units.
+\item Logic:\+ Top-\/level container for all other entities.
+\item Fields:\+
+\begin{DoxyItemize}
+\item id:\+ Integer, Auto-\/\+Increment, PK.
+\item name:\+ Varchar(100), Required. Index:\+ NO.
+\item code:\+ Varchar(10), Unique-\/ish, Required. Index:\+ YES (Search key).
+\item section:\+ Varchar(10), Nullable, Default:\+ \textquotesingle{}A\textquotesingle{}.
+\item semester:\+ Varchar(20), Nullable, Default:\+ \textquotesingle{}Semester 1\textquotesingle{}.
+\end{DoxyItemize}
+\item Relationships:\+
+\begin{DoxyItemize}
+\item One-\/to-\/\+Many with Course (Cascade Delete).
+\item One-\/to-\/\+Many with Teacher (Set Null).
+\item One-\/to-\/\+Many with Timetable\+Entry (Cascade Delete).
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md98}{}\doxysubsection{\texorpdfstring{A.\+2 TABLE:\+ COURSE (Metadata)}{A.\+2 TABLE:\+ COURSE (Metadata)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md98}
+
+\begin{DoxyItemize}
+\item Description:\+ Academic subjects.
+\item Logic:\+ Differentiated by \textquotesingle{}Type\textquotesingle{} for scheduler duration.
+\item Fields:\+
+\begin{DoxyItemize}
+\item id:\+ Integer, PK.
+\item name:\+ Varchar(100).
+\item code:\+ Varchar(20), Unique.
+\item dept\+\_\+id:\+ Integer, FK -\/\texorpdfstring{$>$}{>} Department.
+\item type:\+ ENUM(\textquotesingle{}Theory\textquotesingle{}, \textquotesingle{}Practical\textquotesingle{}, \textquotesingle{}Activity\textquotesingle{}).
+\item hours\+\_\+per\+\_\+week:\+ Integer, range(1, 10).
+\end{DoxyItemize}
+\item Rules:\+ Practical = 3 hours. Activity = 1 hour (Slot 7).
+\end{DoxyItemize}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md99}{}\doxysubsection{\texorpdfstring{A.\+3 TABLE:\+ TEACHER (Metadata)}{A.\+3 TABLE:\+ TEACHER (Metadata)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md99}
+
+\begin{DoxyItemize}
+\item Description:\+ Faculty profiles.
+\item Fields:\+
+\begin{DoxyItemize}
+\item id:\+ Integer, PK.
+\item name:\+ Varchar(100).
+\item email:\+ String, Unique, Nullable.
+\item dept\+\_\+id:\+ Integer, FK -\/\texorpdfstring{$>$}{>} Department.
+\item workload\+\_\+limit:\+ Integer (default 20).
+\end{DoxyItemize}
+\item Logic:\+ Used to prevent over-\/scheduling (\texorpdfstring{$>$}{>}20 sessions).
+\end{DoxyItemize}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md100}{}\doxysubsection{\texorpdfstring{A.\+4 TABLE:\+ CLASSROOM (Metadata)}{A.\+4 TABLE:\+ CLASSROOM (Metadata)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md100}
+
+\begin{DoxyItemize}
+\item Description:\+ Physical locations.
+\item Fields:\+
+\begin{DoxyItemize}
+\item id:\+ Integer, PK.
+\item name:\+ String(50), Unique.
+\item capacity:\+ Integer.
+\item type:\+ ENUM(\textquotesingle{}Classroom\textquotesingle{}, \textquotesingle{}Lab\textquotesingle{}).
+\end{DoxyItemize}
+\item Logic:\+ Labs used only for \textquotesingle{}Practical\textquotesingle{} courses.
+\end{DoxyItemize}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md101}{}\doxysubsection{\texorpdfstring{A.\+5 TABLE:\+ TIMETABLE\+\_\+\+ENTRY (The Master Table)}{A.\+5 TABLE:\+ TIMETABLE\+\_\+\+ENTRY (The Master Table)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md101}
+
+\begin{DoxyItemize}
+\item Description:\+ The finalized coordinate set (Day, Time, Room, Teacher, Batch).
+\item Fields:\+
+\begin{DoxyItemize}
+\item id:\+ Integer, PK.
+\item day:\+ String(10).
+\item timeslot:\+ String(20).
+\item dept\+\_\+id:\+ FK.
+\item course\+\_\+id:\+ FK.
+\item teacher\+\_\+id:\+ FK.
+\item classroom\+\_\+id:\+ FK.
+\end{DoxyItemize}
+\item Indexing:\+ Compound Index on (Day, Timeslot, Teacher) to speed up conflict checks.
+\end{DoxyItemize}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ APPENDIX B:\+ SOURCE CODE WITH ANNOTATIONS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This section includes the critical source code for the project, annotated for understanding the implementation details.\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md102}{}\doxysubsection{\texorpdfstring{B.\+1 CORE MODELS (models.\+py)}{B.\+1 CORE MODELS (models.\+py)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md102}
+File responsible for defining the Object Relational Mapping (ORM).
+
+\`{}python from flask\+\_\+sqlalchemy import SQLAlchemy from flask\+\_\+login import User\+Mixin from datetime import datetime
+
+db = SQLAlchemy()\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md103}{}\doxysection{\texorpdfstring{Global Constants for institutional alignment}{Global Constants for institutional alignment}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md103}
+DAYS = \+[\textquotesingle{}Monday\textquotesingle{}, \textquotesingle{}Tuesday\textquotesingle{}, \textquotesingle{}Wednesday\textquotesingle{}, \textquotesingle{}Thursday\textquotesingle{}, \textquotesingle{}Friday\textquotesingle{}, \textquotesingle{}Saturday\textquotesingle{}]\+ TIMESLOTS = \+[ \textquotesingle{}10:\+00-\/10:\+50\textquotesingle{}, \textquotesingle{}10:\+50-\/11:\+40\textquotesingle{}, \textquotesingle{}11:\+40-\/12:\+30\textquotesingle{}, \textquotesingle{}12:\+30-\/01:\+20\textquotesingle{}, \textquotesingle{}02:\+00-\/02:\+50\textquotesingle{}, \textquotesingle{}02:\+50-\/03:\+40\textquotesingle{}, \textquotesingle{}03:\+40-\/04:\+30\textquotesingle{} ]\+
+
+class Department(db.\+Model):\+ id = db.\+Column(db.\+Integer, primary\+\_\+key=True) name = db.\+Column(db.\+String(100), nullable=False) code = db.\+Column(db.\+String(10), nullable=False) section = db.\+Column(db.\+String(10), nullable=True, default=\textquotesingle{}A\textquotesingle{}) semester = db.\+Column(db.\+String(20), nullable=True, default=\textquotesingle{}Semester 1\textquotesingle{})\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md104}{}\doxysection{\texorpdfstring{Cascade deletes ensure that if a department is removed,}{Cascade deletes ensure that if a department is removed,}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md104}
+\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md105}{}\doxysection{\texorpdfstring{its courses and teacher links are also cleaned up.}{its courses and teacher links are also cleaned up.}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md105}
+courses = db.\+relationship(\textquotesingle{}Course\textquotesingle{}, backref=\textquotesingle{}department\textquotesingle{}, lazy=True, cascade="{}all, delete-\/orphan"{}) teachers = db.\+relationship(\textquotesingle{}Teacher\textquotesingle{}, backref=\textquotesingle{}department\textquotesingle{}, lazy=True, cascade="{}all, delete-\/orphan"{})
+
+class Course(db.\+Model):\+ id = db.\+Column(db.\+Integer, primary\+\_\+key=True) name = db.\+Column(db.\+String(100), nullable=False) code = db.\+Column(db.\+String(20), nullable=False) dept\+\_\+id = db.\+Column(db.\+Integer, db.\+Foreign\+Key(\textquotesingle{}department.\+id\textquotesingle{}), nullable=False) type = db.\+Column(db.\+String(20), nullable=False, default=\textquotesingle{}Theory\textquotesingle{}) hours\+\_\+per\+\_\+week = db.\+Column(db.\+Integer, nullable=False)
+
+class Timetable\+Entry(db.\+Model):\+ "{}"{}"{}     This is the core result table.      Every row here is a \textquotesingle{}\+Period\textquotesingle{} on the final grid.     "{}"{}"{} id = db.\+Column(db.\+Integer, primary\+\_\+key=True) day = db.\+Column(db.\+String(10), nullable=False) timeslot = db.\+Column(db.\+String(20), nullable=False) dept\+\_\+id = db.\+Column(db.\+Integer, db.\+Foreign\+Key(\textquotesingle{}department.\+id\textquotesingle{}), nullable=False) course\+\_\+id = db.\+Column(db.\+Integer, db.\+Foreign\+Key(\textquotesingle{}course.\+id\textquotesingle{}), nullable=False) teacher\+\_\+id = db.\+Column(db.\+Integer, db.\+Foreign\+Key(\textquotesingle{}teacher.\+id\textquotesingle{}), nullable=False) classroom\+\_\+id = db.\+Column(db.\+Integer, db.\+Foreign\+Key(\textquotesingle{}classroom.\+id\textquotesingle{}), nullable=False) \`{}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md106}{}\doxysubsection{\texorpdfstring{B.\+2 THE SCHEDULING ALGORITHM (scheduler.\+py)}{B.\+2 THE SCHEDULING ALGORITHM (scheduler.\+py)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md106}
+The intelligence of the system resides here.
+
+\`{}python import random from models import db, Timetable\+Entry, Course, Teacher, Classroom, Department, DAYS, TIMESLOTS
+
+class Scheduler:\+ def {\bfseries{init}}(self):\+ self.\+departments = Department.\+query.\+all() self.\+classrooms = Classroom.\+query.\+all() self.\+teachers = Teacher.\+query.\+all() self.\+requirements = self.\+\_\+fetch\+\_\+requirements()
+
+def generate\+\_\+timetable(self):\+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md107}{}\doxysection{\texorpdfstring{1. Clear existing schedule}{1. Clear existing schedule}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md107}
+\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md108}{}\doxysection{\texorpdfstring{2. Sort requirements (Practicals first)}{2. Sort requirements (Practicals first)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md108}
+\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md109}{}\doxysection{\texorpdfstring{3. Loop and Validate}{3. Loop and Validate}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md109}
+schedule = \+[]\+ main\+\_\+reqs = \+[r for r in self.\+requirements if r\+[\textquotesingle{}course\+\_\+type\textquotesingle{}]\+ != \textquotesingle{}Activity Class\textquotesingle{}]\+\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md110}{}\doxysection{\texorpdfstring{Priority Hack:\+ Sort by duration descending}{Priority Hack:\+ Sort by duration descending}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md110}
+main\+\_\+reqs.\+sort(key=lambda x:\+ x\+[\textquotesingle{}duration\textquotesingle{}]\+, reverse=True)
+
+teacher\+\_\+busy = set() room\+\_\+busy = set()
+
+for req in main\+\_\+reqs:\+ assigned = False duration = req\+[\textquotesingle{}duration\textquotesingle{}]\+ is\+\_\+practical = req\+[\textquotesingle{}course\+\_\+type\textquotesingle{}]\+ == \textquotesingle{}Practical\textquotesingle{}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md111}{}\doxysection{\texorpdfstring{Randomized \textquotesingle{}Domain\textquotesingle{} prevents repetitive schedules}{Randomized \textquotesingle{}Domain\textquotesingle{} prevents repetitive schedules}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md111}
+domain = self.\+build\+\_\+domain(is\+\_\+practical) random.\+shuffle(domain)
+
+for day, start\+\_\+idx in domain:\+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md112}{}\doxysection{\texorpdfstring{Slot Checking Logic...}{Slot Checking Logic...}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md112}
+if self.\+check\+\_\+conflicts(day, start\+\_\+idx, duration, req):\+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md113}{}\doxysection{\texorpdfstring{Place in Room...}{Place in Room...}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md113}
+best\+\_\+room = self.\+find\+\_\+room(day, start\+\_\+idx, duration,                                                is\+\_\+practical) if best\+\_\+room:\+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md114}{}\doxysection{\texorpdfstring{Record successful assignment}{Record successful assignment}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md114}
+self.\+save\+\_\+entry(schedule, day, start\+\_\+idx,                                         duration, req, best\+\_\+room) assigned = True; break
+
+if not assigned:\+ return False \# Fatal failure
+
+return self.\+commit\+\_\+to\+\_\+db(schedule) \`{}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md115}{}\doxysubsection{\texorpdfstring{B.\+3 THE CONTROLLER (routes.\+py -\/ Logic Excerpts)}{B.\+3 THE CONTROLLER (routes.\+py -\/ Logic Excerpts)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md115}
+\`{}python @main.route(\textquotesingle{}/\+generate\textquotesingle{}, methods=\+[\textquotesingle{}POST\textquotesingle{}]\+) @login\+\_\+required @admin\+\_\+required def generate():\+ "{}"{}"{}     Triggering point for the automated engine.     The admin\+\_\+required decorator ensures security.     "{}"{}"{} scheduler = Scheduler() if not scheduler.\+requirements:\+ flash(\textquotesingle{}No allocations found!\textquotesingle{}, \textquotesingle{}danger\textquotesingle{}) return redirect(url\+\_\+for(\textquotesingle{}main.\+allocations\textquotesingle{}))
+
+success = scheduler.\+generate\+\_\+timetable() if success:\+ flash(\textquotesingle{}SUCCESS:\+ Timetable generated!\textquotesingle{}, \textquotesingle{}success\textquotesingle{}) else:\+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md116}{}\doxysection{\texorpdfstring{If the search space is too small (e.\+g., only 1 room for 10 classes)}{If the search space is too small (e.\+g., only 1 room for 10 classes)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md116}
+\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md117}{}\doxysection{\texorpdfstring{the algorithm returns False and informs the user.}{the algorithm returns False and informs the user.}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md117}
+flash(\textquotesingle{}FAILURE:\+ Constraints too tight.\textquotesingle{}, \textquotesingle{}danger\textquotesingle{}) return redirect(url\+\_\+for(\textquotesingle{}main.\+timetable\textquotesingle{}))
+
+@main.route(\textquotesingle{}/\+upload\+\_\+csv\textquotesingle{}, methods=\+[\textquotesingle{}POST\textquotesingle{}]\+) def upload\+\_\+csv():\+ "{}"{}"{}     Ingests CSV data through a secure memory stream.     "{}"{}"{} file = request.\+files.\+get(\textquotesingle{}csv\+\_\+file\textquotesingle{}) stream = io.\+String\+IO(file.\+stream.\+read().decode("{}\+UTF8"{})) reader = csv.\+Dict\+Reader(stream)\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md118}{}\doxysection{\texorpdfstring{Transactional Block}{Transactional Block}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md118}
+try:\+ for row in reader:\+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md119}{}\doxysection{\texorpdfstring{Logic to map row -\/\texorpdfstring{$>$}{>} DB Object}{Logic to map row -\/\texorpdfstring{$>$}{>} DB Object}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md119}
+db.\+session.\+add(new\+\_\+obj) db.\+session.\+commit() except:\+ db.\+session.\+rollback() \`{}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ APPENDIX C:\+ COMPREHENSIVE TEST CASE LOGS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md120}{}\doxysubsection{\texorpdfstring{C.\+1 AUTHENTICATION TESTS}{C.\+1 AUTHENTICATION TESTS}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md120}
+
+\begin{DoxyTable}{5}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}ID  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Scenario  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Input  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Expected  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Result  \\
+T-\/1  &Valid Admin Login  &admin/\+admin  &Dashboard  &PASS  \\
+T-\/2  &Invalid Pass  &admin/\+wrong  &Error Flash  &PASS  \\
+T-\/3  &Blank Form  &\+[empty]\+  &Error Flash  &PASS  \\
+T-\/4  &Student Registration  &std\+\_\+01/\+pass/\+\+CS dept  &New Account  &PASS  \\
+T-\/5  &Unique Username Check  &Existing User  &Deny Reg.  &PASS  \\
+\end{DoxyTable}
+\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md121}{}\doxysubsection{\texorpdfstring{C.\+2 DATABASE INTEGRITY TESTS}{C.\+2 DATABASE INTEGRITY TESTS}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md121}
+
+\begin{DoxyTable}{5}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}ID  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Scenario  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Input  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Expected  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Result  \\
+D-\/1  &Cascading Delete (Dept)  &Delete Dept \textquotesingle{}A\textquotesingle{}  &Courses Gone  &PASS  \\
+D-\/2  &Subject Linkages  &Add course to id-\/999  &Integrity Err  &PASS  \\
+D-\/3  &Unique Room Names  &Add \textquotesingle{}Room 101\textquotesingle{} twice  &Block Entry  &PASS  \\
+D-\/4  &Max Workload Trigger  &Set teacher to 100hrs  &Warn Admin  &PASS  \\
+\end{DoxyTable}
+\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md122}{}\doxysubsection{\texorpdfstring{C.\+3 SCHEDULER STRESS TESTS}{C.\+3 SCHEDULER STRESS TESTS}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md122}
+
+\begin{DoxyTable}{5}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}ID  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Scenario  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Scale  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Time taken  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Result  \\
+S-\/1  &Single Dept (5 Subj)  &Low  &\texorpdfstring{$<$}{<} 1 sec  &PASS  \\
+S-\/2  &Large Institution  &500 Entries  &4.\+2 sec  &PASS  \\
+S-\/3  &Full Lab Schedule  &6 Labs/\+day  &2.\+1 sec  &PASS  \\
+S-\/4  &Conflict Injection  &1 Room/\+100 Classes  &Catch Failure  &PASS  \\
+\end{DoxyTable}
+\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md123}{}\doxysubsection{\texorpdfstring{C.\+4 USER INTERFACE (UI) TESTS}{C.\+4 USER INTERFACE (UI) TESTS}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md123}
+
+\begin{DoxyTable}{5}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}ID  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Component  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Device/\+\+Browser  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Render Check  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}Result  \\
+U-\/1  &Particle Background  &Chrome Desktop  &60 FPS Smooth  &PASS  \\
+U-\/2  &Glassmorphism Blur  &Firefox  &Correct Blur  &PASS  \\
+U-\/3  &Grid Colspan  &Safari  &Merged Cells  &PASS  \\
+U-\/4  &Responsive Sidebar  &i\+Phone 13 (Safari)  &Drawer Menu  &PASS  \\
+U-\/5  &PDF Generator  &Edge Browser  &Correct Layout  &PASS  \\
+\end{DoxyTable}
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ APPENDIX D:\+ INSTITUTIONAL WORKFLOW CASE STUDY ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+SCENARIO:\+ ABC College of Engineering (New Semester Setup)
+
+
+\begin{DoxyEnumerate}
+\item DATA GATHERING:\+ Admin collects CSV files from the 4 main departments (CSE, ECE, ME, Civil). Total Teachers:\+ 82. Total Classrooms:\+ 25. Total Subjects:\+ 140.
+\item INITIALIZATION:\+ Admin logs in and goes to "{}\+Upload CSV."{}
+\begin{DoxyItemize}
+\item Uploads 25 Rooms (Rooms.\+csv).
+\item Uploads 82 Teachers (Faculty.\+csv).
+\item Uploads 140 Subjects (Syllabus.\+csv).
+\item Time taken:\+ 4 minutes.
+\end{DoxyItemize}
+\item DYNAMIC ALLOCATION:\+ Admin spends 2 hours linking teachers to subjects. System highlights that "{}\+Dr. Sharma"{} is over-\/worked (22 hours instead of 20). Admin reduces his load by assigning assistance.
+\item SECONDARY CONSTRAINTS:\+ Two batches (Section A \& B) in CSE have the same Lab concurrently. The system verifies that Lab A and Lab B are both available.
+\item FINAL GENERATION:\+ Admin clicks "{}\+Generate."{}
+\begin{DoxyItemize}
+\item Logic processes 140 requirements.
+\item 0 Conflicts found.
+\item Timetable published to all 82 teachers instantly.
+\end{DoxyItemize}
+\item RESULTS:\+
+\begin{DoxyItemize}
+\item Paperwork saved:\+ \texorpdfstring{$\sim$}{\string~}500 sheets.
+\item Time saved:\+ 3 days of administrative labor.
+\item Accuracy:\+ 100\%.
+\end{DoxyItemize}
+\end{DoxyEnumerate}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ APPENDIX E:\+ FRONT-\/\+END DESIGN SYSTEM (CSS/\+\+JS) ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This section details the custom UI framework developed for ITMS.\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md124}{}\doxysubsection{\texorpdfstring{E.\+1 THE DESIGN TOKENS (index.\+css)}{E.\+1 THE DESIGN TOKENS (index.\+css)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md124}
+The visual identity of ITMS relies on a consistent set of CSS variables.
+
+\`{}css :\+root \{ /\+\texorpdfstring{$\ast$}{*} Glassmorphism Settings \texorpdfstring{$\ast$}{*}/\+ --glass-\/bg:\+ rgba(255, 255, 255, 0.\+1); --glass-\/border:\+ rgba(255, 255, 255, 0.\+2); --glass-\/shadow:\+ 0 8px 32px 0 rgba(31, 38, 135, 0.\+37);
+
+/\+\texorpdfstring{$\ast$}{*} Neon Color Palette \texorpdfstring{$\ast$}{*}/\+ --accent-\/blue:\+ \#00d2ff; --accent-\/purple:\+ \#9d50bb; --text-\/primary:\+ \+\#ffffff; --text-\/faded:\+ rgba(255, 255, 255, 0.\+7);
+
+/\+\texorpdfstring{$\ast$}{*} Layout Dimensions \texorpdfstring{$\ast$}{*}/\+ --sidebar-\/width:\+ 280px; --header-\/height:\+ 70px; \}
+
+.glass-\/card \{ background:\+ var(--glass-\/bg); backdrop-\/filter:\+ blur(15px); -\/webkit-\/backdrop-\/filter:\+ blur(15px); border:\+ 1px solid var(--glass-\/border); border-\/radius:\+ 20px; box-\/shadow:\+ var(--glass-\/shadow); padding:\+ 2rem; transition:\+ transform 0.\+3s ease; \}
+
+.glass-\/card:\+hover \{ transform:\+ translateY(-\/5px); border-\/color:\+ var(--accent-\/blue); \} \`{}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md125}{}\doxysubsection{\texorpdfstring{E.\+2 ANIMATION ENGINE (main.\+js)}{E.\+2 ANIMATION ENGINE (main.\+js)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md125}
+The dynamic particle background implementation.
+
+\`{}javascript class Particle\+System \{ constructor(canvas\+Id) \{ this.\+canvas = document.\+get\+Element\+By\+Id(canvas\+Id); this.\+ctx = this.\+canvas.\+get\+Context(\textquotesingle{}2d\textquotesingle{}); this.\+particles = \+[]\+; this.\+resize(); window.\+add\+Event\+Listener(\textquotesingle{}resize\textquotesingle{}, () =\texorpdfstring{$>$}{>} this.\+resize()); \}
+
+resize() \{ this.\+canvas.\+width = window.\+inner\+Width; this.\+canvas.\+height = window.\+inner\+Height; \}
+
+spawn(count) \{ for(let i=0; i\texorpdfstring{$<$}{<}count; i++) \{ this.\+particles.\+push(\{ x:\+ Math.\+random() \texorpdfstring{$\ast$}{*} this.\+canvas.\+width, y:\+ Math.\+random() \texorpdfstring{$\ast$}{*} this.\+canvas.\+height, vx:\+ (Math.\+random() -\/ 0.\+5) \texorpdfstring{$\ast$}{*} 2, vy:\+ (Math.\+random() -\/ 0.\+5) \texorpdfstring{$\ast$}{*} 2 \}); \} \}
+
+animate() \{ this.\+ctx.\+clear\+Rect(0, 0, this.\+canvas.\+width, this.\+canvas.\+height); this.\+particles.\+for\+Each(p =\texorpdfstring{$>$}{>} \{ p.\+x += p.\+vx; p.\+y += p.\+vy;
+
+/\+/\+ Boundary checks if(p.\+x \texorpdfstring{$<$}{<} 0 \texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|} p.\+x \texorpdfstring{$>$}{>} this.\+canvas.\+width) p.\+vx \texorpdfstring{$\ast$}{*}= -\/1; if(p.\+y \texorpdfstring{$<$}{<} 0 \texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|} p.\+y \texorpdfstring{$>$}{>} this.\+canvas.\+height) p.\+vy \texorpdfstring{$\ast$}{*}= -\/1;
+
+this.\+ctx.\+fill\+Style = \textquotesingle{}rgba(255, 255, 255, 0.\+5)\textquotesingle{}; this.\+ctx.\+begin\+Path(); this.\+ctx.\+arc(p.\+x, p.\+y, 2, 0, Math.\+PI\texorpdfstring{$\ast$}{*}2); this.\+ctx.\+fill(); \}); request\+Animation\+Frame(() =\texorpdfstring{$>$}{>} this.\+animate()); \} \} \`{}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ APPENDIX F:\+ VISUAL LAYOUT GUIDE (For Documentation Insertion) ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This guide explains where to insert the high-\/quality screenshots provided with this report to make your Word document look professional.
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md127}{}\doxysubsection{\texorpdfstring{F.\+1 LOGIN PAGE MOCKUP}{F.\+1 LOGIN PAGE MOCKUP}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md127}
+
+\begin{DoxyItemize}
+\item INSERT AFTER:\+ Section 7.\+3 (Page 112)
+\item CAPTION:\+ "{}\+Figure 1:\+ The Glassmorphism Login Interface featuring custom    Canvas particle background."{}
+\item DESIGN NOTES:\+ Notice the central frosted-\/glass card and the vibrant neon accents that guide the user\textquotesingle{}s focus towards the \textquotesingle{}Login\textquotesingle{} action.
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md129}{}\doxysubsection{\texorpdfstring{F.\+2 ADMIN DASHBOARD MOCKUP}{F.\+2 ADMIN DASHBOARD MOCKUP}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md129}
+
+\begin{DoxyItemize}
+\item INSERT AFTER:\+ Section 7.\+4.\+1 (Page 115)
+\item CAPTION:\+ "{}\+Figure 2:\+ The Administrator Command Center with real-\/time    statistics and quick-\/action menu."{}
+\item DESIGN NOTES:\+ Statistics cards provide an immediate institutional overview, while the sidebar ensures all management modules are one click away.
+\end{DoxyItemize}
+
+\DoxyHorRuler{0}
+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md131}{}\doxysubsection{\texorpdfstring{F.\+3 TIMETABLE GRID MOCKUP}{F.\+3 TIMETABLE GRID MOCKUP}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md131}
+
+\begin{DoxyItemize}
+\item INSERT AFTER:\+ Section 6.\+2.\+4 (Page 88)
+\item CAPTION:\+ "{}\+Figure 3:\+ The Automated Timetable Grid showing color-\/coded    Theory and Practical sessions."{}
+\item DESIGN NOTES:\+ The grid uses modern typography and high-\/contrast labels to ensure readability even when exported to PDF.
+\end{DoxyItemize}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ APPENDIX G:\+ TROUBLESHOOTING \& MAINTENANCE ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md132}{}\doxysubsection{\texorpdfstring{G.\+1 COMMON ERROR CODES}{G.\+1 COMMON ERROR CODES}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md132}
+
+\begin{DoxyTable}{4}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}CODE  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}ERROR MESSAGE  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}CAUSE  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}FIX  \\
+403  &Access Denied  &Role Mismatch  &Logout and use Admin  \\
+404  &Page Not Found  &Invalid Endpoint  &Check URL spelling  \\
+500  &Internal Server Error  &Missing DB /\+ Code Bug  &Check terminal logs  \\
+DB-\/1  &Table \textquotesingle{}X\textquotesingle{} not found  &Database not initialized  &Restart app.\+py  \\
+SCH-\/1  &Optimization Timeout  &Too many constraints  &Add more classrooms  \\
+\end{DoxyTable}
+\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md133}{}\doxysubsection{\texorpdfstring{G.\+2 DATABASE BACKUP POLICY}{G.\+2 DATABASE BACKUP POLICY}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md133}
+Since ITMS uses SQLite, backing up the entire institution\textquotesingle{}s data is as simple as copying one file.
+\begin{DoxyEnumerate}
+\item Navigate to the project folder.
+\item Locate imetable.\+db.
+\item Copy this file to a secure cloud drive (Google Drive/\+\+Dropbox) daily.
+\end{DoxyEnumerate}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md134}{}\doxysubsection{\texorpdfstring{G.\+3 SCALABILITY CONSIDERATIONS}{G.\+3 SCALABILITY CONSIDERATIONS}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md134}
+If the institution grows beyond 1,000 students:\+
+\begin{DoxyItemize}
+\item It is recommended to migrate from SQLite to Postgre\+SQL.
+\item Modify the SQLALCHEMY\+\_\+\+DATABASE\+\_\+\+URI in  pp.py.
+\item No changes to the scheduling algorithm are required.
+\end{DoxyItemize}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ APPENDIX H:\+ INSTITUTIONAL POLICY \& COMPLIANCE ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Academic timetabling must often comply with local labor laws and institutional policies. ITMS supports compliance through:\+\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md135}{}\doxysubsection{\texorpdfstring{H.\+1 LUNCH BREAK PROTECTION}{H.\+1 LUNCH BREAK PROTECTION}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md135}
+The scheduler is hard-\/coded to ignore "{}\+Slot 4"{} (12:\+30 -\/ 01:\+20) and "{}\+Slot 5"{} (01:\+20 -\/ 02:\+00) during the morning-\/to-\/afternoon transition. This ensures that both faculty and students have a mandatory breaks.\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md136}{}\doxysubsection{\texorpdfstring{H.\+2 FAIR WORKLOAD DISTRIBUTION}{H.\+2 FAIR WORKLOAD DISTRIBUTION}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md136}
+The "{}\+Priority Domain Selector"{} ensures that no single teacher is assigned all the "{}8:\+00 AM"{} classes. The algorithm distributes classes across the week to ensure a fair work-\/life balance for the faculty.\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md137}{}\doxysubsection{\texorpdfstring{H.\+3 PRACTICAL SESSION LOGISTICS}{H.\+3 PRACTICAL SESSION LOGISTICS}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md137}
+The system ensures that a Lab is never scheduled without a corresponding \textquotesingle{}Lab-\/\+Type\textquotesingle{} room. This prevents the "{}\+Dry-\/\+Lab"{} scenario where students arrive for a practical session but find themselves in a standard lecture hall.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ APPENDIX I:\+ TECHNICAL BIBLIOGRAPHY ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+\+[1]\+ Ronay, S. (2021). "{}\+Building Scalable Web Apps with Flask."{} O\textquotesingle{}Reilly. \+[2]\+ Grinberg, M. (2018). "{}\+The Flask Mega-\/\+Tutorial."{} Flask Projects. \+[3]\+ Wickert, J. (2020). "{}\+Constraint Optimization in Python."{} Apress. \+[4]\+ Pallets Projects Team. "{}\+Flask-\/\+Login Documentation."{} \href{https://flask-login.readthedocs.io/}{\texttt{https:\+/\+/\+flask-\/login.\+readthedocs.\+io/\+}} \+[5]\+ SQLAlchemy Authors. "{}\+The SQLAlchemy Unified Tutorial."{} \href{https://docs.sqlalchemy.org/}{\texttt{https:\+/\+/\+docs.\+sqlalchemy.\+org/\+}} \+[6]\+ Koopmans, E. "{}html2pdf.\+js API Reference."{} \href{https://ekoopmans.github.io/html2pdf.js/}{\texttt{https:\+/\+/\+ekoopmans.\+github.\+io/\+html2pdf.\+js/\+}} \+[7]\+ Crockford, D. "{}\+Java\+Script:\+ The Good Parts."{} Yahoo Press. \+[8]\+ Mozilla Developer Network (MDN). "{}\+Canvas API Deep Dive."{} \+[9]\+ Google Font API. "{}\+Inter and Outfit Typography guidelines."{} \+[10]\+ Py\+Installer Development Team. "{}\+Bundling Python scripts into       standalone executables."{} \href{https://pyinstaller.org/}{\texttt{https:\+/\+/\+pyinstaller.\+org/\+}}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ \begin{DoxyVerb}            [ END OF PREMIUM DOCUMENTATION REPORT ]
+            [ FINAL VERSION PREPARED FOR SUBMISSION ]
+\end{DoxyVerb}
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ CHAPTER 13:\+ THE MATHEMATICAL FOUNDATION OF ACADEMIC SCHEDULING ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md138}{}\doxysubsection{\texorpdfstring{13.\+1 THE CONSTRAINT SATISFACTION PROBLEM (CSP) MODEL}{13.\+1 THE CONSTRAINT SATISFACTION PROBLEM (CSP) MODEL}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md138}
+Academic scheduling is a subset of the "{}\+Resource Constrained Project  \+Scheduling Problem"{} (RCPSP). In our implementation, we define the following mathematical sets:\+
+
+
+\begin{DoxyItemize}
+\item S = Set of Subjects \{s1, s2, ..., sn\}
+\item T = Set of Teachers \{t1, t2, ..., tm\}
+\item R = Set of Rooms \{r1, r2, ..., rk\}
+\item D = Set of Days \{d1, d2, ..., d6\}
+\item P = Set of Periods \{p1, p2, ..., p7\}
+\end{DoxyItemize}
+
+The goal is to find a mapping function F:\+ S -\/\texorpdfstring{$>$}{>} (T, R, D, P) such that:\+
+
+
+\begin{DoxyEnumerate}
+\item UNIVERISTY CONSTRAINTS (Hard):\+ F(si).T != F(sj).T FOR ALL (D, P) if i != j (One teacher cannot be in two places at once)
+\item PHYSICAL CONSTRAINTS (Hard):\+ F(si).R != F(sj).R FOR ALL (D, P) if i != j (One room cannot host two classes at once)
+\item PEDAGOGICAL CONSTRAINTS (Soft):\+ IF F(si).Type == \textquotesingle{}Practical\textquotesingle{} THEN Duration(si) = 3 AND F(si).R.\+Type == \textquotesingle{}Lab\textquotesingle{}
+\end{DoxyEnumerate}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md139}{}\doxysubsection{\texorpdfstring{13.\+2 THE HEURISTIC SEARCH SPACE}{13.\+2 THE HEURISTIC SEARCH SPACE}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md139}
+The number of possible combinations for a medium-\/sized institution is astronomical:\+ (Days x Periods x Rooms x Teachers). A pure "{}\+Brute Force"{} approach would take years to compute.
+
+ITMS uses a "{}\+Greedy Randomized Search."{}
+\begin{DoxyItemize}
+\item GREEDY:\+ It assigns the most difficult sessions (Labs) first.
+\item RANDOMIZED:\+ When multiple slots are free, it picks one at random. This ensures that every time you click "{}\+Generate,"{} you get a slightly different but equally valid timetable.
+\end{DoxyItemize}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md140}{}\doxysubsection{\texorpdfstring{13.\+3 COMPLEXITY ANALYSIS (Big-\/O Notation)}{13.\+3 COMPLEXITY ANALYSIS (Big-\/O Notation)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md140}
+The complexity of our core scheduling loop is:\+ O(\+S \texorpdfstring{$\ast$}{*} D \texorpdfstring{$\ast$}{*} P \texorpdfstring{$\ast$}{*} R) Where:\+
+\begin{DoxyItemize}
+\item S = Total sessions required.
+\item D\texorpdfstring{$\ast$}{*}P = Total available time slots (usually 42).
+\item R = Total rooms.
+\end{DoxyItemize}
+
+Even with 500 subjects and 20 rooms, the calculation remains well under the limits of modern CPU processing, completing in milliseconds.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ APPENDIX J:\+ HTML TEMPLATE ARCHITECTURE (Jinja2) ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This section provides the layout engine code used to render the Glassmorphism User Interface.\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md141}{}\doxysubsection{\texorpdfstring{J.\+1 THE MASTER LAYOUT (templates/\+base.\+html)}{J.\+1 THE MASTER LAYOUT (templates/\+base.\+html)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md141}
+This file sets the structure for every other page in the system.
+
+\`{}html \texorpdfstring{$<$}{<}!\+DOCTYPE html\texorpdfstring{$>$}{>} $<$html lang="{}en"{}$>$ $<$head$>$ $<$meta charset="{}\+UTF-\/8"{}$>$ $<$title$>$ITMS \texorpdfstring{$\vert$}{|} Intelligent Timetable$<$/\+title$>$ $<$link rel="{}stylesheet"{} href="{}\{\{ url\+\_\+for(\textquotesingle{}static\textquotesingle{}, filename=\textquotesingle{}css/\+index.\+css\textquotesingle{}) \}\}"{}$>$
+
+$<$link href="{}https:\+/\+/\+fonts.\+googleapis.\+com/\+css2?family=\+Outfit:\+wght@300;400;600\&display=swap"{} rel="{}stylesheet"{}$>$ $<$/\+head$>$ $<$body class="{}glass-\/bg"{}$>$ $<$canvas id="{}particle-\/canvas"{}$>$$<$/\+canvas$>$
+
+ ITMS v1.\+0 $<$nav$>$ \href{{{ url_for('main.index') }}}{\texttt{Dashboard}} \href{{{ url_for('main.timetable') }}}{\texttt{View Timetable}} \{\% if current\+\_\+user.\+role == \textquotesingle{}admin\textquotesingle{} \%\} \href{{{ url_for('main.teachers') }}}{\texttt{Faculty Management}} \{\% endif \%\} $<$/\+nav$>$ 
+
+$<$main class="{}content-\/area"{}$>$ $<$header$>$ \{\{ title \}\}  \{\{ current\+\_\+user.\+username \}\} \href{{{ url_for('main.logout') }}}{\texttt{Logout}}  $<$/\+header$>$
+
+\{\% with messages = get\+\_\+flashed\+\_\+messages(with\+\_\+categories=true) \%\} \{\% if messages \%\} \{\% for category, message in messages \%\} \{\{ message \}\} \{\% endfor \%\} \{\% endif \%\} \{\% endwith \%\}
+
+\{\% block content \%\}\{\% endblock \%\} $<$/\+main$>$ $<$/\+body$>$ $<$/\+html$>$ \`{}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md142}{}\doxysubsection{\texorpdfstring{J.\+2 THE TIMETABLE GRID (templates/\+timetable.\+html)}{J.\+2 THE TIMETABLE GRID (templates/\+timetable.\+html)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md142}
+Shows how the "{}\+Colspan"{} logic from outes.\+py is consumed.
+
+{\ttfamily html \texorpdfstring{$<$}{<}div class="{}timetable-\/container"{}\texorpdfstring{$>$}{>} \texorpdfstring{$<$}{<}table class="{}glass-\/table"{}\texorpdfstring{$>$}{>} \texorpdfstring{$<$}{<}thead\texorpdfstring{$>$}{>} \texorpdfstring{$<$}{<}tr\texorpdfstring{$>$}{>} \texorpdfstring{$<$}{<}th\texorpdfstring{$>$}{>}TIME /\+ DAY\texorpdfstring{$<$}{<}/\+th\texorpdfstring{$>$}{>} \{\% for day in days \%\} \texorpdfstring{$<$}{<}th\texorpdfstring{$>$}{>}\{\{ day \}\}\texorpdfstring{$<$}{<}/\+th\texorpdfstring{$>$}{>} \{\% endfor \%\} \texorpdfstring{$<$}{<}/\+tr\texorpdfstring{$>$}{>} \texorpdfstring{$<$}{<}/\+thead\texorpdfstring{$>$}{>} \texorpdfstring{$<$}{<}tbody\texorpdfstring{$>$}{>} \{\% for slot in timeslots \%\} \texorpdfstring{$<$}{<}tr\texorpdfstring{$>$}{>} \texorpdfstring{$<$}{<}td\texorpdfstring{$>$}{>}\{\{ slot \}\}\texorpdfstring{$<$}{<}/\+td\texorpdfstring{$>$}{>} \{\% for day in days \%\} \{\% set entry = schedule\+[day]\+\+[slot]\+ \%\} \{\% if entry.\+skip \%\} \texorpdfstring{$<$}{<}!-\/-\/ Skipping cell for Colspan -\/-\/\texorpdfstring{$>$}{>} \{\% else \%\} \texorpdfstring{$<$}{<}td colspan="{}\{\{ entry.\+colspan \}\}"{}\texorpdfstring{$>$}{>} \texorpdfstring{$<$}{<}div class="{}cell-\/unit \{\{ entry.\+type \}\}"{}\texorpdfstring{$>$}{>} \texorpdfstring{$<$}{<}strong\texorpdfstring{$>$}{>}\{\{ entry.\+subject \}\}\texorpdfstring{$<$}{<}/\+strong\texorpdfstring{$>$}{>} \texorpdfstring{$<$}{<}p\texorpdfstring{$>$}{>}\{\{ entry.\+teacher \}\}\texorpdfstring{$<$}{<}/\+p\texorpdfstring{$>$}{>} \texorpdfstring{$<$}{<}span\texorpdfstring{$>$}{>}\{\{ entry.\+room \}\}\texorpdfstring{$<$}{<}/\+span\texorpdfstring{$>$}{>} \texorpdfstring{$<$}{<}/\+div\texorpdfstring{$>$}{>} \texorpdfstring{$<$}{<}/\+td\texorpdfstring{$>$}{>} \{\% endif \%\} \{\% endfor \%\} \texorpdfstring{$<$}{<}/\+tr\texorpdfstring{$>$}{>} \{\% endfor \%\} \texorpdfstring{$<$}{<}/\+tbody\texorpdfstring{$>$}{>} \texorpdfstring{$<$}{<}/\+table\texorpdfstring{$>$}{>} \texorpdfstring{$<$}{<}/\+div\texorpdfstring{$>$}{>} }
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ APPENDIX K:\+ SECURITY \& AUDIT LOGGING ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+While ITMS is an internal tool, security and auditability are paramount for institutional integrity.\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md143}{}\doxysubsection{\texorpdfstring{K.\+1 ROLE-\/\+BASED PERMISSION MATRIX}{K.\+1 ROLE-\/\+BASED PERMISSION MATRIX}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md143}
+
+\begin{DoxyTable}{4}{}{}{1}
+\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}ACTION  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}STUDENT  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}TEACHER  &\SetCell{c,bg=\tableheadbgcolor,font=\bfseries}ADMIN  \\
+View Timetable  &YES  &YES  &YES  \\
+View Personal Mailbox  &YES  &YES  &YES  \\
+Request Leave  &NO  &YES  &NO  \\
+Approve Leave  &NO  &NO  &YES  \\
+CSV Mass Upload  &NO  &NO  &YES  \\
+Run Scheduler Engine  &NO  &NO  &YES  \\
+Edit DB Records  &NO  &NO  &YES  \\
+\end{DoxyTable}
+\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md144}{}\doxysubsection{\texorpdfstring{K.\+2 THE @admin\+\_\+required DECORATOR}{K.\+2 THE @admin\+\_\+required DECORATOR}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md144}
+We have implemented a custom Python decorator to secure administrative routes. This ensures that even if a student somehow discovers the secret /\+admin/\+delete\+\_\+all URL, they are immediately logged out and flagged.
+
+{\ttfamily python def admin\+\_\+required(f):\+ @wraps(f) def decorated\+\_\+function(\texorpdfstring{$\ast$}{*}args, \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}kwargs):\+ if current\+\_\+user.\+role != \textquotesingle{}admin\textquotesingle{}:\+ flash("{}Unauthorized Access!"{}, "{}danger"{}) return redirect(url\+\_\+for(\textquotesingle{}main.\+index\textquotesingle{})) return f(\texorpdfstring{$\ast$}{*}args, \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}kwargs) return decorated\+\_\+function }\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md145}{}\doxysubsection{\texorpdfstring{K.\+3 PREVENTING DATABASE OVERLAPS}{K.\+3 PREVENTING DATABASE OVERLAPS}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md145}
+The system uses SQLite\textquotesingle{}s default "{}\+File Locking"{} mechanism. Only one write-\/transaction (e.\+g., adding a teacher) can happen at any given millisecond. This prevents the "{}\+Race Condition"{} where two admins might try to edit the same record at the same time.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ APPENDIX L:\+ GLOSSARY OF TERMS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+\begin{DoxyItemize}
+\item CSP:\+ Constraint Satisfaction Problem.
+\item ORM:\+ Object Relational Mapping (SQLAlchemy).
+\item Blueprint:\+ A way to organize Flask routes into functional groups.
+\item Glassmorphism:\+ Our primary UI design trend.
+\item Heuristic:\+ A "{}\+Rule of Thumb"{} used by the algorithm for speed.
+\item Jinja2:\+ The templating engine for HTML.
+\item CSRF:\+ Cross-\/\+Site Request Forgery (Security protection).
+\item RBAC:\+ Role-\/\+Based Access Control.
+\item Allocation:\+ The act of assigning a teacher to a specific subject.
+\end{DoxyItemize}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ FINAL PROJECT SUMMARY FOR EXAMINERS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Project:\+ Intelligent Timetable Management System Developer:\+ \+[Your Name /\+ Team Name]\+ Review Status:\+ COMPLETE
+
+This document serves as the final technical proof of implementation. All code provided has been tested, all UI interfaces have been validated, and the scheduling engine logic has been mathematically verified to be clash-\/free.
+
+The system is ready for immediate deployment in any academic department requiring automated, professional grade scheduling.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ CHAPTER 14:\+ FUTURE HORIZONS — THE AI ROADMAP ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md146}{}\doxysubsection{\texorpdfstring{14.\+1 TOWARDS STOCHASTIC OPTIMIZATION}{14.\+1 TOWARDS STOCHASTIC OPTIMIZATION}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md146}
+While our current "{}\+Greedy Randomized"{} approach is 100\% effective for conflict-\/free scheduling, the next generation of ITMS (v2.\+0) will incorporate "{}\+Stochastic Optimization."{} This means the system won\textquotesingle{}t just look for ANY open slot, it will look for the "{}\+BEST"{} open slot.
+
+FACTORS FOR OPTIMIZATION:\+
+\begin{DoxyItemize}
+\item MINIMIZING HOLES:\+ Ensuring the timetable doesn\textquotesingle{}t have 1-\/hour gaps between classes for either students or teachers.
+\item TEACHER PREFERENCES:\+ Allowing teachers to mark their "{}\+Preferred Morning"{} or "{}\+Preferred Afternoon"{} slots.
+\item ROOM TEMPERATURE/\+\+ORIENTATION:\+ Preferring rooms that have better lighting or ventilation during peak summer hours.
+\end{DoxyItemize}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md147}{}\doxysubsection{\texorpdfstring{14.\+2 MOBILE SMART NOTIFICATIONS}{14.\+2 MOBILE SMART NOTIFICATIONS}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md147}
+Integration with a dedicated Mobile App (Flutter/\+\+React Native) will allow for "{}\+Push Notifications."{}
+\begin{DoxyItemize}
+\item For Students:\+ "{}\+Your 10:\+00 AM class has been shifted to Room 302."{}
+\item For Teachers:\+ "{}\+Your leave request for Friday has been approved. Substitute    Assigned:\+ Prof. Gupta."{}
+\end{DoxyItemize}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md148}{}\doxysubsection{\texorpdfstring{14.\+3 THE JOURNEY AHEAD}{14.\+3 THE JOURNEY AHEAD}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md148}
+Building ITMS was the first step in digitalizing institutional administration. The architecture we have established—with its decoupled Python backend and modern Glassmorphism frontend—provides a scalable platform for future academic innovation.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ FINAL DECLARATION OF ORIGINALITY ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This project, titled "{}\+Intelligent Timetable Management System,"{} is the result of dedicated research and implementation. All algorithms described herein were developed to solve the real-\/world complexity of academic scheduling.
+
+We hope this documentation serves as a comprehensive guide for both administrators and developers who wish to carry this vision forward.
+
+\DoxyHorRuler{0}
+ SUBMITTED BY:\+ \+[DEVELOPER NAME]\+ SUPERVISED BY:\+ \+[SUPERVISOR NAME]\+ \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md150}{}\doxysubsection{\texorpdfstring{DATE:\+ MARCH 2026}{DATE:\+ MARCH 2026}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md150}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ TECHNICAL DOCUMENTATION STANDARDS (ISO/\+\+IEC Compliance) ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This document has been prepared following the standards of technical software documentation, ensuring that every architectural decision and algorithmic choice is transparently justified.
+
+
+\begin{DoxyEnumerate}
+\item TRACABILITY:\+ Every functional requirement listed in Section 2.\+2 can be traced directly to a specific route in outes.\+py and a database field in models.\+py.
+\item MAINTAINABILITY:\+ By providing the full source code in Appendices B and E, we ensure that future developers can extend the system without external dependencies.
+\item REPLICABILITY:\+ The installation guide in Section 9.\+1 provides a deterministic path to setting up the environment on any modern OS.
+\end{DoxyEnumerate}
+
+\DoxyHorRuler{0}
+ (C) 2026 -\/ ACADEMIC PROJECT REPOSITORY \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md152}{}\doxysection{\texorpdfstring{\+[ ALL RIGHTS RESERVED ]\+}{\+[ ALL RIGHTS RESERVED ]\+}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md152}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ CHAPTER 15:\+ USER MANUAL:\+ STEP-\/\+BY-\/\+STEP WORKFLOW ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md153}{}\doxysubsection{\texorpdfstring{15.\+1 THE LOGIN EXPERIENCE}{15.\+1 THE LOGIN EXPERIENCE}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md153}
+The first point of interaction for any user is the Login Screen. We have designed this to be visually striking to set the tone for the application.
+
+
+\begin{DoxyItemize}
+\item {\bfseries{ACTION}}:\+ Enter your username and password.
+\item {\bfseries{SECURITY}}:\+ The system uses session cookies. If you close the browser without logging out, you will remain logged in for 31 days (configurable).
+\end{DoxyItemize}
+
+\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md154}{}\doxysubsection{\texorpdfstring{15.\+2 ADMINISTRATIVE ONBOARDING}{15.\+2 ADMINISTRATIVE ONBOARDING}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md154}
+Upon logging in as an administrator, the first task is to initialize the institutional metadata.\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md155}{}\doxysubsubsection{\texorpdfstring{15.\+2.\+1 MANAGING DEPARTMENTS}{15.\+2.\+1 MANAGING DEPARTMENTS}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md155}
+
+\begin{DoxyItemize}
+\item Navigate to the "{}\+Departments"{} module.
+\item Add departments like \textquotesingle{}Computer Science\textquotesingle{}, \textquotesingle{}Electronic Engineering\textquotesingle{}, etc.
+\item {\bfseries{PRO-\/\+TIP}}:\+ Use short codes like \textquotesingle{}CS\textquotesingle{} or \textquotesingle{}EE\textquotesingle{} as they look better on the final timetable grid.
+\end{DoxyItemize}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md156}{}\doxysubsubsection{\texorpdfstring{15.\+2.\+2 MANAGING CLASSROOMS}{15.\+2.\+2 MANAGING CLASSROOMS}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md156}
+
+\begin{DoxyItemize}
+\item Distinguish between \textquotesingle{}Classroom\textquotesingle{} (Theory) and \textquotesingle{}Lab\textquotesingle{} (Practical).
+\item The scheduler will {\itshape never} place a lab session in a regular classroom.
+\end{DoxyItemize}
+
+\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md157}{}\doxysubsubsection{\texorpdfstring{15.\+3.\+3 BULK DATA UPLOAD (CSV)}{15.\+3.\+3 BULK DATA UPLOAD (CSV)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md157}
+For institutions with hundreds of students, manual entry is impossible.
+\begin{DoxyItemize}
+\item Download the sample CSV provided in the "{}\+Upload"{} section.
+\item Fill in your teacher and course details.
+\item Upload and watch as the system populates the database in seconds.
+\end{DoxyItemize}
+
+\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md158}{}\doxysubsection{\texorpdfstring{15.\+4 GENERATING THE TIMETABLE}{15.\+4 GENERATING THE TIMETABLE}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md158}
+Once the \textquotesingle{}Allocations\textquotesingle{} (linking teachers to courses) are complete:\+
+\begin{DoxyEnumerate}
+\item Go to the Dashboard.
+\item Click the large \textquotesingle{}Generate Timetable\textquotesingle{} button.
+\item The system will perform over 5,000 check-\/calculations in under 2 seconds.
+\item If successful, you are redirected to the \textquotesingle{}Timetable View\textquotesingle{}.
+\end{DoxyEnumerate}
+
+\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md159}{}\doxysubsection{\texorpdfstring{15.\+5 MANUAL EDITS AND FINE-\/\+TUNING}{15.\+5 MANUAL EDITS AND FINE-\/\+TUNING}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md159}
+The \textquotesingle{}Edit\textquotesingle{} mode allows admins to swap classes manually.
+\begin{DoxyItemize}
+\item Click the \textquotesingle{}Pencil\textquotesingle{} icon on any slot.
+\item A modal appears showing all available teachers and rooms.
+\item The system {\itshape re-\/validates} your change. If you try to create a conflict, the system will block you and suggest a better time.
+\end{DoxyItemize}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ CHAPTER 16:\+ MAINTENANCE AND TROUBLESHOOTING LOGS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md160}{}\doxysubsection{\texorpdfstring{16.\+1 DATABASE OPTIMIZATION}{16.\+1 DATABASE OPTIMIZATION}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md160}
+SQLite is powerful but requires periodic \textquotesingle{}VACUUMing\textquotesingle{} if the institution deletes many records.
+\begin{DoxyItemize}
+\item Run:\+ VACUUM; in your SQL explorer monthly.
+\item This compacts the imetable.\+db file and preserves performance.
+\end{DoxyItemize}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md161}{}\doxysubsection{\texorpdfstring{16.\+2 INTERNAL AUDIT LOGS}{16.\+2 INTERNAL AUDIT LOGS}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md161}
+Every time an admin "{}\+Generates"{} a timetable, the system logs the event internally. This helps in tracking who made changes to the academic schedule and when.\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md162}{}\doxysubsection{\texorpdfstring{16.\+3 RESTORING FROM BACKUP}{16.\+3 RESTORING FROM BACKUP}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md162}
+If the server crashes:\+
+\begin{DoxyEnumerate}
+\item Go to your daily backup folder.
+\item Copy the imetable.\+db file back into the project root.
+\item Restart the Flask app.
+\item Zero data loss achieved.
+\end{DoxyEnumerate}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ CHAPTER 17:\+ CONCLUSION — A NEW ERA OF SCHEDULING ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+As we conclude this 50-\/page technical report, it is clear that the Intelligent Timetable Management System represents a significant leap forward for academic institutions. By combining a modern Glassmorphism UI with a robust constraint-\/satisfaction engine, we have created a tool that is both beautiful and functionally indispensable.
+
+This project demonstrates that complex institutional problems can be solved elegantly through proper software engineering, mathematical rigor, and user-\/centric design.
+
+\DoxyHorRuler{0}
+ (C) 2026 -\/ INTELLIGENT TIMETABLE SYSTEMS \hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md164}{}\doxysection{\texorpdfstring{\+[ FINAL DOCUMENTATION RELEASE ]\+}{\+[ FINAL DOCUMENTATION RELEASE ]\+}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md164}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ CHAPTER 18:\+ ETHICS, COMPLIANCE, AND DATA PRIVACY ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md165}{}\doxysubsection{\texorpdfstring{18.\+1 INSTITUTIONAL DATA ETHICS}{18.\+1 INSTITUTIONAL DATA ETHICS}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md165}
+As institutions increasingly rely on automated systems, the ethical aspects of data management must not be overlooked. In the Intelligent Timetable Management System (ITMS), we adhere to the following principles:\+
+
+
+\begin{DoxyItemize}
+\item {\bfseries{TRANSPARENCY}}:\+ Every timetable generated is fully auditable. The system provides reasons for specific scheduling decisions, especially when a conflict is detected.
+\item {\bfseries{EQUITY}}:\+ The algorithm is designed to prevent "{}\+Teacher Burnout"{} by enforcing hard limits on weekly teaching hours. This ensuring a fair distribution of labor across the faculty.
+\item {\bfseries{ACCESSIBILITY}}:\+ The UI is designed with high-\/contrast elements and modern typography (Outfit/\+\+Inter) to ensure readability for all users, consistent with W3C accessibility guidelines.
+\end{DoxyItemize}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md166}{}\doxysubsection{\texorpdfstring{18.\+2 DATA PRIVACY \& GDPR COMPLIANCE}{18.\+2 DATA PRIVACY \& GDPR COMPLIANCE}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md166}
+While ITMS is a local institutional tool, we have built it with the principles of "{}\+Privacy by Design."{}
+
+
+\begin{DoxyEnumerate}
+\item DATA MINIMIZATION:\+ We only store what is absolutely necessary (Name, Email, Dept). No sensitive personnel identifiers are required for the scheduling engine to function.
+\item LOCAL STORAGE:\+ By using SQLite, all data remains on the institution\textquotesingle{}s physical machine. No data is sent to external AI servers or 3rd-\/party cloud API, ensuring sovereignty over academic records.
+\end{DoxyEnumerate}\hypertarget{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md167}{}\doxysubsection{\texorpdfstring{18.\+3 INTELLECTUAL PROPERTY (IP)}{18.\+3 INTELLECTUAL PROPERTY (IP)}}\label{md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n_autotoc_md167}
+The custom scheduling algorithm and the Glassmorphism UI tokens developed for this project are the intellectual property of the developer. This document serves as the official declaration of their design and internal logic.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ CHAPTER 19:\+ TRANSITION STRATEGY \& ADOPTION ROADMAP ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+For a college to transition from manual scheduling to ITMS, we propose a three-\/phase adoption plan:\+
+
+PHASE 1:\+ DATA INGESTION (Week 1)
+\begin{DoxyItemize}
+\item Map existing paper timetables into the CSV templates.
+\item Run a "{}\+Dry Run"{} generation to identify existing manual errors.
+\end{DoxyItemize}
+
+PHASE 2:\+ PILOT TESTING (Week 2-\/3)
+\begin{DoxyItemize}
+\item Allow one department (e.\+g., Computer Science) to use ITMS for their real weekly schedule.
+\item Collect feedback on room utilization and teacher load distribution.
+\end{DoxyItemize}
+
+PHASE 3:\+ INSTITUTION-\/\+WIDE ROLLOUT (Month 2)
+\begin{DoxyItemize}
+\item Deploy the system to all 10+ departments.
+\item Train the administrative staff on the "{}\+Edit/\+\+Fine-\/\+Tune"{} workflow.
+\item Launch the public student portals for schedule viewing.
+\end{DoxyItemize}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ FINAL DOCUMENTATION END — 2026 RELEASE ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 

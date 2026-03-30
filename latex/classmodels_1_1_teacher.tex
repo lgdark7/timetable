@@ -1,0 +1,37 @@
+\doxysection{models.\+Teacher Class Reference}
+\hypertarget{classmodels_1_1_teacher}{}\label{classmodels_1_1_teacher}\index{models.Teacher@{models.Teacher}}
+Inheritance diagram for models.\+Teacher:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classmodels_1_1_teacher}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classmodels_1_1_teacher_af211b2ab40b1aca36d9e49440c207156}\label{classmodels_1_1_teacher_af211b2ab40b1aca36d9e49440c207156} 
+{\bfseries id} = db.\+Column(db.\+Integer, primary\+\_\+key=True)
+\item 
+\Hypertarget{classmodels_1_1_teacher_af6a7d3a6262874e3c4ec676461ae0480}\label{classmodels_1_1_teacher_af6a7d3a6262874e3c4ec676461ae0480} 
+{\bfseries name} = db.\+Column(db.\+String(100), nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_teacher_a8595cef6dfa8a5fdb06a1b20a041ebe0}\label{classmodels_1_1_teacher_a8595cef6dfa8a5fdb06a1b20a041ebe0} 
+{\bfseries email} = db.\+Column(db.\+String(120), unique=True, nullable=True)
+\item 
+\Hypertarget{classmodels_1_1_teacher_ac3d35d9cd6af44d1c45175fab16458c1}\label{classmodels_1_1_teacher_ac3d35d9cd6af44d1c45175fab16458c1} 
+{\bfseries dept\+\_\+id} = db.\+Column(db.\+Integer, db.\+Foreign\+Key(\textquotesingle{}department.\+id\textquotesingle{}), nullable=True)
+\item 
+\Hypertarget{classmodels_1_1_teacher_a9e579fe00dd46472e53b10f4e1d5667e}\label{classmodels_1_1_teacher_a9e579fe00dd46472e53b10f4e1d5667e} 
+{\bfseries workload\+\_\+limit} = db.\+Column(db.\+Integer, default=20)
+\item 
+\Hypertarget{classmodels_1_1_teacher_aa5fe990a9ca87afc2004ccb8dea8a236}\label{classmodels_1_1_teacher_aa5fe990a9ca87afc2004ccb8dea8a236} 
+{\bfseries allocations} = db.\+relationship(\textquotesingle{}\doxymbox{\hyperlink{classmodels_1_1_allocation}{Allocation}}\textquotesingle{}, backref=\textquotesingle{}teacher\textquotesingle{}, lazy=True, cascade="{}all, delete-\/orphan"{})
+\item 
+\Hypertarget{classmodels_1_1_teacher_aa4cdba6e44b1c58e7f839fbab2ae454d}\label{classmodels_1_1_teacher_aa4cdba6e44b1c58e7f839fbab2ae454d} 
+{\bfseries timetable\+\_\+entries} = db.\+relationship(\textquotesingle{}\doxymbox{\hyperlink{classmodels_1_1_timetable_entry}{Timetable\+Entry}}\textquotesingle{}, backref=\textquotesingle{}teacher\textquotesingle{}, lazy=True, cascade="{}all, delete-\/orphan"{})
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+models.\+py\end{DoxyCompactItemize}

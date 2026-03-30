@@ -1,0 +1,30 @@
+\doxysection{models.\+Allocation Class Reference}
+\hypertarget{classmodels_1_1_allocation}{}\label{classmodels_1_1_allocation}\index{models.Allocation@{models.Allocation}}
+Inheritance diagram for models.\+Allocation:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classmodels_1_1_allocation}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classmodels_1_1_allocation_aa839ba15d5457c108a30094326cc9724}\label{classmodels_1_1_allocation_aa839ba15d5457c108a30094326cc9724} 
+{\bfseries id} = db.\+Column(db.\+Integer, primary\+\_\+key=True)
+\item 
+\Hypertarget{classmodels_1_1_allocation_ad4ed584f86f81e7bdceca989c51432d0}\label{classmodels_1_1_allocation_ad4ed584f86f81e7bdceca989c51432d0} 
+{\bfseries course\+\_\+id} = db.\+Column(db.\+Integer, db.\+Foreign\+Key(\textquotesingle{}course.\+id\textquotesingle{}), nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_allocation_a6e3029df079f36ec8b5d02aad93023ab}\label{classmodels_1_1_allocation_a6e3029df079f36ec8b5d02aad93023ab} 
+{\bfseries teacher\+\_\+id} = db.\+Column(db.\+Integer, db.\+Foreign\+Key(\textquotesingle{}teacher.\+id\textquotesingle{}), nullable=False)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Mapping of which teacher teaches which course.
+\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+models.\+py\end{DoxyCompactItemize}

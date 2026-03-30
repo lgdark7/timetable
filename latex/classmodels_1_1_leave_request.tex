@@ -1,0 +1,37 @@
+\doxysection{models.\+Leave\+Request Class Reference}
+\hypertarget{classmodels_1_1_leave_request}{}\label{classmodels_1_1_leave_request}\index{models.LeaveRequest@{models.LeaveRequest}}
+Inheritance diagram for models.\+Leave\+Request:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classmodels_1_1_leave_request}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classmodels_1_1_leave_request_aaafe2ed7ac993a2c5d9296cade4d5891}\label{classmodels_1_1_leave_request_aaafe2ed7ac993a2c5d9296cade4d5891} 
+{\bfseries id} = db.\+Column(db.\+Integer, primary\+\_\+key=True)
+\item 
+\Hypertarget{classmodels_1_1_leave_request_ac940f36e5711645a488807f1e78cf3da}\label{classmodels_1_1_leave_request_ac940f36e5711645a488807f1e78cf3da} 
+{\bfseries teacher\+\_\+id} = db.\+Column(db.\+Integer, db.\+Foreign\+Key(\textquotesingle{}teacher.\+id\textquotesingle{}), nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_leave_request_a0c95d824cbdfe353e486b0a7d58f96c1}\label{classmodels_1_1_leave_request_a0c95d824cbdfe353e486b0a7d58f96c1} 
+{\bfseries date} = db.\+Column(db.\+Date, nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_leave_request_afdbee17295b85c056bab54bae477678b}\label{classmodels_1_1_leave_request_afdbee17295b85c056bab54bae477678b} 
+{\bfseries reason} = db.\+Column(db.\+String(200), nullable=True)
+\item 
+\Hypertarget{classmodels_1_1_leave_request_af09df8a08a4330a1d0b234bb17432e41}\label{classmodels_1_1_leave_request_af09df8a08a4330a1d0b234bb17432e41} 
+{\bfseries status} = db.\+Column(db.\+String(20), default=\textquotesingle{}Pending\textquotesingle{})
+\item 
+\Hypertarget{classmodels_1_1_leave_request_ab2d8d563f33e9da02751adfdc721393b}\label{classmodels_1_1_leave_request_ab2d8d563f33e9da02751adfdc721393b} 
+{\bfseries admin\+\_\+response} = db.\+Column(db.\+String(200), nullable=True)
+\item 
+\Hypertarget{classmodels_1_1_leave_request_a142eddeda49cb52d8d2982cb6927e45c}\label{classmodels_1_1_leave_request_a142eddeda49cb52d8d2982cb6927e45c} 
+{\bfseries teacher} = db.\+relationship(\textquotesingle{}\doxymbox{\hyperlink{classmodels_1_1_teacher}{Teacher}}\textquotesingle{}, backref=\textquotesingle{}leave\+\_\+requests\textquotesingle{})
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+models.\+py\end{DoxyCompactItemize}

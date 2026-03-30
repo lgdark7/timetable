@@ -1,0 +1,54 @@
+\chapter{Intelligent Timetable Management System }
+\hypertarget{md__r_e_a_d_m_e}{}\label{md__r_e_a_d_m_e}\index{Intelligent Timetable Management System@{Intelligent Timetable Management System}}
+\label{md__r_e_a_d_m_e_autotoc_md168}%
+\Hypertarget{md__r_e_a_d_m_e_autotoc_md168}%
+
+
+An advanced, AI-\/driven academic scheduling solution built with Flask and SQLAlchemy. This system automates the complex task of generating clash-\/free weekly timetables for college departments while respecting multiple real-\/world constraints.\hypertarget{md__r_e_a_d_m_e_autotoc_md169}{}\doxysection{\texorpdfstring{🚀 Key Features}{🚀 Key Features}}\label{md__r_e_a_d_m_e_autotoc_md169}
+\hypertarget{md__r_e_a_d_m_e_autotoc_md170}{}\doxysubsection{\texorpdfstring{🧠 Intelligent Scheduler}{🧠 Intelligent Scheduler}}\label{md__r_e_a_d_m_e_autotoc_md170}
+
+\begin{DoxyItemize}
+\item {\bfseries{Conflict Prevention}}:\+ Automatically detects and prevents conflicts across three dimensions:\+ Teachers, Classrooms, and Department Batches.
+\item {\bfseries{Smart Lab Blocks}}:\+ Specifically handles 3-\/hour practical sessions with restricted start times (10:\+50 AM and 2:\+00 PM) to align with standard academic parities.
+\item {\bfseries{Activity Class Logic}}:\+ Automatically assigns "{}\+Activity"{} periods for the last hour of the day, intelligently selecting the teacher from the preceding session.
+\item {\bfseries{Parallel Sessions}}:\+ Supports concurrent lab sessions for different batches in the same department.
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md171}{}\doxysubsection{\texorpdfstring{👥 Role-\/\+Based Access Control (RBAC)}{👥 Role-\/\+Based Access Control (RBAC)}}\label{md__r_e_a_d_m_e_autotoc_md171}
+
+\begin{DoxyItemize}
+\item {\bfseries{Admin}}:\+ Full control over data entry, bulk CSV uploads, and automated timetable generation.
+\item {\bfseries{Teacher}}:\+ Personalized dashboard and the ability to manually adjust their own scheduled sessions.
+\item {\bfseries{Student}}:\+ Clean, read-\/only view of their specific department\textquotesingle{}s weekly schedule.
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md172}{}\doxysubsection{\texorpdfstring{🎨 Modern UI/\+\+UX}{🎨 Modern UI/\+\+UX}}\label{md__r_e_a_d_m_e_autotoc_md172}
+
+\begin{DoxyItemize}
+\item {\bfseries{Interactive Background}}:\+ High-\/performance Particle Network background using HTML5 Canvas.
+\item {\bfseries{Glassmorphism Design}}:\+ Sleek, modern interface with soft blurs and glowing accents.
+\item {\bfseries{PDF Generation}}:\+ High-\/quality PDF exports for both the complete institution and individual departments.
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md173}{}\doxysubsection{\texorpdfstring{📊 Data Management}{📊 Data Management}}\label{md__r_e_a_d_m_e_autotoc_md173}
+
+\begin{DoxyItemize}
+\item {\bfseries{Bulk Imports}}:\+ Support for CSV uploads for Departments, Teachers, Subjects, and Classrooms.
+\item {\bfseries{Multi-\/\+Dimensional}}:\+ Handles Branches, Semesters, and Sections seamlessly.
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md174}{}\doxysection{\texorpdfstring{🛠️ Technical Stack}{🛠️ Technical Stack}}\label{md__r_e_a_d_m_e_autotoc_md174}
+
+\begin{DoxyItemize}
+\item {\bfseries{Backend}}:\+ Python 3.\+x, Flask
+\item {\bfseries{Database}}:\+ SQLite with SQLAlchemy ORM
+\item {\bfseries{Frontend}}:\+ Vanilla CSS (Premium Glassmorphism), Java\+Script (Canvas Animation)
+\item {\bfseries{PDF Library}}:\+ html2pdf.\+js
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md175}{}\doxysection{\texorpdfstring{📝 Prerequisites}{📝 Prerequisites}}\label{md__r_e_a_d_m_e_autotoc_md175}
+
+\begin{DoxyItemize}
+\item Python 3.\+10+
+\item Flask \& Flask-\/\+SQLAlchemy
+\item Flask-\/\+Login
+\end{DoxyItemize}\hypertarget{md__r_e_a_d_m_e_autotoc_md176}{}\doxysection{\texorpdfstring{🏃 Getting Started}{🏃 Getting Started}}\label{md__r_e_a_d_m_e_autotoc_md176}
+
+\begin{DoxyEnumerate}
+\item Clone the repository.
+\item Install dependencies:\+ {\ttfamily pip install -\/r requirements.\+txt}
+\item Run the application:\+ {\ttfamily python app.\+py}
+\item Access the portal at {\ttfamily \href{http://127.0.0.1:5000}{\texttt{http:\+/\+/\+127.\+0.\+0.\+1:\+5000}}}
+\item Default Admin Credentials:\+ {\ttfamily admin /\+ admin}
+\end{DoxyEnumerate}\hypertarget{md__r_e_a_d_m_e_autotoc_md177}{}\doxysection{\texorpdfstring{⚖️ License}{⚖️ License}}\label{md__r_e_a_d_m_e_autotoc_md177}
+This project is developed for academic purposes. 

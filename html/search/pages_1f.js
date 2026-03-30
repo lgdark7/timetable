@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['uat_0',['10.2 USER ACCEPTANCE TESTING (UAT)',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md91',1,'']]],
+  ['ui_20resources_1',['27.4 Design and UI Resources',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md475',1,'']]],
+  ['ui_20tests_2',['C.4 USER INTERFACE (UI) TESTS',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md123',1,'']]],
+  ['ui_20ux_3',['🎨 Modern UI/UX',['../md__r_e_a_d_m_e.html#autotoc_md172',1,'']]],
+  ['up_4',['its courses and teacher links are also cleaned up.',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md105',1,'']]],
+  ['up_20a_20new_20semester_5',['9.1 ADMINISTRATOR GUIDE: SETTING UP A NEW SEMESTER',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md87',1,'']]],
+  ['upload_6',['20.6 CSV Upload',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md367',1,'']]],
+  ['upload_20csv_7',['15.3.3 BULK DATA UPLOAD (CSV)',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md157',1,'']]],
+  ['upload_20security_8',['File Upload Security',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md435',1,'']]],
+  ['url_20routes_9',['22.1 URL Routes',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md392',1,'']]],
+  ['user_10',['7.10 Data Model: User',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md236',1,'']]],
+  ['user_11',['the algorithm returns False and informs the user.',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md117',1,'']]],
+  ['user_20acceptance_20testing_20uat_12',['10.2 USER ACCEPTANCE TESTING (UAT)',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md91',1,'']]],
+  ['user_20experience_13',['User Experience',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md461',1,'Phase 2 (6 months): User Experience'],['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md447',1,'User Experience']]],
+  ['user_20interface_20and_20frontend_20design_14',['12. User Interface and Frontend Design',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md291',1,'']]],
+  ['user_20interface_20ui_20tests_15',['C.4 USER INTERFACE (UI) TESTS',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md123',1,'']]],
+  ['user_20persona_20dashboards_16',['7.4 USER PERSONA DASHBOARDS',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md71',1,'']]],
+  ['user_20security_20layer_17',['4.2.7 TABLE: user (Security Layer)',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md34',1,'']]],
+  ['username_20or_20password_18',['Issue: &quot;Invalid username or password&quot;',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md374',1,'']]],
+  ['users_19',['Users',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md190',1,'2.4 Target Users'],['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md420',1,'Concurrent Users']]],
+  ['utility_20scripts_20checkers_20and_20migrations_20',['6.3 UTILITY SCRIPTS (Checkers and Migrations)',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md67',1,'']]],
+  ['ux_21',['🎨 Modern UI/UX',['../md__r_e_a_d_m_e.html#autotoc_md172',1,'']]]
+];

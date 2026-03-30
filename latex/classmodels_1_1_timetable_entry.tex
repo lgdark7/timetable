@@ -1,0 +1,42 @@
+\doxysection{models.\+Timetable\+Entry Class Reference}
+\hypertarget{classmodels_1_1_timetable_entry}{}\label{classmodels_1_1_timetable_entry}\index{models.TimetableEntry@{models.TimetableEntry}}
+Inheritance diagram for models.\+Timetable\+Entry:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classmodels_1_1_timetable_entry}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classmodels_1_1_timetable_entry_a7d899b2020b462e6424d41bbfad20a80}\label{classmodels_1_1_timetable_entry_a7d899b2020b462e6424d41bbfad20a80} 
+{\bfseries id} = db.\+Column(db.\+Integer, primary\+\_\+key=True)
+\item 
+\Hypertarget{classmodels_1_1_timetable_entry_aacfd9859cecb667034eb1298bfda392f}\label{classmodels_1_1_timetable_entry_aacfd9859cecb667034eb1298bfda392f} 
+{\bfseries day} = db.\+Column(db.\+String(10), nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_timetable_entry_a5a366f91e2751c3749aee1cc37ea6f22}\label{classmodels_1_1_timetable_entry_a5a366f91e2751c3749aee1cc37ea6f22} 
+{\bfseries timeslot} = db.\+Column(db.\+String(20), nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_timetable_entry_afbdd5e206153855b888a12631ac5e154}\label{classmodels_1_1_timetable_entry_afbdd5e206153855b888a12631ac5e154} 
+{\bfseries dept\+\_\+id} = db.\+Column(db.\+Integer, db.\+Foreign\+Key(\textquotesingle{}department.\+id\textquotesingle{}), nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_timetable_entry_a145b5a9f23af8cd461035b157869b41a}\label{classmodels_1_1_timetable_entry_a145b5a9f23af8cd461035b157869b41a} 
+{\bfseries course\+\_\+id} = db.\+Column(db.\+Integer, db.\+Foreign\+Key(\textquotesingle{}course.\+id\textquotesingle{}), nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_timetable_entry_acfa1b0436ba6edf794e2339fa9691f2b}\label{classmodels_1_1_timetable_entry_acfa1b0436ba6edf794e2339fa9691f2b} 
+{\bfseries teacher\+\_\+id} = db.\+Column(db.\+Integer, db.\+Foreign\+Key(\textquotesingle{}teacher.\+id\textquotesingle{}), nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_timetable_entry_ac6fb702141cc4f2cc9303d40f811aa6c}\label{classmodels_1_1_timetable_entry_ac6fb702141cc4f2cc9303d40f811aa6c} 
+{\bfseries classroom\+\_\+id} = db.\+Column(db.\+Integer, db.\+Foreign\+Key(\textquotesingle{}classroom.\+id\textquotesingle{}), nullable=False)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}The generated timetable.
+\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+models.\+py\end{DoxyCompactItemize}

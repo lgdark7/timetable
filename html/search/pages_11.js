@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['g_201_20common_20error_20codes_0',['G.1 COMMON ERROR CODES',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md132',1,'']]],
+  ['g_202_20database_20backup_20policy_1',['G.2 DATABASE BACKUP POLICY',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md133',1,'']]],
+  ['g_203_20scalability_20considerations_2',['G.3 SCALABILITY CONSIDERATIONS',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md134',1,'']]],
+  ['g_20only_201_20room_20for_2010_20classes_3',['If the search space is too small (e.g., only 1 room for 10 classes)',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md116',1,'']]],
+  ['gdpr_20compliance_4',['18.2 DATA PRIVACY &amp;amp; GDPR COMPLIANCE',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md166',1,'']]],
+  ['generate_20timetable_5',['Issue: &quot;Failed to generate timetable&quot;',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md373',1,'']]],
+  ['generating_20the_20timetable_6',['15.4 GENERATING THE TIMETABLE',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md158',1,'']]],
+  ['generation_20route_7',['9.7 Timetable Generation Route',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md263',1,'']]],
+  ['get_20timetable_20for_20today_3a_8',['Get timetable for today:',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md349',1,'']]],
+  ['getting_20started_9',['🏃 Getting Started',['../md__r_e_a_d_m_e.html#autotoc_md176',1,'']]],
+  ['glassmorphism_20design_20tokens_10',['7.1 GLASSMORPHISM DESIGN TOKENS',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md68',1,'']]],
+  ['global_20constants_11',['7.3 Global Constants',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md229',1,'']]],
+  ['global_20constants_20for_20institutional_20alignment_12',['Global Constants for institutional alignment',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md103',1,'']]],
+  ['goals_13',['2.3 Project Goals',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md189',1,'']]],
+  ['grid_20layouts_14',['7.2 RESPONSIVE GRID LAYOUTS',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md69',1,'']]],
+  ['grid_20mockup_15',['F.3 TIMETABLE GRID MOCKUP',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md131',1,'']]],
+  ['grid_20structure_16',['12.4 Timetable Grid Structure',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md299',1,'']]],
+  ['grid_20templates_20timetable_20html_17',['J.2 THE TIMETABLE GRID (templates/timetable.html)',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md142',1,'']]],
+  ['guard_20decorator_18',['9.3 Admin Guard Decorator',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md255',1,'']]],
+  ['guide_19',['Guide',['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md327',1,'17. Installation and Deployment Guide'],['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md361',1,'20. Screenshots and Visual Guide'],['../md__t_i_m_e_t_a_b_l_e___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md371',1,'21. Troubleshooting Guide']]],
+  ['guide_3a_20attending_20classes_20',['9.3 STUDENT GUIDE: ATTENDING CLASSES',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md89',1,'']]],
+  ['guide_3a_20managing_20your_20academic_20life_21',['9.2 TEACHER GUIDE: MANAGING YOUR ACADEMIC LIFE',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md88',1,'']]],
+  ['guide_3a_20setting_20up_20a_20new_20semester_22',['9.1 ADMINISTRATOR GUIDE: SETTING UP A NEW SEMESTER',['../md__p_r_e_m_i_u_m___d_o_c_u_m_e_n_t_a_t_i_o_n.html#autotoc_md87',1,'']]]
+];

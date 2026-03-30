@@ -1,0 +1,37 @@
+\doxysection{models.\+Substitution Class Reference}
+\hypertarget{classmodels_1_1_substitution}{}\label{classmodels_1_1_substitution}\index{models.Substitution@{models.Substitution}}
+Inheritance diagram for models.\+Substitution:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classmodels_1_1_substitution}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classmodels_1_1_substitution_a8ef6107c7d81ad28b5bfe9a3d723db1e}\label{classmodels_1_1_substitution_a8ef6107c7d81ad28b5bfe9a3d723db1e} 
+{\bfseries id} = db.\+Column(db.\+Integer, primary\+\_\+key=True)
+\item 
+\Hypertarget{classmodels_1_1_substitution_af5a16ee63a2789fbfb8d6dfe5e4658d5}\label{classmodels_1_1_substitution_af5a16ee63a2789fbfb8d6dfe5e4658d5} 
+{\bfseries leave\+\_\+id} = db.\+Column(db.\+Integer, db.\+Foreign\+Key(\textquotesingle{}leave\+\_\+request.\+id\textquotesingle{}), nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_substitution_ac17f2f6f83e4ef4851bca40c1da87b00}\label{classmodels_1_1_substitution_ac17f2f6f83e4ef4851bca40c1da87b00} 
+{\bfseries timetable\+\_\+entry\+\_\+id} = db.\+Column(db.\+Integer, db.\+Foreign\+Key(\textquotesingle{}timetable\+\_\+entry.\+id\textquotesingle{}), nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_substitution_a47c13de4f9d78f84db6a583f6fc81191}\label{classmodels_1_1_substitution_a47c13de4f9d78f84db6a583f6fc81191} 
+{\bfseries substitute\+\_\+teacher\+\_\+id} = db.\+Column(db.\+Integer, db.\+Foreign\+Key(\textquotesingle{}teacher.\+id\textquotesingle{}), nullable=False)
+\item 
+\Hypertarget{classmodels_1_1_substitution_ade71cd1009da63770f35d88dab8f9cc8}\label{classmodels_1_1_substitution_ade71cd1009da63770f35d88dab8f9cc8} 
+{\bfseries leave\+\_\+request} = db.\+relationship(\textquotesingle{}\doxymbox{\hyperlink{classmodels_1_1_leave_request}{Leave\+Request}}\textquotesingle{}, backref=\textquotesingle{}substitutions\textquotesingle{})
+\item 
+\Hypertarget{classmodels_1_1_substitution_a030275f399f27151fd7a05299a248ec4}\label{classmodels_1_1_substitution_a030275f399f27151fd7a05299a248ec4} 
+{\bfseries original\+\_\+entry} = db.\+relationship(\textquotesingle{}\doxymbox{\hyperlink{classmodels_1_1_timetable_entry}{Timetable\+Entry}}\textquotesingle{}, backref=\textquotesingle{}substitutions\textquotesingle{})
+\item 
+\Hypertarget{classmodels_1_1_substitution_a1e91fe78952d075387f65100f259b167}\label{classmodels_1_1_substitution_a1e91fe78952d075387f65100f259b167} 
+{\bfseries substitute\+\_\+teacher} = db.\+relationship(\textquotesingle{}\doxymbox{\hyperlink{classmodels_1_1_teacher}{Teacher}}\textquotesingle{}, backref=\textquotesingle{}substitutions\textquotesingle{})
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+models.\+py\end{DoxyCompactItemize}

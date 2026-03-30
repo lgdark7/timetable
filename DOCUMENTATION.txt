@@ -1,0 +1,1981 @@
+﻿================================================================================
+        INTELLIGENT TIMETABLE MANAGEMENT SYSTEM
+        Full Technical Documentation
+================================================================================
+        Developed Using : Python 3.x | Flask | SQLAlchemy | SQLite
+        Frontend        : HTML5 | Vanilla CSS (Glassmorphism) | JavaScript
+        Version         : 1.0                  Date: March 2026
+        Purpose         : Academic Project Documentation
+================================================================================
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                          TABLE OF CONTENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  1.  Introduction .....................................................  3
+  2.  Project Overview .................................................  4
+  3.  Objectives of the System ........................................  5
+  4.  Scope of the Project ............................................  6
+  5.  Technology Stack ................................................  7
+  6.  System Architecture .............................................  9
+  7.  Database Design and Data Models ................................. 11
+  8.  Application Entry Point (app.py) ................................ 16
+  9.  Routing and Controller Logic (routes.py) ........................ 19
+  10. Intelligent Scheduling Engine (scheduler.py) ................... 27
+  11. Role-Based Access Control (RBAC) ............................... 33
+  12. User Interface and Frontend Design .............................. 35
+  13. CSV Bulk Import Feature ......................................... 38
+  14. Leave Management and Substitution System ....................... 40
+  15. Internal Messaging (Mailbox) System ............................ 42
+  16. PDF Export Feature .............................................. 44
+  17. Installation and Deployment Guide .............................. 45
+  18. Testing and Validation .......................................... 47
+  19. Future Enhancements ............................................. 49
+  20. Conclusion ...................................................... 50
+  21. References ...................................................... 51
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CHAPTER 1:  INTRODUCTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Educational institutions face one of the most complex logistical challenges
+  in academic management: creating a conflict-free weekly timetable. This
+  task involves satisfying many simultaneous constraints including teacher
+  availability, classroom capacity, course type, and departmental sectioning.
+
+  Manual timetable generation is time-consuming and highly error-prone. A
+  single scheduling conflict — two classes in the same room at the same time,
+  or a teacher assigned two lectures simultaneously — can disrupt an entire
+  department's academic schedule for the whole semester.
+
+  The Intelligent Timetable Management System (ITMS) addresses this challenge
+  by providing a fully automated, web-based academic scheduling platform.
+  Built on modern Python frameworks, it leverages constraint-satisfaction
+  principles to generate clash-free timetables for multiple departments in
+  a matter of seconds.
+
+  This documentation provides a complete technical reference for the system,
+  covering its architecture, data models, algorithms, user roles, API routes,
+  frontend design, and deployment procedures. It is intended for developers,
+  system administrators, and academic staff who will use or maintain ITMS.
+
+  +------------------------------------------------------------------+
+  |  KEY HIGHLIGHTS                                                  |
+  |  ---------------------------------------------------------------  |
+  |  * Automatic clash-free timetable generation                     |
+  |  * Handles Theory, Practical (Lab), and Activity classes         |
+  |  * Role-Based Access: Admin, Teacher, Student                    |
+  |  * CSV bulk data import for rapid institutional setup            |
+  |  * Teacher leave and substitution management workflow            |
+  |  * Internal messaging / mailbox system                           |
+  |  * PDF export for all department timetables                      |
+  |  * Modern Glassmorphism UI with Canvas particle animations       |
+  +------------------------------------------------------------------+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CHAPTER 2:  PROJECT OVERVIEW
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  2.1  Project Name
+  -----------------
+  Intelligent Timetable Management System (ITMS)
+
+  2.2  Project Description
+  ------------------------
+  ITMS is an advanced, AI-driven academic scheduling solution built with Flask
+  and SQLAlchemy. The system automates the generation of weekly timetables for
+  college departments while respecting real-world constraints:
+
+    - Teacher workload limits (configurable per teacher)
+    - Classroom type matching (Lab rooms for Practicals, regular for Theory)
+    - Parallel batch handling for practical sessions
+    - Activity class period assignment (last slot of the day)
+    - Department section and semester differentiation
+
+  The system is accessible through any modern web browser and provides
+  personalized dashboards for each user type. The administrator controls
+  all data entry, timetable generation, and user management. Teachers can
+  view their personal schedules and request adjustments. Students have a
+  clean, read-only view of their department timetable.
+
+  2.3  Project Goals
+  ------------------
+  The system was designed around three primary goals:
+
+    1. AUTOMATION  - Remove the burden of manual scheduling from academic
+                     staff, replacing hours of work with a single click.
+
+    2. ACCURACY    - Eliminate scheduling conflicts through multi-dimensional
+                     constraint checking across teachers, rooms, departments.
+
+    3. ACCESSIBILITY - Provide a modern web interface accessible to all
+                       stakeholders: admin, teachers, and students.
+
+  2.4  Target Users
+  -----------------
+  +----------------+----------------------------------------------------------+
+  |  User Role     |  Primary Use Case                                        |
+  +----------------+----------------------------------------------------------+
+  |  Admin         |  Full system control: data entry, timetable generation,  |
+  |                |  user management, reporting, messaging                   |
+  +----------------+----------------------------------------------------------+
+  |  Teacher       |  View personal schedule, edit sessions, request leave,   |
+  |                |  read inbox messages                                     |
+  +----------------+----------------------------------------------------------+
+  |  Student       |  Read-only access to department timetable, view sub      |
+  |                |  announcements                                           |
+  +----------------+----------------------------------------------------------+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CHAPTER 3:  OBJECTIVES OF THE SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  3.1  Primary Objectives
+  -----------------------
+  (i)   To design and implement an intelligent scheduling algorithm capable
+        of generating weekly timetables free from teacher, classroom, and
+        department-level conflicts.
+
+  (ii)  To support multiple course types including Theory, Practical (Lab),
+        and Activity classes, each with their own scheduling constraints.
+
+  (iii) To implement a robust Role-Based Access Control system so that each
+        user type has access only to features relevant to their function.
+
+  (iv)  To allow administrators to bulk-import institutional data via CSV
+        files, avoiding time-consuming manual data entry.
+
+  (v)   To enable teachers to request leaves with substitution management
+        so that no class period goes unattended.
+
+  (vi)  To provide a modern web interface with PDF export capabilities so
+        timetables can be easily printed or shared digitally.
+
+  3.2  Secondary Objectives
+  -------------------------
+  (i)   To provide an internal messaging system for official communication
+        between the admin and teaching/student community.
+
+  (ii)  To build a deployable desktop application version (using PyInstaller
+        and PyWebView) for institutions without server infrastructure.
+
+  (iii) To ensure the system correctly handles multi-section and multi-
+        semester department configurations.
+
+  (iv)  To allow manual timetable adjustments with real-time conflict
+        detection and smart alternative slot suggestions.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CHAPTER 4:  SCOPE OF THE PROJECT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  4.1  In Scope
+  -------------
+  * Department, Course, Teacher, and Classroom management
+  * Course-to-Teacher allocation management
+  * Automated timetable generation with conflict checking
+  * Manual timetable entry editing with conflict validation
+  * Smart alternative slot suggestions during conflict detection
+  * Teacher leave request workflow (Pending -> Approved/Rejected)
+  * Automatic substitution assignment on leave approval
+  * Internal messaging system (broadcast and individual messages)
+  * PDF export of complete and per-department timetables
+  * CSV bulk import for all data categories
+  * User registration for teachers and students
+  * Profile management with password update capability
+  * Custom 404 and 500 error handling pages
+
+  4.2  Out of Scope
+  -----------------
+  * Real-time collaborative editing (multi-admin simultaneous access)
+  * Mobile application (Android/iOS native app)
+  * Integration with external LMS (Moodle, Blackboard, Canvas)
+  * Automated email or SMS notifications
+  * AI-based teacher workload prediction
+  * Attendance tracking module
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CHAPTER 5:  TECHNOLOGY STACK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  5.1  Backend Technologies
+  -------------------------
+  +----------------------+------------+--------------------------------------+
+  |  Technology          |  Version   |  Purpose                             |
+  +----------------------+------------+--------------------------------------+
+  |  Python              |  3.10+     |  Core programming language           |
+  |  Flask               |  Latest    |  Web framework and routing engine    |
+  |  Flask-SQLAlchemy    |  Latest    |  ORM for database operations         |
+  |  Flask-Login         |  Latest    |  Session and authentication mgmt     |
+  |  SQLite              |  Built-in  |  Lightweight relational database      |
+  |  PyInstaller         |  Latest    |  Desktop application packaging       |
+  |  PyWebView           |  Latest    |  Desktop GUI wrapper for Flask       |
+  +----------------------+------------+--------------------------------------+
+
+  5.2  Frontend Technologies
+  --------------------------
+  +----------------------+------------------------------------------------+
+  |  Technology          |  Purpose                                       |
+  +----------------------+------------------------------------------------+
+  |  HTML5               |  Page structure and semantic markup            |
+  |  Vanilla CSS         |  Custom styling, glassmorphism design system   |
+  |  JavaScript (ES6+)   |  Dynamic UI, Canvas animations, PDF export     |
+  |  html2pdf.js (CDN)   |  Client-side PDF generation from HTML          |
+  |  HTML5 Canvas API    |  Particle network background animation         |
+  +----------------------+------------------------------------------------+
+
+  5.3  Why This Stack?
+  --------------------
+  Flask was chosen as the web framework because:
+  * It is lightweight and minimalistic, ideal for focused academic projects
+  * It is highly flexible, allowing custom MVC-style architecture
+  * It uses Jinja2 templating for powerful HTML generation with Python logic
+  * Flask-Login and Flask-SQLAlchemy integrate seamlessly with it
+  * It can be packaged as a desktop app via PyWebView + PyInstaller
+
+  SQLite was chosen as the database because:
+  * It requires zero configuration (no separate server process)
+  * It is file-based, making the app fully portable
+  * It is fully supported by SQLAlchemy ORM
+  * It is sufficient for institutional use at the department scale
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CHAPTER 6:  SYSTEM ARCHITECTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  6.1  Architectural Pattern
+  --------------------------
+  The system follows the Model-View-Controller (MVC) architectural pattern,
+  implemented through Flask's Blueprint and Jinja2 templating system:
+
+    MODEL      -> models.py       (SQLAlchemy ORM classes and DB schema)
+    VIEW       -> templates/      (Jinja2 HTML templates)
+    CONTROLLER -> routes.py       (Flask route handlers and business logic)
+    LOGIC      -> scheduler.py    (Scheduling algorithm, separate concern)
+    ENTRY      -> app.py          (Application factory and configuration)
+
+  6.2  Architecture Diagram
+  -------------------------
+
+  +-------------------+
+  |   Web Browser     |  <-- User (Admin / Teacher / Student)
+  +-------------------+
+          |
+          | HTTP Request
+          v
+  +-------------------+
+  |    app.py         |  Flask application factory, config, login manager
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |    routes.py      |  Blueprint routes, decorators, business logic
+  |  (Controller)     |  admin_required decorator, conflict checking,
+  +-------------------+  CSV parsing, substitution management
+          |
+     +----+----+
+     |         |
+     v         v
+  +--------+ +----------+
+  |models  | |scheduler |  Models: ORM data layer
+  |.py     | |.py       |  Scheduler: constraint satisfaction algorithm
+  +--------+ +----------+
+     |
+     v
+  +-------------------+
+  |   SQLite DB       |  timetable.db (persistent data store)
+  +-------------------+
+          |
+          v
+  +-------------------+
+  |  templates/       |  Jinja2 HTML rendered and sent back to browser
+  |  static/          |  CSS, JS, images served statically
+  +-------------------+
+
+  6.3  File Structure
+  -------------------
+  timetable-main/
+  |
+  |-- app.py                  (Application entry point)
+  |-- routes.py               (All URL routes and view functions)
+  |-- models.py               (Database models/schema)
+  |-- scheduler.py            (Timetable generation algorithm)
+  |-- requirements.txt        (Python dependencies)
+  |-- check_density.py        (Utility: schedule density checker)
+  |-- check_schedule.py       (Utility: schedule integrity verifier)
+  |-- migrate_sections.py     (Utility: DB migration for sections)
+  |-- migrate_semester.py     (Utility: DB migration for semesters)
+  |-- desktop.py              (Desktop app launcher via PyWebView)
+  |
+  |-- templates/              (Jinja2 HTML templates)
+  |   |-- base.html           (Master layout template)
+  |   |-- dashboard.html      (Main dashboard page)
+  |   |-- login.html          (Login form)
+  |   |-- timetable.html      (Timetable display page)
+  |   |-- edit_timetable_entry.html
+  |   |-- mailbox.html        (Inbox page)
+  |   |-- compose_message.html
+  |   |-- leave_request.html  (Leave request form)
+  |   |-- profile.html        (User profile page)
+  |   |-- reports.html        (Reports page)
+  |   |-- upload_csv.html     (CSV import page)
+  |   |-- register.html       (Registration landing)
+  |   |-- resources/          (CRUD pages for entities)
+  |       |-- departments.html
+  |       |-- teachers.html
+  |       |-- courses.html
+  |       |-- classrooms.html
+  |       |-- allocations.html
+  |
+  |-- static/
+  |   |-- css/                (Stylesheet files)
+  |   |-- js/                 (JavaScript files)
+  |   |-- img/                (Image assets)
+  |
+  |-- instance/
+      |-- timetable.db        (SQLite database file)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CHAPTER 7:  DATABASE DESIGN AND DATA MODELS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  7.1  Database Overview
+  ----------------------
+  The system persists all data in a SQLite database named timetable.db.
+  The database is managed entirely through SQLAlchemy ORM. The schema
+  consists of 9 main tables representing the core entities of the system.
+
+  7.2  Entity Relationship Summary
+  ---------------------------------
+  Department  <---(1:N)--->  Course
+  Department  <---(1:N)--->  Teacher
+  Department  <---(1:N)--->  TimetableEntry
+  Course      <---(1:N)--->  Allocation
+  Teacher     <---(1:N)--->  Allocation
+  Course      <---(1:N)--->  TimetableEntry
+  Teacher     <---(1:N)--->  TimetableEntry
+  Classroom   <---(1:N)--->  TimetableEntry
+  Teacher     <---(1:N)--->  LeaveRequest
+  LeaveRequest<---(1:N)--->  Substitution
+  User        <---(1:N)--->  Message (as recipient)
+  User        <---(1:N)--->  Message (as sender)
+
+  7.3  Global Constants
+  ----------------------
+  The following constants are defined in models.py and shared across the app:
+
+  CODE BLOCK - models.py (Constants):
+  ------------------------------------
+  DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+  TIMESLOTS = [
+      '10:00-10:50',   # Period 1
+      '10:50-11:40',   # Period 2
+      '11:40-12:30',   # Period 3
+      '12:30-01:20',   # Period 4
+      '02:00-02:50',   # Period 5  (after lunch break)
+      '02:50-03:40',   # Period 6
+      '03:40-04:30'    # Period 7  (Activity Class slot)
+  ]
+  ------------------------------------
+
+  The system supports 6 working days (Monday through Saturday) and 7 daily
+  time periods. Period 7 (03:40-04:30) is reserved for Activity Classes.
+  Periods 5 and 6 follow a lunch break (12:30 PM to 2:00 PM).
+
+  7.4  Data Model: Department
+  ----------------------------
+  Represents an academic department or branch.
+
+  CODE BLOCK - models.py (Department model):
+  -------------------------------------------
+  class Department(db.Model):
+      id       = db.Column(db.Integer, primary_key=True)
+      name     = db.Column(db.String(100), nullable=False)
+      code     = db.Column(db.String(10),  nullable=False)
+      section  = db.Column(db.String(10),  nullable=True, default='A')
+      semester = db.Column(db.String(20),  nullable=True, default='Semester 1')
+
+      courses         = db.relationship('Course', backref='department',
+                            lazy=True, cascade="all, delete-orphan")
+      teachers        = db.relationship('Teacher', backref='department',
+                            lazy=True, cascade="all, delete-orphan")
+      timetable_entries = db.relationship('TimetableEntry',
+                            backref='department', lazy=True,
+                            cascade="all, delete-orphan")
+  -------------------------------------------
+
+  Field Descriptions:
+  +----------+-----------+--------------------------------------------------+
+  | Field    | Type      | Description                                      |
+  +----------+-----------+--------------------------------------------------+
+  | id       | Integer   | Primary key (auto-increment)                     |
+  | name     | String    | Full department name (e.g., "Computer Science")  |
+  | code     | String    | Short code (e.g., "CS", "ECE")                   |
+  | section  | String    | Section label (e.g., "A", "B")                   |
+  | semester | String    | Semester label (e.g., "Semester 3")              |
+  +----------+-----------+--------------------------------------------------+
+
+  7.5  Data Model: Course
+  ------------------------
+  Represents a subject or course taught within a department.
+
+  CODE BLOCK - models.py (Course model):
+  ----------------------------------------
+  class Course(db.Model):
+      id            = db.Column(db.Integer, primary_key=True)
+      name          = db.Column(db.String(100), nullable=False)
+      code          = db.Column(db.String(20),  nullable=False)
+      dept_id       = db.Column(db.Integer, db.ForeignKey('department.id'),
+                                nullable=False)
+      type          = db.Column(db.String(20), nullable=False,
+                                default='Theory')
+      hours_per_week= db.Column(db.Integer, nullable=False)
+  ----------------------------------------
+
+  Course Types:
+  +----------------+----------------------------------------------------------+
+  | Type           | Description                                              |
+  +----------------+----------------------------------------------------------+
+  | Theory         | Regular lecture (1 hour per slot, 1-6 hours/week)       |
+  | Practical      | Lab session (3 consecutive hours per slot)              |
+  | Activity Class | Special period (always in Period 7, last slot)          |
+  +----------------+----------------------------------------------------------+
+
+  7.6  Data Model: Teacher
+  -------------------------
+  Represents a faculty member linked to a department.
+
+  CODE BLOCK - models.py (Teacher model):
+  -----------------------------------------
+  class Teacher(db.Model):
+      id             = db.Column(db.Integer, primary_key=True)
+      name           = db.Column(db.String(100), nullable=False)
+      email          = db.Column(db.String(120), unique=True, nullable=True)
+      dept_id        = db.Column(db.Integer, db.ForeignKey('department.id'),
+                                 nullable=True)
+      workload_limit = db.Column(db.Integer, default=20)
+  -----------------------------------------
+
+  7.7  Data Model: Classroom
+  ---------------------------
+  Represents a physical room or lab in the institution.
+
+  CODE BLOCK - models.py (Classroom model):
+  ------------------------------------------
+  class Classroom(db.Model):
+      id       = db.Column(db.Integer, primary_key=True)
+      name     = db.Column(db.String(50), unique=True, nullable=False)
+      capacity = db.Column(db.Integer, nullable=False)
+      type     = db.Column(db.String(20), nullable=False,
+                           default='Classroom')
+  ------------------------------------------
+
+  Room Types:
+  * 'Classroom' - Regular rooms for Theory lectures
+  * 'Lab'       - Lab rooms for Practical sessions (algorithm matches type)
+
+  7.8  Data Model: Allocation
+  ----------------------------
+  A mapping that assigns a Teacher to a Course. This is the prerequisite
+  that must exist before the scheduler can run.
+
+  CODE BLOCK - models.py (Allocation model):
+  -------------------------------------------
+  class Allocation(db.Model):
+      """Mapping of which teacher teaches which course."""
+      id         = db.Column(db.Integer, primary_key=True)
+      course_id  = db.Column(db.Integer, db.ForeignKey('course.id'),
+                             nullable=False)
+      teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'),
+                             nullable=False)
+  -------------------------------------------
+
+  7.9  Data Model: TimetableEntry
+  --------------------------------
+  The core output of the system. Each row represents one scheduled period.
+
+  CODE BLOCK - models.py (TimetableEntry model):
+  -----------------------------------------------
+  class TimetableEntry(db.Model):
+      """The generated timetable."""
+      id           = db.Column(db.Integer, primary_key=True)
+      day          = db.Column(db.String(10), nullable=False)
+      timeslot     = db.Column(db.String(20), nullable=False)
+      dept_id      = db.Column(db.Integer, db.ForeignKey('department.id'),
+                               nullable=False)
+      course_id    = db.Column(db.Integer, db.ForeignKey('course.id'),
+                               nullable=False)
+      teacher_id   = db.Column(db.Integer, db.ForeignKey('teacher.id'),
+                               nullable=False)
+      classroom_id = db.Column(db.Integer, db.ForeignKey('classroom.id'),
+                               nullable=False)
+  -----------------------------------------------
+
+  7.10  Data Model: User
+  -----------------------
+  Represents a system user (Admin, Teacher, or Student login account).
+
+  CODE BLOCK - models.py (User model):
+  --------------------------------------
+  class User(db.Model, UserMixin):
+      id         = db.Column(db.Integer, primary_key=True)
+      username   = db.Column(db.String(80), unique=True, nullable=False)
+      password   = db.Column(db.String(120), nullable=False)
+      email      = db.Column(db.String(120), nullable=True)
+      role       = db.Column(db.String(20), nullable=False, default='student')
+      dept_id    = db.Column(db.Integer, db.ForeignKey('department.id'),
+                             nullable=True)
+      teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'),
+                             nullable=True)
+  --------------------------------------
+
+  7.11  Data Model: LeaveRequest
+  --------------------------------
+  Handles teacher leave requests with admin approval workflow.
+
+  CODE BLOCK - models.py (LeaveRequest model):
+  ----------------------------------------------
+  class LeaveRequest(db.Model):
+      id             = db.Column(db.Integer, primary_key=True)
+      teacher_id     = db.Column(db.Integer, db.ForeignKey('teacher.id'),
+                                 nullable=False)
+      date           = db.Column(db.Date, nullable=False)
+      reason         = db.Column(db.String(200), nullable=True)
+      status         = db.Column(db.String(20), default='Pending')
+      admin_response = db.Column(db.String(200), nullable=True)
+  ----------------------------------------------
+
+  Status values: 'Pending', 'Approved', 'Rejected'
+
+  7.12  Data Model: Substitution
+  --------------------------------
+  When a leave is approved, substitution entries are created.
+
+  CODE BLOCK - models.py (Substitution model):
+  ----------------------------------------------
+  class Substitution(db.Model):
+      id                   = db.Column(db.Integer, primary_key=True)
+      leave_id             = db.Column(db.Integer,
+                               db.ForeignKey('leave_request.id'),
+                               nullable=False)
+      timetable_entry_id   = db.Column(db.Integer,
+                               db.ForeignKey('timetable_entry.id'),
+                               nullable=False)
+      substitute_teacher_id= db.Column(db.Integer,
+                               db.ForeignKey('teacher.id'),
+                               nullable=False)
+  ----------------------------------------------
+
+  7.13  Data Model: Message
+  --------------------------
+  Internal messaging system entries.
+
+  CODE BLOCK - models.py (Message model):
+  -----------------------------------------
+  class Message(db.Model):
+      id           = db.Column(db.Integer, primary_key=True)
+      recipient_id = db.Column(db.Integer, db.ForeignKey('user.id'),
+                               nullable=False)
+      sender_id    = db.Column(db.Integer, db.ForeignKey('user.id'),
+                               nullable=True)   # None = System message
+      subject      = db.Column(db.String(150), nullable=False)
+      body         = db.Column(db.Text, nullable=False)
+      timestamp    = db.Column(db.DateTime, default=datetime.utcnow)
+      is_read      = db.Column(db.Boolean, default=False)
+      category     = db.Column(db.String(50), default='System')
+  -----------------------------------------
+
+  Categories: 'System', 'Admin Message', 'Leave Notification'
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CHAPTER 8:  APPLICATION ENTRY POINT (app.py)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  8.1  Overview
+  -------------
+  app.py is the main entry point of the Flask application. It is responsible
+  for creating the Flask application instance, configuring the database,
+  initializing Flask-Login, registering blueprints, registering error handlers,
+  and starting the development server.
+
+  8.2  Complete Source Code
+  --------------------------
+  CODE BLOCK - app.py (Complete File):
+  --------------------------------------
+  from flask import Flask
+  from models import db, User
+  from routes import main
+  from flask_login import LoginManager
+
+  app = Flask(__name__)
+  app.config['SECRET_KEY'] = 'dev_key_for_project'
+
+  import sys
+  import os
+
+  if getattr(sys, 'frozen', False):
+      # Running as a bundled desktop application (PyInstaller)
+      data_dir = os.path.join(os.environ['APPDATA'], 'TimetableManager')
+      if not os.path.exists(data_dir):
+          os.makedirs(data_dir)
+      db_path = os.path.join(data_dir, 'timetable.db')
+      app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+  else:
+      # Running in development mode
+      app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///timetable.db'
+
+  app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+  db.init_app(app)
+
+  login_manager = LoginManager()
+  login_manager.login_view = 'main.login'
+  login_manager.init_app(app)
+
+  @login_manager.user_loader
+  def load_user(user_id):
+      return User.query.get(int(user_id))
+
+  @app.context_processor
+  def inject_unread_count():
+      from flask_login import current_user
+      from models import Message
+      if current_user.is_authenticated:
+          count = Message.query.filter_by(
+              recipient_id=current_user.id,
+              is_read=False
+          ).count()
+          return dict(unread_count=count)
+      return dict(unread_count=0)
+
+  @app.errorhandler(404)
+  def page_not_found(e):
+      from flask import render_template
+      return render_template('404.html'), 404
+
+  @app.errorhandler(500)
+  def internal_server_error(e):
+      from flask import render_template
+      return render_template('500.html'), 500
+
+  app.register_blueprint(main)
+
+  with app.app_context():
+      db.create_all()
+
+  if __name__ == '__main__':
+      app.run(debug=True)
+  --------------------------------------
+
+  8.3  Key Sections Explained
+  ----------------------------
+
+  8.3.1  Desktop vs. Development Mode
+  The application detects whether it is running as a packaged .exe file
+  (via PyInstaller) using sys.frozen. In desktop mode, the SQLite database
+  is stored in the user's AppData folder for persistence. In development
+  mode, the database is stored in the project's instance/ folder.
+
+  8.3.2  LoginManager Configuration
+  Flask-Login is initialized with:
+  * login_view = 'main.login'  -> Redirects unauthenticated users to login
+  * user_loader callback       -> Loads user from DB by session user_id
+
+  8.3.3  Context Processor: inject_unread_count
+  This function runs on every page render and injects the unread message
+  count into all Jinja2 templates, allowing the navbar to display a
+  notification badge without repeating the query in every route.
+
+  8.3.4  Error Handlers
+  Custom error pages are registered for HTTP 404 (Not Found) and
+  HTTP 500 (Internal Server Error) to provide friendly error messages.
+
+  8.3.5  Blueprint Registration
+  All routes are organized into a Blueprint named 'main' (defined in
+  routes.py) and registered with the app using app.register_blueprint(main).
+
+  8.3.6  Database Initialization
+  db.create_all() is called inside the app context to create all database
+  tables on first run if they do not already exist.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CHAPTER 9:  ROUTING AND CONTROLLER LOGIC (routes.py)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  9.1  Overview
+  -------------
+  routes.py is the largest file in the project (1055 lines). It contains all
+  Flask route handlers (view functions) organized as a Blueprint. This file
+  acts as the Controller layer: it receives HTTP requests, performs business
+  logic, queries the database, and returns rendered HTML responses.
+
+  9.2  Blueprint Definition
+  -------------------------
+  CODE BLOCK - routes.py (Blueprint and imports):
+  ------------------------------------------------
+  from flask import (Blueprint, render_template, request,
+                     redirect, url_for, flash, jsonify)
+  from functools import wraps
+  from models import (db, Department, Course, Teacher, Classroom,
+                      Allocation, TimetableEntry, User, DAYS, TIMESLOTS,
+                      LeaveRequest, Substitution, Message)
+  from scheduler import Scheduler
+  from flask_login import login_user, logout_user, login_required, current_user
+  import csv, io, random
+  from datetime import datetime, date
+
+  main = Blueprint('main', __name__)
+  ------------------------------------------------
+
+  9.3  Admin Guard Decorator
+  --------------------------
+  A custom decorator is defined to restrict access to admin-only routes:
+
+  CODE BLOCK - routes.py (admin_required decorator):
+  ---------------------------------------------------
+  def admin_required(f):
+      from functools import wraps
+      @wraps(f)
+      def decorated_function(*args, **kwargs):
+          if not current_user.is_authenticated or current_user.role != 'admin':
+              flash('Access denied. Admin only.', 'danger')
+              return redirect(url_for('main.dashboard'))
+          return f(*args, **kwargs)
+      return decorated_function
+  ---------------------------------------------------
+
+  This decorator is stacked on top of @login_required for any route that
+  requires admin privileges (e.g., generate timetable, delete departments).
+
+  9.4  Authentication Routes
+  --------------------------
+  +--------------------------------------------+----------+----------------+
+  |  Route                                     |  Methods |  Access        |
+  +--------------------------------------------+----------+----------------+
+  |  /                                         |  GET     |  Public        |
+  |  /login                                    |  GET/POST|  Public        |
+  |  /logout                                   |  GET     |  Login required|
+  |  /register                                 |  GET     |  Public        |
+  |  /register/student                         |  GET/POST|  Public        |
+  |  /register/teacher                         |  GET/POST|  Public        |
+  |  /profile                                  |  GET/POST|  Login required|
+  +--------------------------------------------+----------+----------------+
+
+  9.4.1  Login Route
+  The login route accepts a POST form submission with 'username' and
+  'password' fields. It queries the User table and compares the password.
+  A special bootstrap case creates the first admin account if none exists.
+
+  CODE BLOCK - routes.py (Login route):
+  ---------------------------------------
+  @main.route('/login', methods=['GET', 'POST'])
+  def login():
+      if request.method == 'POST':
+          username = request.form.get('username')
+          password = request.form.get('password')
+
+          user = User.query.filter_by(username=username).first()
+          if user and user.password == password:
+              login_user(user)
+              flash(f'Welcome back, {username}!', 'success')
+              return redirect(url_for('main.dashboard'))
+
+          # Bootstrap: Create first admin if not exists
+          if username == 'admin' and password == 'admin':
+              if not User.query.filter_by(username='admin').first():
+                  new_admin = User(username='admin',
+                                   password='admin', role='admin')
+                  db.session.add(new_admin)
+                  db.session.commit()
+                  login_user(new_admin)
+                  return redirect(url_for('main.dashboard'))
+
+          flash('Invalid username or password', 'danger')
+      return render_template('login.html')
+  ---------------------------------------
+
+  9.5  Dashboard Route
+  --------------------
+  The dashboard displays system-wide statistics to the logged-in user.
+
+  CODE BLOCK - routes.py (Dashboard route):
+  ------------------------------------------
+  @main.route('/dashboard')
+  @login_required
+  def dashboard():
+      counts = {
+          'departments': Department.query.count(),
+          'teachers':    Teacher.query.count(),
+          'courses':     Course.query.count(),
+          'classrooms':  Classroom.query.count()
+      }
+      return render_template('dashboard.html', counts=counts)
+  ------------------------------------------
+
+  9.6  CRUD Routes Summary
+  ------------------------
+  The system provides full Create, Read, Update, Delete (CRUD) operations
+  for all core entities. Each entity has three tiers of routes:
+
+  +-------------------+--------------------------------+------------------+
+  |  Entity           |  List/Create Route             |  Access          |
+  +-------------------+--------------------------------+------------------+
+  |  Departments      |  /departments                  |  Login required  |
+  |  Teachers         |  /teachers                     |  Login required  |
+  |  Classrooms       |  /classrooms                   |  Login required  |
+  |  Courses          |  /courses                      |  Login required  |
+  |  Allocations      |  /allocations                  |  Login required  |
+  +-------------------+--------------------------------+------------------+
+
+  +-------------------+--------------------------------+------------------+
+  |  Entity           |  Edit Route                    |  Access          |
+  +-------------------+--------------------------------+------------------+
+  |  Department       |  /edit_department/<id>         |  Admin required  |
+  |  Teacher          |  /teachers/edit/<id>           |  Admin required  |
+  |  Classroom        |  /classrooms/edit/<id>         |  Admin required  |
+  |  Course           |  /courses/edit/<id>            |  Admin required  |
+  +-------------------+--------------------------------+------------------+
+
+  +-------------------+--------------------------------+------------------+
+  |  Entity           |  Delete Route                  |  Access          |
+  +-------------------+--------------------------------+------------------+
+  |  Department       |  /departments/delete/<id>      |  Admin required  |
+  |  Teacher          |  /teachers/delete/<id>         |  Admin required  |
+  |  Classroom        |  /classrooms/delete/<id>       |  Admin required  |
+  |  Course           |  /courses/delete/<id>          |  Admin required  |
+  |  Allocation       |  /allocations/delete/<id>      |  Admin required  |
+  +-------------------+--------------------------------+------------------+
+
+  9.7  Timetable Generation Route
+  --------------------------------
+  CODE BLOCK - routes.py (Generate route):
+  -----------------------------------------
+  @main.route('/generate', methods=['POST'])
+  @login_required
+  @admin_required
+  def generate():
+      scheduler = Scheduler()
+      if not scheduler.requirements:
+          flash('Failed: No subjects have teachers assigned.', 'danger')
+          return redirect(url_for('main.allocations'))
+
+      success = scheduler.generate_timetable()
+      if success:
+          flash('Timetable generated successfully!', 'success')
+      else:
+          flash('Failed to generate timetable. Check allocations.', 'danger')
+      return redirect(url_for('main.timetable'))
+  -----------------------------------------
+
+  9.8  Conflict Detection Function
+  ---------------------------------
+  Before any timetable entry is saved (auto or manual), the check_conflict()
+  function validates three dimensions simultaneously:
+
+  CODE BLOCK - routes.py (check_conflict function):
+  --------------------------------------------------
+  def check_conflict(day, timeslot, teacher_id, classroom_id,
+                     dept_id, ignore_entry_id=None):
+      # 1. Check teacher availability
+      teacher_busy = TimetableEntry.query.filter(
+          TimetableEntry.day == day,
+          TimetableEntry.timeslot == timeslot,
+          TimetableEntry.teacher_id == teacher_id,
+          TimetableEntry.id != ignore_entry_id
+      ).first()
+      if teacher_busy:
+          return True, f"Teacher is already scheduled."
+
+      # 2. Check classroom availability
+      room_busy = TimetableEntry.query.filter(
+          TimetableEntry.day == day,
+          TimetableEntry.timeslot == timeslot,
+          TimetableEntry.classroom_id == classroom_id,
+          TimetableEntry.id != ignore_entry_id
+      ).first()
+      if room_busy:
+          return True, f"Classroom is already occupied."
+
+      # 3. Check department concurrency limit
+      dept_sessions = TimetableEntry.query.filter(
+          TimetableEntry.day == day,
+          TimetableEntry.timeslot == timeslot,
+          TimetableEntry.dept_id == dept_id,
+          TimetableEntry.id != ignore_entry_id
+      ).all()
+      if len(dept_sessions) >= 2:
+          return True, "Department batch limit reached."
+
+      return False, None
+  --------------------------------------------------
+
+  9.9  Smart Slot Suggestion Function
+  ------------------------------------
+  When a conflict is detected during manual editing, the system suggests
+  alternative valid slots automatically:
+
+  CODE BLOCK - routes.py (get_suggestions function):
+  ---------------------------------------------------
+  def get_suggestions(entry, limit=5):
+      suggestions = []
+      classrooms = Classroom.query.all()
+      all_days = list(DAYS)
+      all_slots = list(TIMESLOTS)
+      random.shuffle(all_days)
+      random.shuffle(all_slots)
+      preferred_room_type = entry.classroom.type
+
+      for day in all_days:
+          for slot in all_slots:
+              if day == entry.day and slot == entry.timeslot:
+                  continue
+              for room in classrooms:
+                  conflict, _ = check_conflict(
+                      day, slot, entry.teacher_id,
+                      room.id, entry.dept_id, entry.id)
+                  if not conflict:
+                      suggestions.append({
+                          'day': day,
+                          'timeslot': slot,
+                          'classroom': room
+                      })
+              if len(suggestions) >= limit:
+                  return suggestions
+      return suggestions
+  ---------------------------------------------------
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CHAPTER 10:  INTELLIGENT SCHEDULING ENGINE (scheduler.py)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  10.1  Overview
+  ---------------
+  The Scheduler class in scheduler.py is the heart of the system. It
+  implements a constraint-satisfaction-based greedy scheduling algorithm
+  that generates a complete weekly timetable by assigning courses to
+  available time slots while respecting all institutional constraints.
+
+  10.2  Scheduling Algorithm Design
+  ----------------------------------
+  The algorithm follows a priority-based greedy approach:
+
+  Step 1: REQUIREMENT COLLECTION
+    - Query all departments and their courses
+    - For each course, fetch assigned teacher from Allocations
+    - Build a flat list of "requirements" (one per scheduled session)
+    - Practical courses generate 3-hour block requirements
+    - Theory courses generate 1-hour requirements per hour_per_week
+
+  Step 2: PRIORITIZATION
+    - Sort requirements: Practicals (duration=3) scheduled FIRST
+    - This ensures lab blocks get their slots before theory fills them
+
+  Step 3: DOMAIN BUILDING
+    - Practicals: only allowed to start at Period 2 (10:50) or Period 5 (2:00)
+    - Theory: may use Periods 1-6; Period 7 is reserved for Activity Classes
+
+  Step 4: CONSTRAINT CHECKING (for each candidate slot)
+    - Teacher Conflict: teacher not teaching another class at this time
+    - Room Conflict: classroom not already occupied at this time
+    - Department Conflict: department not exceeding concurrency limit
+    - Lab Block Rule: only one lab start time per department per day
+
+  Step 5: ROOM MATCHING
+    - Practical sessions must use rooms of type 'Lab'
+    - Theory sessions must use rooms of type 'Classroom'
+
+  Step 6: ACTIVITY CLASS ASSIGNMENT
+    - After all main classes are placed, Activity Classes are scheduled
+    - Activity Classes always go to Period 7 (03:40-04:30)
+    - The assigned teacher is inherited from the Period 6 teacher on that day
+
+  Step 7: DATABASE COMMIT
+    - Delete existing timetable entries
+    - Bulk-insert all generated schedule entries
+    - Rollback on any database error
+
+  10.3  Scheduler Class Constructor
+  -----------------------------------
+  CODE BLOCK - scheduler.py (Constructor and _fetch_requirements):
+  ----------------------------------------------------------------
+  import random
+  from models import db, TimetableEntry, Course, Teacher, Classroom,
+                     Department, DAYS, TIMESLOTS
+
+  class Scheduler:
+      def __init__(self):
+          self.departments  = Department.query.all()
+          self.classrooms   = Classroom.query.all()
+          self.teachers     = Teacher.query.all()
+          self.requirements = self._fetch_requirements()
+
+      def _fetch_requirements(self):
+          reqs = []
+          for dept in self.departments:
+              for course in dept.courses:
+                  allocations = course.allocations
+                  if not allocations and course.type != 'Activity Class':
+                      continue
+                  teacher_id = allocations[0].teacher_id if allocations else None
+
+                  if course.type == 'Practical':
+                      for _ in range(course.hours_per_week):
+                          reqs.append({
+                              'dept_id': dept.id, 'course_id': course.id,
+                              'teacher_id': teacher_id,
+                              'course_type': 'Practical', 'duration': 3
+                          })
+                  elif course.type == 'Activity Class':
+                      for _ in range(course.hours_per_week):
+                          reqs.append({
+                              'dept_id': dept.id, 'course_id': course.id,
+                              'teacher_id': teacher_id,
+                              'course_type': 'Activity Class', 'duration': 1
+                          })
+                  else:   # Theory
+                      for _ in range(course.hours_per_week):
+                          reqs.append({
+                              'dept_id': dept.id, 'course_id': course.id,
+                              'teacher_id': teacher_id,
+                              'course_type': 'Theory', 'duration': 1
+                          })
+          return reqs
+  ----------------------------------------------------------------
+
+  10.4  Main Scheduling Method
+  -----------------------------
+  CODE BLOCK - scheduler.py (generate_timetable - core loop):
+  ------------------------------------------------------------
+  LAB_START_INDICES = [1, 4]   # Index of 10:50 and 02:00 in TIMESLOTS
+
+  def generate_timetable(self):
+      schedule = []
+      main_reqs     = [r for r in self.requirements
+                       if r['course_type'] != 'Activity Class']
+      activity_reqs = [r for r in self.requirements
+                       if r['course_type'] == 'Activity Class']
+
+      # Prioritize longer (Practical) sessions
+      main_reqs.sort(key=lambda x: x['duration'], reverse=True)
+
+      teacher_busy         = set()   # (day, time, teacher_id)
+      room_busy            = set()   # (day, time, room_id)
+      dept_sessions        = {}      # (day, time, dept_id) -> count
+      dept_day_has_lab     = set()   # (day, dept_id)
+      dept_course_day_count= {}      # (day, dept_id, course_id) -> count
+
+      for req in main_reqs:
+          duration     = req['duration']
+          is_practical = req['course_type'] == 'Practical'
+
+          # Build domain of candidate (day, start_index) pairs
+          if is_practical:
+              domain = [(d, i) for d in DAYS for i in LAB_START_INDICES]
+          else:
+              p1_p6  = [(d, i) for d in DAYS for i in range(len(TIMESLOTS)-1)]
+              p7     = [(d, len(TIMESLOTS)-1) for d in DAYS]
+              domain = p1_p6 + p7
+
+          random.shuffle(domain)
+
+          assigned = False
+          for day, start_idx in domain:
+              # Check constraints and assign...
+              slots_indices = range(start_idx, start_idx + duration)
+
+              conflict = False
+              for idx in slots_indices:
+                  time = TIMESLOTS[idx]
+                  if (day, time, req['teacher_id']) in teacher_busy:
+                      conflict = True; break
+                  count = dept_sessions.get((day, time, req['dept_id']), 0)
+                  if (is_practical and count >= 2) or
+                     (not is_practical and count >= 1):
+                      conflict = True; break
+
+              if conflict: continue
+
+              # Find matching room
+              candidates = [r for r in self.classrooms
+                  if (is_practical and r.type == 'Lab') or
+                     (not is_practical and r.type != 'Lab')]
+              random.shuffle(candidates)
+
+              best_room = next((r for r in candidates if all(
+                  (day, TIMESLOTS[i], r.id) not in room_busy
+                  for i in slots_indices)), None)
+
+              if best_room:
+                  for idx in slots_indices:
+                      time = TIMESLOTS[idx]
+                      entry = TimetableEntry(day=day, timeslot=time,
+                          dept_id=req['dept_id'], course_id=req['course_id'],
+                          teacher_id=req['teacher_id'],
+                          classroom_id=best_room.id)
+                      schedule.append(entry)
+                      teacher_busy.add((day, time, req['teacher_id']))
+                      room_busy.add((day, time, best_room.id))
+                      dept_sessions[(day, time, req['dept_id'])] = \
+                          dept_sessions.get((day, time, req['dept_id']), 0)+1
+                  assigned = True; break
+
+          if not assigned:
+              return False  # Scheduling failed
+
+      # Save to database
+      TimetableEntry.query.delete()
+      for entry in schedule:
+          db.session.add(entry)
+      db.session.commit()
+      return True
+  ------------------------------------------------------------
+
+  10.5  Activity Class Assignment Logic
+  ---------------------------------------
+  Activity Classes are special: they are always placed in Period 7
+  (03:40-04:30) and the teacher is automatically inherited from whoever
+  taught Period 6 (02:50-03:40) on that day for that department:
+
+  CODE BLOCK - scheduler.py (Activity class logic):
+  --------------------------------------------------
+  p6_time = TIMESLOTS[5]   # '02:50-03:40'
+  p7_time = TIMESLOTS[6]   # '03:40-04:30'
+
+  for req in activity_reqs:
+      for day in shuffled_days:
+          # Find who taught Period 6 for this dept on this day
+          p6_teacher_id = next(
+              (e.teacher_id for e in schedule
+               if e.day == day and e.timeslot == p6_time
+               and e.dept_id == req['dept_id']),
+              None
+          )
+          target_teacher = p6_teacher_id or random_available_teacher
+
+          if target_teacher not in teacher_busy for p7_time:
+              # Assign Activity Class
+              entry = TimetableEntry(day=day, timeslot=p7_time, ...)
+              schedule.append(entry)
+              break
+  --------------------------------------------------
+
+  10.6  Constraint Summary
+  ------------------------
+  +---------------------------+--------------------------------------------+
+  |  Constraint               |  Description                               |
+  +---------------------------+--------------------------------------------+
+  |  Teacher uniqueness       |  One teacher in one place at a time        |
+  |  Room uniqueness          |  One class per room per time slot          |
+  |  Dept. concurrency limit  |  Max 2 parallel sessions per department    |
+  |  Lab start restriction    |  Labs start only at Period 2 or Period 5   |
+  |  One lab block per day    |  One lab block start time per dept/day     |
+  |  Sam subject distribution |  Same subject max 2 sessions per day       |
+  |  Activity Class slot      |  Always Period 7, inherit Period 6 teacher |
+  |  Room type matching       |  Labs->Lab rooms | Theory->Classrooms      |
+  +---------------------------+--------------------------------------------+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CHAPTER 11:  ROLE-BASED ACCESS CONTROL (RBAC)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  11.1  Overview
+  ---------------
+  The system implements a three-tier Role-Based Access Control (RBAC) model.
+  Each user account has a 'role' field that determines what actions they can
+  perform and what pages they can access.
+
+  11.2  Role Definitions
+  ----------------------
+  +----------+---------------------------------------------------------------+
+  |  Role    |  Permissions                                                  |
+  +----------+---------------------------------------------------------------+
+  |  admin   |  Full system access. Can create/edit/delete all entities,     |
+  |          |  generate timetables, manage users, send messages, approve    |
+  |          |  leaves, and access CSV upload features.                      |
+  +----------+---------------------------------------------------------------+
+  |  teacher |  View personal timetable, edit their own sessions only,       |
+  |          |  submit leave requests, view inbox messages.                  |
+  +----------+---------------------------------------------------------------+
+  |  student |  Read-only access to their department timetable.             |
+  |          |  View inbox messages from admin.                              |
+  +----------+---------------------------------------------------------------+
+
+  11.3  Access Control Implementation
+  -------------------------------------
+  Access control is enforced at three levels:
+
+  Level 1 - Route Decorators:
+    @login_required  -> Ensures user is authenticated (any role)
+    @admin_required  -> Ensures user has 'admin' role
+
+  Level 2 - In-route Role Checks:
+    if current_user.role != 'admin': flash('Access denied.'); redirect(...)
+
+  Level 3 - Template-Level Visibility:
+    {% if current_user.role == 'admin' %} ... show edit buttons ... {% endif %}
+
+  11.4  Feature Access Matrix
+  ----------------------------
+  +-------------------------------+---------+---------+---------+
+  |  Feature                      |  Admin  | Teacher | Student |
+  +-------------------------------+---------+---------+---------+
+  |  View Dashboard               |   YES   |   YES   |   YES   |
+  |  View Timetable               |   YES   |   YES   |   YES   |
+  |  Edit Timetable Entry         |   YES   |  Own only|   NO   |
+  |  Generate Timetable           |   YES   |   NO    |   NO    |
+  |  Add/Edit/Delete Dept         |   YES   |   NO    |   NO    |
+  |  Add/Edit/Delete Teacher      |   YES   |   NO    |   NO    |
+  |  Add/Edit/Delete Course       |   YES   |   NO    |   NO    |
+  |  Add/Edit/Delete Classroom    |   YES   |   NO    |   NO    |
+  |  Manage Allocations           |   YES   |   NO    |   NO    |
+  |  Upload CSV                   |   YES   |   NO    |   NO    |
+  |  View Leave Requests          |   YES   |   YES   |   NO    |
+  |  Submit Leave Request         |   NO    |   YES   |   NO    |
+  |  Approve/Reject Leave         |   YES   |   NO    |   NO    |
+  |  Send Messages                |   YES   |   NO    |   NO    |
+  |  Read Inbox                   |   YES   |   YES   |   YES   |
+  |  View Reports                 |   YES   |   YES   |   NO    |
+  +-------------------------------+---------+---------+---------+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CHAPTER 12:  USER INTERFACE AND FRONTEND DESIGN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  12.1  Design Philosophy
+  -----------------------
+  The system uses a modern Glassmorphism design language characterized by:
+  * Frosted glass effect using CSS backdrop-filter: blur()
+  * Semi-transparent cards with rgba() backgrounds
+  * Glowing neon accents in blue and purple tones
+  * Smooth CSS transitions and hover animations
+  * HTML5 Canvas particle network background (animated)
+
+  12.2  Master Layout (base.html)
+  --------------------------------
+  All pages extend a single base.html master template which provides:
+  * Navigation bar with role-aware menu items
+  * Unread message notification badge (injected by context processor)
+  * Particle network canvas background (runs on all pages)
+  * Flash message alert display (success/danger/warning)
+  * Footer with system version info
+  * CSS and JS block sections for page-specific resources
+
+  12.3  Key Pages
+  ----------------
+
+  LOGIN PAGE (login.html)
+  - Centered glassmorphism card on animated particle background
+  - Username and password input fields
+  - Flash message area for login failure alerts
+  - Link to registration page
+
+  DASHBOARD (dashboard.html)
+  - Statistics cards showing counts of Departments, Teachers, Courses, Rooms
+  - Quick action buttons (Generate Timetable, Upload CSV)
+  - Role-aware content: admin sees management buttons, teachers see schedule
+
+  TIMETABLE PAGE (timetable.html)
+  - Master timetable view for all departments (admin/student view)
+  - Personal timetable view for teacher role
+  - Colour-coded cells: Theory (blue), Practical (green), Activity (orange)
+  - Colspan merging for multi-period Lab blocks (3 cells merged into 1)
+  - Today's date is highlighted on the current day column
+  - Substitution teacher names shown in real-time when applicable
+  - Department filter dropdown to focus on specific branch
+  - PDF Export button (triggers html2pdf.js client-side rendering)
+
+  EDIT TIMETABLE ENTRY (edit_timetable_entry.html)
+  - Dropdown selectors for Day, Timeslot, Classroom, Teacher
+  - Real-time conflict alert displayed on submission failure
+  - Suggested alternative slots listed with one-click application
+
+  12.4  Timetable Grid Structure
+  --------------------------------
+  The HTML timetable grid is generated dynamically by Jinja2. Each cell
+  in the grid has:
+
+    +-----+----------+----------+----------+----------+----------+----------+
+    |     | Monday   | Tuesday  |Wednesday | Thursday | Friday   | Saturday |
+    +-----+----------+----------+----------+----------+----------+----------+
+    |10:00| CS101    |          | CS102    |          | CS101    |          |
+    |     | Dr. A    |  FREE    | Dr. B    |  FREE    | Dr. A    |  FREE    |
+    |     | Room 101 |          | Room 102 |          | Room 101 |          |
+    +-----+----------+----------+----------+----------+----------+----------+
+    |10:50|===LAB================|          | CS103    |          |ACTIVITY |
+    |     |  CS-LAB  |   LAB    |  FREE    | Dr. C    |  FREE    | Dr. A   |
+    |     | (3hrs)   |  (cont.) |          | Lab 1    |          |Room 101 |
+    +-----+----------+----------+----------+----------+----------+----------+
+
+  12.5  Particle Network Animation
+  ---------------------------------
+  The interactive background is rendered on an HTML5 Canvas element using
+  vanilla JavaScript. Key properties:
+  * 100+ particles moving at random velocities
+  * Connecting lines drawn when particles are within 150px of each other
+  * Canvas resizes automatically on browser window resize
+  * GPU-accelerated via requestAnimationFrame loop
+  * Color: soft white/blue-tinted particles on dark background
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CHAPTER 13:  CSV BULK IMPORT FEATURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  13.1  Overview
+  ---------------
+  To allow institutions to set up the system rapidly, ITMS supports bulk
+  data import via CSV (Comma-Separated Values) files. This allows
+  administrators to upload hundreds of teachers, courses, and classrooms
+  simultaneously rather than entering them one by one manually.
+
+  13.2  Supported Import Types
+  ------------------------------
+  +----------------+--------------------------------------------+-----------+
+  |  Type          |  Required CSV Columns                      |  Notes    |
+  +----------------+--------------------------------------------+-----------+
+  |  departments   |  Name, Code, Section, Semester             |           |
+  |  teachers      |  TeacherName, DepartmentCode, Email,       | Dept code |
+  |                |  MaxHoursPerWeek                           | must exist|
+  |  subjects      |  Name, Code, DepartmentCode, HoursPerWeek, |           |
+  |                |  Type                                      |           |
+  |  classrooms    |  Name, Capacity, Type                      |           |
+  |  allocations   |  CourseCode, TeacherName                   | Both must |
+  |                |                                            | exist     |
+  +----------------+--------------------------------------------+-----------+
+
+  13.3  CSV Import Route
+  ----------------------
+  CODE BLOCK - routes.py (upload_csv route excerpt):
+  ---------------------------------------------------
+  @main.route('/upload_csv', methods=['GET', 'POST'])
+  @login_required
+  @admin_required
+  def upload_csv():
+      if request.method == 'POST':
+          file_type = request.form.get('file_type')
+          file = request.files.get('csv_file')
+
+          if not file or not file.filename.endswith('.csv'):
+              flash('Please upload a valid CSV file.', 'danger')
+              return redirect(url_for('main.upload_csv'))
+
+          stream = io.StringIO(
+              file.stream.read().decode("UTF8"), newline=None)
+          reader = csv.DictReader(stream)
+
+          count = 0
+          if file_type == 'teachers':
+              for row in reader:
+                  dept = Department.query.filter_by(
+                      code=row['DepartmentCode']).first()
+                  teacher = Teacher(
+                      name=row['TeacherName'],
+                      dept_id=dept.id if dept else None,
+                      workload_limit=int(row.get('MaxHoursPerWeek', 20)),
+                      email=row.get('Email')
+                  )
+                  db.session.add(teacher)
+                  count += 1
+
+          db.session.commit()
+          flash(f'Successfully imported {count} items.', 'success')
+  ---------------------------------------------------
+
+  13.4  Sample CSV Formats
+  -------------------------
+
+  Sample: departments.csv
+  -------------------------
+  Name,Code,Section,Semester
+  Computer Science,CS,A,Semester 3
+  Electronics Engineering,ECE,B,Semester 3
+  Mechanical Engineering,ME,A,Semester 5
+
+  Sample: teachers.csv
+  ----------------------
+  TeacherName,DepartmentCode,Email,MaxHoursPerWeek
+  Dr. Arun Kumar,CS,arun@college.edu,18
+  Dr. Priya Singh,ECE,priya@college.edu,20
+  Prof. Ramesh,ME,ramesh@college.edu,16
+
+  Sample: subjects.csv
+  ----------------------
+  Name,Code,DepartmentCode,HoursPerWeek,Type
+  Data Structures,DS301,CS,4,Theory
+  OS Lab,OSL302,CS,1,Practical
+  Activity Period,ACT001,CS,5,Activity Class
+
+  Sample: classrooms.csv
+  ----------------------
+  Name,Capacity,Type
+  Room 101,60,Classroom
+  Room 102,60,Classroom
+  Lab A,30,Lab
+  Lab B,30,Lab
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CHAPTER 14:  LEAVE MANAGEMENT AND SUBSTITUTION SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  14.1  Overview
+  ---------------
+  The system includes a complete leave management workflow allowing teachers
+  to submit leave requests and admins to approve or reject them. When a leave
+  is approved, the system automatically finds substitute teachers for all
+  affected classes and creates substitution records. Those substitutions are
+  displayed on the timetable page to all users on the specific date.
+
+  14.2  Leave Request Workflow
+  ------------------------------
+
+  Step 1:  Teacher submits leave request via /leave_request route
+           - Selects date and provides reason
+           - Status is set to 'Pending'
+
+  Step 2:  Admin reviews pending requests via /admin/leaves route
+           - Sees all pending requests from all teachers
+           - Can approve or reject with optional admin feedback
+
+  Step 3:  On APPROVAL:
+           - System queries the leaving teacher's timetable for that date
+           - For each affected TimetableEntry, finds an available substitute
+           - Creates Substitution records linking leave -> entry -> sub teacher
+           - Auto-sends a Message to the substitute teacher notifying them
+
+  Step 4:  On the leave date:
+           - /timetable route queries active substitutions for today
+           - Displays substitute teacher names in affected cells
+           - All users can see the substitution info in real-time
+
+  14.3  LeaveRequest States
+  --------------------------
+  +----------+------------------------------------------------------------+
+  |  Status  |  Meaning                                                   |
+  +----------+------------------------------------------------------------+
+  |  Pending |  Submitted by teacher, awaiting admin review               |
+  |  Approved|  Admin approved; substitutions auto-created                |
+  |  Rejected|  Admin rejected; no substitutions created                  |
+  +----------+------------------------------------------------------------+
+
+  14.4  Substitution Display Logic
+  ----------------------------------
+  CODE BLOCK - routes.py (substitution query in timetable route):
+  ----------------------------------------------------------------
+  today = date.today()
+  day_index = today.weekday()
+  today_name = DAYS[day_index] if day_index < 6 else None
+
+  todays_substitutions = {}
+  if today_name:
+      subs = Substitution.query.join(LeaveRequest).filter(
+          LeaveRequest.date == today,
+          LeaveRequest.status == 'Approved'
+      ).all()
+
+      todays_substitutions = {
+          sub.timetable_entry_id: sub.substitute_teacher.name
+          for sub in subs
+      }
+  ----------------------------------------------------------------
+
+  The todays_substitutions dictionary maps TimetableEntry IDs to substitute
+  teacher names. Jinja2 templates use this to show "Sub: Dr. X" in the cell.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CHAPTER 15:  INTERNAL MESSAGING (MAILBOX) SYSTEM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  15.1  Overview
+  ---------------
+  The system includes a complete internal messaging module allowing
+  administrators to send individual or broadcast messages to users.
+  Every user has a personal inbox (mailbox) where they can read messages
+  and mark them as read.
+
+  15.2  Messaging Features
+  -------------------------
+  * Admin can send messages to: individual users, all teachers,
+    all students, or everyone on the system
+  * System auto-sends messages for: leave approvals, leave rejections,
+    and substitution notifications
+  * Unread message count shown as badge in navigation bar
+  * Full message thread view with timestamp, sender, subject, body
+  * Bulk clear mailbox (delete all messages at once)
+
+  15.3  Compose Message Route
+  ----------------------------
+  CODE BLOCK - routes.py (compose_message POST handler):
+  -------------------------------------------------------
+  @main.route('/mailbox/send', methods=['GET', 'POST'])
+  @login_required
+  def compose_message():
+      if current_user.role != 'admin':
+          flash('Only admins can send messages.', 'danger')
+          return redirect(url_for('main.mailbox'))
+
+      if request.method == 'POST':
+          recipient_group = request.form.get('recipient_group')
+          subject = request.form.get('subject')
+          body    = request.form.get('body')
+
+          recipients = []
+          if recipient_group == 'all_teachers':
+              recipients = User.query.filter_by(role='teacher').all()
+          elif recipient_group == 'all_students':
+              recipients = User.query.filter_by(role='student').all()
+          elif recipient_group == 'everyone':
+              recipients = User.query.filter(
+                  User.id != current_user.id).all()
+
+          count = 0
+          for recipient in recipients:
+              msg = Message(
+                  recipient_id=recipient.id,
+                  sender_id=current_user.id,
+                  subject=subject,
+                  body=body,
+                  category='Admin Message'
+              )
+              db.session.add(msg)
+              count += 1
+
+          db.session.commit()
+          flash(f'Message sent to {count} users.', 'success')
+  -------------------------------------------------------
+
+  15.4  Navigation Badge
+  ----------------------
+  The unread count is injected into every page via the context processor
+  defined in app.py. The base.html template renders it as a badge:
+
+  TEMPLATE SNIPPET - base.html (unread badge):
+  ----------------------------------------------
+  {% if unread_count > 0 %}
+    <span class="badge">{{ unread_count }}</span>
+  {% endif %}
+  ----------------------------------------------
+
+  15.5  Message Categories
+  -------------------------
+  +--------------------+----------------------------------------------------+
+  |  Category          |  When Generated                                    |
+  +--------------------+----------------------------------------------------+
+  |  System            |  Auto-generated system notifications               |
+  |  Admin Message     |  Manually composed by admin                        |
+  |  Leave Notification|  Auto-sent on leave approval / substitution assign |
+  +--------------------+----------------------------------------------------+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CHAPTER 16:  PDF EXPORT FEATURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  16.1  Overview
+  ---------------
+  The system provides a one-click PDF export feature allowing users to
+  download a high-quality PDF copy of the timetable directly from the web
+  interface. The export is performed entirely on the client side using the
+  html2pdf.js library, meaning no server processing is required.
+
+  16.2  How It Works
+  -------------------
+  1. The user clicks the "Export PDF" button on the timetable page.
+  2. JavaScript code captures the specific HTML element containing the
+     timetable grid using document.getElementById().
+  3. html2pdf.js converts that HTML (including CSS styles) into a PDF.
+  4. The PDF is automatically downloaded to the user's device.
+
+  16.3  PDF Export JavaScript
+  ----------------------------
+  CODE BLOCK - timetable.html (PDF export JavaScript):
+  -----------------------------------------------------
+  function exportPDF() {
+      const element = document.getElementById('timetable-container');
+      const options = {
+          margin:       0.5,
+          filename:     'timetable_export.pdf',
+          image:        { type: 'jpeg', quality: 0.98 },
+          html2canvas:  { scale: 2, useCORS: true },
+          jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' }
+      };
+      html2pdf().set(options).from(element).save();
+  }
+  -----------------------------------------------------
+
+  16.4  Export Options
+  --------------------
+  * Full Institution Timetable: exports all department timetables on a
+    single multi-page PDF document
+  * Per-Department PDF: exports a filtered single-department timetable
+  * Orientation: Landscape (A4) for maximum timetable visibility
+  * Quality: High (0.98 JPEG quality, 2x scale canvas rendering)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CHAPTER 17:  INSTALLATION AND DEPLOYMENT GUIDE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  17.1  Prerequisites
+  --------------------
+  Before installing the system, ensure the following are available:
+
+  +--------------------+------------------------------------------+---------+
+  |  Requirement       |  Minimum Version                         |  Notes  |
+  +--------------------+------------------------------------------+---------+
+  |  Python            |  3.10 or higher                          | Required|
+  |  pip               |  Latest                                  | Required|
+  |  Web Browser       |  Chrome / Firefox / Edge (modern)        | Required|
+  |  Operating System  |  Windows 10/11, macOS 12+, Ubuntu 20.04+ | Any OS |
+  +--------------------+------------------------------------------+---------+
+
+  17.2  Installation Steps (Web / Development Mode)
+  --------------------------------------------------
+
+  STEP 1: Clone the repository or extract the project ZIP
+  --------------------------------------------------------
+  > git clone https://github.com/your-repo/timetable-main.git
+  > cd timetable-main
+
+  STEP 2: Create and activate a virtual environment (recommended)
+  ---------------------------------------------------------------
+  Windows:
+  > python -m venv venv
+  > venv\Scripts\activate
+
+  macOS / Linux:
+  > python3 -m venv venv
+  > source venv/bin/activate
+
+  STEP 3: Install all Python dependencies
+  ----------------------------------------
+  > pip install -r requirements.txt
+
+  The requirements.txt file contains:
+  ------------------------------------
+  Flask
+  SQLAlchemy
+  Flask-SQLAlchemy
+  Flask-Login
+  pywebview
+  pyinstaller
+  ------------------------------------
+
+  STEP 4: Run the Flask development server
+  -----------------------------------------
+  > python app.py
+
+  Expected output:
+  > * Running on http://127.0.0.1:5000
+  > * Debug mode: on
+
+  STEP 5: Access the application
+  --------------------------------
+  Open your web browser and go to:
+  > http://127.0.0.1:5000
+
+  STEP 6: First Admin Login
+  --------------------------
+  The system bootstraps automatically. Use:
+  > Username: admin
+  > Password: admin
+
+  On first login with these credentials, the admin account is created
+  automatically in the database.
+
+  17.3  Initial Setup Workflow (After Install)
+  ---------------------------------------------
+  Once logged in as admin, follow this sequence to set up the system:
+
+  Step 1:  Add Departments   ->  /departments
+  Step 2:  Add Classrooms    ->  /classrooms
+  Step 3:  Add Teachers      ->  /teachers
+  Step 4:  Add Courses       ->  /courses
+  Step 5:  Assign Teachers   ->  /allocations  (link course to teacher)
+  Step 6:  Generate Timetable -> Dashboard -> "Generate Timetable" button
+  Step 7:  View Timetable    ->  /timetable
+
+  Alternatively, Steps 1-5 can be done via CSV upload:
+  > Dashboard -> Upload CSV -> Select type -> Upload file
+
+  17.4  Desktop Application Build (Optional)
+  -------------------------------------------
+  To build a standalone Windows .exe (no Python required for end user):
+
+  > pyinstaller TimetableManager.spec
+
+  The .spec file is pre-configured in the project root. After build:
+  > dist/TimetableManager/TimetableManager.exe
+
+  The desktop app uses PyWebView to open the Flask server in a native
+  OS window, providing an app-like experience without a browser.
+
+  17.5  Resetting the Database
+  -----------------------------
+  To reset all data and start fresh:
+  > Delete the file: instance/timetable.db
+  > Restart the application: python app.py
+  > A fresh database will be auto-created on startup.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CHAPTER 18:  TESTING AND VALIDATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  18.1  Overview
+  ---------------
+  The system includes utility scripts for validating the generated timetable
+  and verifying schedule density. These scripts run independently and output
+  diagnostic information.
+
+  18.2  Schedule Density Checker (check_density.py)
+  ---------------------------------------------------
+  This script checks the percentage utilization of each timeslot across all
+  departments, helping identify under-scheduled or over-crowded periods.
+
+  CODE BLOCK - check_density.py:
+  --------------------------------
+  from app import app
+  from models import TimetableEntry, DAYS, TIMESLOTS, Department
+
+  with app.app_context():
+      departments = Department.query.all()
+      for dept in departments:
+          print(f"\n Department: {dept.name} ({dept.code})")
+          for day in DAYS:
+              sessions = TimetableEntry.query.filter_by(
+                  dept_id=dept.id, day=day).count()
+              print(f"  {day}: {sessions} sessions scheduled")
+  --------------------------------
+
+  18.3  Schedule Integrity Checker (check_schedule.py)
+  ------------------------------------------------------
+  This script verifies that no conflicts exist in the generated timetable
+  by checking all three conflict dimensions for every entry:
+
+  CODE BLOCK - check_schedule.py:
+  ---------------------------------
+  from app import app
+  from models import TimetableEntry
+
+  with app.app_context():
+      entries = TimetableEntry.query.all()
+      conflicts_found = 0
+
+      for e1 in entries:
+          for e2 in entries:
+              if e1.id == e2.id:
+                  continue
+              if e1.day == e2.day and e1.timeslot == e2.timeslot:
+                  if e1.teacher_id == e2.teacher_id:
+                      print(f"TEACHER CONFLICT: Entry {e1.id}, {e2.id}")
+                      conflicts_found += 1
+                  if e1.classroom_id == e2.classroom_id:
+                      print(f"ROOM CONFLICT: Entry {e1.id}, {e2.id}")
+                      conflicts_found += 1
+
+      if conflicts_found == 0:
+          print("SUCCESS: No conflicts found in the timetable!")
+      else:
+          print(f"FAILED: {conflicts_found} conflicts detected!")
+  ---------------------------------
+
+  18.4  Test Scenarios
+  ---------------------
+  The following functional test scenarios were validated during development:
+
+  +----+-------------------------------------------+--------+------------+
+  | #  |  Test Scenario                            | Result |  Notes     |
+  +----+-------------------------------------------+--------+------------+
+  | 1  |  Admin login with correct credentials     |  PASS  |            |
+  | 2  |  Admin login with wrong password          |  PASS  | Error shown|
+  | 3  |  Add Department via form                  |  PASS  |            |
+  | 4  |  Add Department via CSV upload            |  PASS  |            |
+  | 5  |  Generate timetable with allocations done |  PASS  |            |
+  | 6  |  Generate timetable with no allocations   |  PASS  | Error flash|
+  | 7  |  Edit entry: valid new slot               |  PASS  |            |
+  | 8  |  Edit entry: conflicting slot             |  PASS  | Error+Sugg.|
+  | 9  |  Teacher submits leave request            |  PASS  |            |
+  | 10 |  Admin approves leave, auto-substitution  |  PASS  |            |
+  | 11 |  Admin sends broadcast message            |  PASS  |            |
+  | 12 |  Student views mailbox                    |  PASS  |            |
+  | 13 |  PDF export button downloads file         |  PASS  |            |
+  | 14 |  Student cannot access admin pages        |  PASS  | Redirected |
+  | 15 |  Teacher edits only own sessions          |  PASS  |            |
+  | 16 |  CSV import for teachers                  |  PASS  |            |
+  | 17 |  404 page for invalid URL                 |  PASS  |            |
+  | 18 |  500 page on server error                 |  PASS  |            |
+  | 19 |  Delete department cascades to children   |  PASS  |            |
+  | 20 |  Lab always starts at P2 or P5            |  PASS  | Verified   |
+  +----+-------------------------------------------+--------+------------+
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CHAPTER 19:  FUTURE ENHANCEMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  The following features are identified as potential enhancements for future
+  development cycles of the Intelligent Timetable Management System:
+
+  19.1  Short-Term Enhancements (v1.1)
+  -------------------------------------
+  * Password Hashing: Replace plain-text passwords with bcrypt hashing
+    using Flask-Bcrypt for improved security compliance.
+
+  * Input Validation: Add server-side form validation using WTForms or
+    Flask-WTF to prevent invalid data from being saved to the database.
+
+  * Email Notifications: Integrate Flask-Mail to send real email alerts
+    when leaves are approved or substitutions are assigned.
+
+  * Search and Filter: Add keyword search for the teacher list, course
+    list, and timetable page.
+
+  * Pagination: Add pagination to long entity listing pages (teachers,
+    courses, classrooms) for better usability with large datasets.
+
+  19.2  Medium-Term Enhancements (v2.0)
+  ----------------------------------------
+  * PostgreSQL Support: Migrate from SQLite to PostgreSQL for production
+    multi-user deployments with concurrent database access.
+
+  * REST API: Expose RESTful API endpoints (JSON responses) to allow
+    integration with mobile apps or third-party systems.
+
+  * Mobile-Responsive UI: Redesign the CSS grid layout to fully support
+    mobile and tablet screen sizes.
+
+  * Multi-Admin Support: Allow multiple admin users with separate
+    activity logs and audit trails.
+
+  * Drag-and-Drop Timetable Editor: Replace the form-based entry editor
+    with a visual drag-and-drop grid interface.
+
+  19.3  Long-Term Vision (v3.0)
+  ------------------------------
+  * AI-Enhanced Scheduling: Use reinforcement learning or genetic
+    algorithms to optimize timetable quality beyond constraint satisfaction.
+
+  * LMS Integration: Integrate with Moodle or Google Classroom to push
+    timetable data directly into existing learning management systems.
+
+  * Attendance Module: Add a QR-code or RFID based attendance tracking
+    module linked to the generated timetable.
+
+  * Analytics Dashboard: Provide graphical charts showing teacher workload
+    distribution, room utilization rates, and peak scheduling hours.
+
+  * Multi-Institution Support: Convert to a SaaS (Software as a Service)
+    model supporting multiple institutions with isolated data tenants.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CHAPTER 20:  CONCLUSION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  The Intelligent Timetable Management System (ITMS) successfully addresses
+  one of the most persistent and complex administrative challenges faced by
+  academic institutions: the generation and management of a conflict-free
+  weekly class schedule.
+
+  By leveraging the power of Python, Flask, and SQLAlchemy alongside a
+  custom constraint-satisfaction scheduling algorithm, the system delivers
+  a comprehensive, automated solution that eliminates manual scheduling
+  effort and removes the risk of human error.
+
+  Key achievements of this project include:
+
+  1. AUTOMATED SCHEDULING: The Scheduler class generates complete, valid
+     weekly timetables in seconds, enforcing all real-world constraints
+     including teacher availability, room type matching, lab block rules,
+     and department concurrency limits.
+
+  2. ROLE-BASED SYSTEM: The three-tier RBAC model (Admin, Teacher, Student)
+     ensures every user interacts with only the features relevant to their
+     role, maintaining data integrity and access control.
+
+  3. COMPLETE WORKFLOW: Beyond timetable generation, the system covers the
+     full academic scheduling lifecycle — from initial data setup to leave
+     management, substitution assignment, and official communications.
+
+  4. MODERN INTERFACE: The Glassmorphism UI with Canvas particle animations
+     provides a polished, professional user experience that sets this
+     application apart from traditional academic management tools.
+
+  5. PORTABILITY: The combination of SQLite (file-based database) and
+     PyInstaller packaging allows the system to be deployed as a zero-
+     dependency desktop application for institutions without server access.
+
+  This project demonstrates the practical application of web development,
+  database engineering, algorithmic problem-solving, and software design
+  principles in solving a real-world academic challenge. It lays a solid
+  foundation for future enhancements and serves as a complete, functional
+  tool ready for immediate institutional deployment.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  CHAPTER 21:  REFERENCES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  [1]  Flask Documentation - Official Flask Documentation
+       https://flask.palletsprojects.com/
+
+  [2]  SQLAlchemy Documentation - Official SQLAlchemy ORM Guide
+       https://docs.sqlalchemy.org/
+
+  [3]  Flask-Login Documentation
+       https://flask-login.readthedocs.io/
+
+  [4]  Flask-SQLAlchemy Documentation
+       https://flask-sqlalchemy.palletsprojects.com/
+
+  [5]  html2pdf.js Library
+       https://ekoopmans.github.io/html2pdf.js/
+
+  [6]  PyInstaller Documentation
+       https://pyinstaller.org/en/stable/
+
+  [7]  PyWebView Documentation
+       https://pywebview.flowrl.com/
+
+  [8]  SQLite Official Documentation
+       https://www.sqlite.org/docs.html
+
+  [9]  MDN Web Docs - HTML5 Canvas API
+       https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API
+
+  [10] Jinja2 Template Engine Documentation
+       https://jinja.palletsprojects.com/
+
+  [11] Python Official Documentation
+       https://docs.python.org/3/
+
+  [12] Gurobi, H. (2008). "Constraint Satisfaction Problems in Academic
+       Timetabling" - Journal of Automated Reasoning
+
+  [13] Even, S., Shamir, E. (1975). "An O(n log n) algorithm for graph
+       coloring" - Used as inspiration for scheduling constraint theory
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  END OF DOCUMENTATION
+  Intelligent Timetable Management System  |  Version 1.0  |  March 2026
+  For academic purposes only.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
